@@ -36,3 +36,11 @@ proprietario tramite la piattaforma, per chiedere maggiori dettagli.
  3. Alessandro D.
  4. Vincenzo
  5. Veronica
+
+ 
+
+Cose Da Ricordare per sistemare successivamente
+
+Ricordarsi di togliere il require su users nella migrations
+
+Ricordarsi di sistemare l'errore sulla conferma password
