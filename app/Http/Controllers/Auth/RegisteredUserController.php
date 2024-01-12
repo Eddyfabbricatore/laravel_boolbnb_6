@@ -30,16 +30,35 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $messages = 
+        [
+            "name.max" => 'Il nome non può avere più di :max caratteri',
+            "surname.max" => 'Il cognome non può avere più di :max caratteri',
+            "email.required" => 'Inserisci l\'email',
+            "email.string" => 'L\'email deve essere una stringa di caratteri',
+            "email.lowercase" => 'I caratteri devono essere minuscoli',
+            "email.email" => 'Inserisci un email valida',
+            "email.max" => 'L\'email non deve avere più di :max caratteri',
+            "email.unique" => 'L\'email è gia registrata',
+            "password.required" => 'Inserisci la password',
+            "password.confirmed" => 'Le due password devono coincidere',
+            "password.min" => 'La password deve avere almeno :min caratteri',
+            "date_of_birth.date" => 'Inserisci una data di nascita corretta'
+        ]; 
+
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['max:255'],
+            'surname' => ['max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+            'password' => ['required', 'confirmed', 'min:8', Rules\Password::defaults()]
+        ], $messages);          
 
         $user = User::create([
             'name' => $request->name,
+            'surname' => $request->surname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'date_of_birth' => $request->date_of_birth
         ]);
 
         event(new Registered($user));
