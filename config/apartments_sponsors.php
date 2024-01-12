@@ -10,7 +10,7 @@ return [
 
     [
       'name' => 'Premium',
-      'description' => `Sponsorizzato per 72h`,
+      'description' => 'Sponsorizzato per 72h',
       'price' => '5.99',
       'duration_in_hours' => '72',
     ],
