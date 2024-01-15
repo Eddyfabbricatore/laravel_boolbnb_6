@@ -31,7 +31,6 @@ class ApartmentController extends Controller
         $route = route('admin.apartments.store');
         $apartment = null;
         $services = Service::all();
-
         return view('admin.apartments.create-edit', compact("apartment", "services", "title", "method", "route"));
     }
 
@@ -40,9 +39,10 @@ class ApartmentController extends Controller
      */
     public function store(Request $request)
     {
+
         $form_data_apartment = $request->all();
         $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
-
+        $form_data_apartment['user_id'] = Auth::user()->id;
         $form_data_apartment["address"] =
             Helper::generateFullAddress(
                 $form_data_apartment["street_address"],
@@ -53,6 +53,9 @@ class ApartmentController extends Controller
                 $form_data_apartment["region"],
                 $form_data_apartment["country"]
             );
+
+        $form_data_apartment["lat"] = Helper::generateLatLng($form_data_apartment["address"], 'lat');
+        $form_data_apartment["lng"] = Helper::generateLatLng($form_data_apartment["address"], 'lon');
 
         $new_apartment = Apartment::create($form_data_apartment);
 
@@ -100,7 +103,6 @@ class ApartmentController extends Controller
                 $form_data_apartment["region"],
                 $form_data_apartment["country"]
             );
-        dd($form_data_apartment["address"]);
         if($form_data_apartment["title"] != $apartment->title){
             $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
         }else{
