@@ -9,6 +9,6 @@ class DashboardController extends Controller
 {
     public function index(){
         $apartments = Apartment::all();
-        return view('dashboard', compact('apartments'));
+        return view('admin.dashboard', compact('apartments'));
     }
 }
