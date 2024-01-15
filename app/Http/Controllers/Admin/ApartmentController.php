@@ -44,13 +44,15 @@ class ApartmentController extends Controller
         $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
 
         $form_data_apartment["address"] =
-        $form_data_apartment["street_address"]. " " .
-        $form_data_apartment["street_number"]. " " .
-        $form_data_apartment["cap"]. " " .
-        $form_data_apartment["city"]. " " .
-        $form_data_apartment["province"]. " " .
-        $form_data_apartment["region"]. " " .
-        $form_data_apartment["country"];
+            Helper::generateFullAddress(
+                $form_data_apartment["street_address"],
+                $form_data_apartment["street_number"],
+                $form_data_apartment["cap"],
+                $form_data_apartment["city"],
+                $form_data_apartment["province"],
+                $form_data_apartment["region"],
+                $form_data_apartment["country"]
+            );
 
         $new_apartment = Apartment::create($form_data_apartment);
 
@@ -88,6 +90,17 @@ class ApartmentController extends Controller
     {
         $form_data_apartment = $request->all();
 
+        $form_data_apartment["address"] =
+            Helper::generateFullAddress(
+                $form_data_apartment["street_address"],
+                $form_data_apartment["street_number"],
+                $form_data_apartment["cap"],
+                $form_data_apartment["city"],
+                $form_data_apartment["province"],
+                $form_data_apartment["region"],
+                $form_data_apartment["country"]
+            );
+        dd($form_data_apartment["address"]);
         if($form_data_apartment["title"] != $apartment->title){
             $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
         }else{
