@@ -5,12 +5,12 @@
         <h1>Il tuo appartamento</h1>
 
         <div class="card mb-3">
-            <img src="..." class="card-img-top" alt="...">
+            <img src="{{asset('storage/'.$apartment->image)}}" onerror="this.src='/img/Placeholder.png'" class="card-img-top" alt="{{$apartment->title}}">
             <div class="card-body">
                 <h5 class="card-title">{{ $apartment->title }}</h5>
                 <p>Numero di stanze: {{ $apartment->rooms }} | Numero di bagni:{{ $apartment->bathrooms }} | Numero di camere da letto:{{ $apartment->beds }}</p>
-                <p>Metri quadrati:{{ $apartment->square_meters }}</p>
-                <p>Indirizzo:{{ $apartment->address }}</p>
+                <p>Metri quadrati: {{ $apartment->square_meters }}</p>
+                <p>Indirizzo: {{ $apartment->address }}</p>
                 </div>
 
                 <div>
