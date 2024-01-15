@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Apartment;
 use Illuminate\Http\Request;
+use App\Models\Service;
 
 class ApartmentController extends Controller
 {
@@ -13,8 +14,8 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-        $apartments = Apartment::all();
-        return view('');
+        $apartments = Apartment::orderBy('id');
+        return view('apartments.index', compact('apartments'));
     }
 
     /**
@@ -22,7 +23,10 @@ class ApartmentController extends Controller
      */
     public function create()
     {
-        //
+        $services = Service::all();
+
+        return view('admin.apartments.create-edit', compact('services'));
+
     }
 
     /**
@@ -30,7 +34,8 @@ class ApartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $form_data = $request->all();
+        dump($form_data);
     }
 
     /**
