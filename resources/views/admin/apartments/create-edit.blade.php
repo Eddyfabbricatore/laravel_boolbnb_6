@@ -1,70 +1,80 @@
 @extends('layouts.app')
 
 @section('content')
-    ciao create-edit only apatments
+    <h1>{{ $title }}</h1>
 
-    <form class="col-8 " action="{{route('admin.apartments.store')}}" method="POST" enctype="multipart/form-data">
+    <form class="col-8 " action="{{$route}}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('POST')
+        @method($method)
 
         <label for="title">Inserisci un titolo per l'annuncio del tuo appartamento</label>
-        <input type="text" name="title" id="title">
+        <input type="text" name="title" id="title" value="{{ old("title", $apartment?->title) }}">
 
         {{-- inserire snippet js upload image --}}
-        {{-- <label for="image">Inserisci un titolo per l'annuncio del tuo appartamento</label>
-        <input type="text" name="title" id="title"> --}}
+        <label for="image">Inserisci Immagine</label>
+        <input type="text" name="image" id="image" value="{{old('image', $apartment?->image)}}">
 
         <label for="rooms">Numero stanze</label>
-        <input type="number" name="rooms" id="rooms" value="{{old('rooms')}}">
+        <input type="number" name="rooms" id="rooms" value="{{old('rooms', $apartment?->rooms)}}">
 
         <label for="bathrooms">Numero di bagni</label>
-        <input type="number" name="bathrooms" id="bathrooms">
+        <input type="number" name="bathrooms" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}">
 
         <label for="beds">Numero di letti</label>
-        <input type="number" name="beds" id="beds">
+        <input type="number" name="beds" id="beds" value="{{old('beds', $apartment?->beds)}}">
 
         <label for="square_meters">Superficie m²</label>
-        <input type="number" name="square_meters" id="square_meters">
+        <input type="number" name="square_meters" id="square_meters" value="{{old('square_meters', $apartment?->square_meters)}}">
 
         {{-- <label for="address">Inserisci l'indirizzo</label>
         <input type="text" name="address" id="address"> --}}
         <div>
             <label for="street_address">Indirizzo (via/piazza/...)</label>
-            <input type="text" name="street_address" id="street_address">
+            <input type="text" name="street_address" id="street_address" value="{{old('street_address', $apartment?->street_address)}}">
         </div>
 
         <div>
             <label for="street_number">Numero civico</label>
-            <input type="text" name="street_number" id="street_number">
+            <input type="text" name="street_number" id="street_number" value="{{old('street_number', $apartment?->street_number)}}">
+        </div>
+
+        <div>
+            <label for="cap">CAP</label>
+            <input type="text" name="cap" id="cap" value="{{old('cap', $apartment?->cap)}}">
         </div>
 
         <div>
             <label for="city">Città</label>
-            <input type="text" name="city" id="city">
+            <input type="text" name="city" id="city" value="{{old('city', $apartment?->city)}}">
         </div>
 
         <div>
             <label for="province">Provincia</label>
-            <input type="text" name="province" id="province">
+            <input type="text" name="province" id="province" value="{{old('province', $apartment?->province)}}">
         </div>
 
         <div>
             <label for="region">Regione</label>
-            <input type="text" name="region" id="region">
+            <input type="text" name="region" id="region" value="{{old('region', $apartment?->region)}}">
         </div>
 
         <div>
             <label for="country">Nazione</label>
-            <input type="text" name="country" id="country">
+            <input type="text" name="country" id="country" value="{{old('country', $apartment?->country)}}">
         </div>
 
         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
             @foreach ($services as $service)
-                <input type="checkbox" class="btn-check" name="services[]" id="{{$service->id}}" value="{{$service->id}}" autocomplete="off">
+                <input type="checkbox" class="btn-check" name="services[]" id="{{$service->id}}" value="{{$service->id}}" autocomplete="off"
+                @if (in_array($service->id,old('services',[])))
+                    checked
+                @elseif($apartment?->services->contains($service))
+                    checked
+                @endif>
+                >
                 <label class="btn btn-outline-primary" for="{{$service->id}}">{{$service->name}}</label>
             @endforeach
         </div>
-
         <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group">
             <p class="me-3">Visibile:</p>
             <input type="radio" class="btn-check" name="visible" id="yes" autocomplete="off" checked value='1'>
