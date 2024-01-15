@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Functions\Helper;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class ApartmentController extends Controller
 {
@@ -42,6 +44,10 @@ class ApartmentController extends Controller
 
         $form_data_apartment = $request->all();
         $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
+
+        if(array_key_exists('image',$form_data_apartment)){
+            $form_data_apartment['image']  = Storage::put('uploads',$form_data_apartment['image']);
+        }
         $form_data_apartment['user_id'] = Auth::user()->id;
         $form_data_apartment["address"] =
             Helper::generateFullAddress(
@@ -109,6 +115,13 @@ class ApartmentController extends Controller
             $form_data_apartment["slug"] = $apartment->slug;
         }
 
+        if(array_key_exists('image',$form_data_apartment)){
+            if($apartment->image){
+                Storage::disk('public')->delete($apartment->image);
+            }
+            $form_data_apartment['image'] = Storage::put('uploads',$form_data_apartment['image']);
+        }
+
         $apartment->update($form_data_apartment);
 
         if(array_key_exists("services", $form_data_apartment)){
@@ -123,8 +136,12 @@ class ApartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Apartment $apartment)
     {
-        //
+        if($apartment->image){
+            Storage::disk('public')->delete($apartment->image);
+        }
+        $apartment->delete();
+        return redirect()->route('admin.apartments.index')->with('success',"L'appartamento è stato eliminato correttamente");
     }
 }
