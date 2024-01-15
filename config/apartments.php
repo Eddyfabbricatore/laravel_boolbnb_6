@@ -88,7 +88,7 @@ return [
     [
         'user_id' => '4',
         'title' => 'Settima',
-        'image' => 'pexels-luis-yanez-206172',
+        'image' => 'Placeholder.png',
         'rooms' => '3',
         'bathrooms' => '1',
         'beds' => '2',
