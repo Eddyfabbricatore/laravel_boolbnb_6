@@ -50,18 +50,20 @@ class ApartmentController extends Controller
         }
         $form_data_apartment['user_id'] = Auth::user()->id;
         $form_data_apartment["address"] =
-            Helper::generateFullAddress(
-                $form_data_apartment["street_address"],
-                $form_data_apartment["street_number"],
-                $form_data_apartment["cap"],
-                $form_data_apartment["city"],
-                $form_data_apartment["province"],
-                $form_data_apartment["region"],
-                $form_data_apartment["country"]
-            );
+        Helper::generateFullAddress(
+            $form_data_apartment["street_address"],
+            $form_data_apartment["street_number"],
+            $form_data_apartment["cap"],
+            $form_data_apartment["city"],
+            $form_data_apartment["province"],
+            $form_data_apartment["region"],
+            $form_data_apartment["country"]
+        );
 
-        $form_data_apartment["lat"] = Helper::generateLatLng($form_data_apartment["address"], 'lat');
-        $form_data_apartment["lng"] = Helper::generateLatLng($form_data_apartment["address"], 'lon');
+        $form_data_apartment['position_address'] = Helper::generateLatLng($form_data_apartment["address"], 'lat','lon');
+        $form_data_apartment['lat'] = $form_data_apartment['position_address'][0][0];
+        $form_data_apartment['lng'] = $form_data_apartment['position_address'][0][1];
+        $form_data_apartment['address'] = $form_data_apartment['position_address'][1];
 
         $new_apartment = Apartment::create($form_data_apartment);
 
