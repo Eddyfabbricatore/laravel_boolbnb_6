@@ -2,7 +2,14 @@
 
 @section('content')
 
-    <ul>
+    <div class="container">
+        <ul>
+            <li><a href="{{route('admin.apartments.create')}}">Crea un appartamento</a></li>
+            <li><a href="{{route('admin.apartments.index')}}">Vai agli appartamenti</a></li>
+        </ul>
+    </div>
+
+    {{-- <ul>
         @foreach ($apartments as $apartment)
             <li>
                 {{$apartment->title}}
@@ -13,6 +20,6 @@
                 @endforelse
             </li>
         @endforeach
-    </ul>
+    </ul> --}}
 
 @endsection
