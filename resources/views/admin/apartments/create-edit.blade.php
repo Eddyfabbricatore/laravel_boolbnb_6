@@ -60,12 +60,13 @@
 
         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
             @foreach ($services as $service)
-                <input type="checkbox" class="btn-check" name="service" id="{{$service->id}}" autocomplete="off">
+                <input type="checkbox" class="btn-check" name="services[]" id="{{$service->id}}" value="{{$service->id}}" autocomplete="off">
                 <label class="btn btn-outline-primary" for="{{$service->id}}">{{$service->name}}</label>
             @endforeach
         </div>
 
         <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group">
+            <p class="me-3">Visibile:</p>
             <input type="radio" class="btn-check" name="visible" id="yes" autocomplete="off" checked value='1'>
             <label class="btn btn-outline-primary" for="yes">Sì</label>
 
