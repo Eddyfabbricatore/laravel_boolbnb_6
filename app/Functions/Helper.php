@@ -21,4 +21,22 @@ class Helper {
 
     return $slug;
   }
+
+  public static function generateFullAddress($street_address, $street_number,$cap,$city,$province,$region,$country) {
+
+    return trim($street_address
+    . " " .
+    $street_number
+    . " " .
+    $cap
+    . " " .
+    $city
+    . " " .
+    $province
+    . " " .
+    $region
+    . " " .
+    $country);
+
+  }
 }
