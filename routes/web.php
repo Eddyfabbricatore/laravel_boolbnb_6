@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ApartmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,5 +27,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::middleware(['auth', 'verified'])
+    ->name('admin.')
+    ->prefix('admin')
+    ->group(function () {
+        // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        // Route::get('/', [DashboardController::class,'index'])->name('home');
+        Route::resource('apartments', ApartmentController::class);
+        // Route::resource('technologies', TechnologyController::class);
+        // Route::resource('types', TypeController::class);
+        // Route::get('typeProjects', [TypeController::class, 'typeProjects'])->name('typeProjects');
+        // Route::get('projects-technology/{technology}', [TechnologyController::class, 'projectsTechnology'])->name('projects-technology');
+    });
 
 require __DIR__.'/auth.php';
