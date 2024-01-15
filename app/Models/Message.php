@@ -10,4 +10,8 @@ class Message extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function apartment(){
+        return $this->belongsTo(Apartment::class);
+    }
 }
