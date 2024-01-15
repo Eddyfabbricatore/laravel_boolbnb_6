@@ -10,9 +10,24 @@
         <label for="title">Inserisci un titolo per l'annuncio del tuo appartamento</label>
         <input type="text" name="title" id="title" value="{{ old("title", $apartment?->title) }}">
 
-        {{-- inserire snippet js upload image --}}
-        <label for="image">Inserisci Immagine</label>
-        <input type="text" name="image" id="image" value="{{old('image', $apartment?->image)}}">
+        <div class="my-2">
+            <label for="image" class="form-label">Immagine</label>
+            <input
+                    type="file"
+                    onchange="showImage(event)"
+                    class="form-control
+                    @error('image')
+                    is-invalid
+                    @enderror"
+                    id="image"
+                    name="image"
+                    value="{{old('image', $apartment?->image)}}">
+            {{-- in caso di errore del caricamento dell'immagine carico il placeholder --}}
+
+            <img id="thumb" width="150" onerror="this.src='/img/Placeholder.png'" src="{{ asset('storage/'. $apartment?->image) }}">
+
+
+        </div>
 
         <label for="rooms">Numero stanze</label>
         <input type="number" name="rooms" id="rooms" value="{{old('rooms', $apartment?->rooms)}}">
