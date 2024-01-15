@@ -3,28 +3,26 @@
 namespace Database\Seeders;
 
 use App\Models\Apartment;
-use App\Models\Service;
+use App\Models\Sponsor;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ApartmentServiceTableSeeder extends Seeder
+class ApartmentSponsorTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        for($i = 0; $i < 24 ;$i++){
 
-        for($i = 0; $i <24 ;$i++){
             $apartment = Apartment::inRandomOrder()->first();
 
-            $service = Service::inRandomOrder()->first();
+            $sponsor = Sponsor::inRandomOrder()->first();
 
-            $apartment->services()->attach($service->id);
+            $apartment->sponsors()->attach($sponsor->id);
 
         }
     }
 }
-
-
 

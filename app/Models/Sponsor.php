@@ -10,4 +10,8 @@ class Sponsor extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function apartments(){
+        return $this->belongsToMany(Apartment::class);
+    }
 }
