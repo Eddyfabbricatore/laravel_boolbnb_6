@@ -2,6 +2,12 @@
 
 @section('content')
 
+@if(session('success'))
+<div class="alert alert-success" role="alert">
+    {{ session("success") }}
+</div>
+@endif
+
 <section class="container">
     <table class="table table-dark table-hover">
         <thead>
@@ -36,6 +42,10 @@
             <td>
                 <a class="btn btn-success" href="{{route('admin.apartments.show',$apartment)}}"><i class="fa-solid fa-eye"></i></a>
                 <a class="btn btn-warning" href="{{route('admin.apartments.edit',$apartment)}}"><i class="fa-solid fa-pencil"></i></a>
+                @include('admin.partials.form_delete',[
+                    'route' => route('admin.apartments.destroy', $apartment),
+                    'message' => 'Sei sicuro di voler eliminare questo Appartamento?'
+                ])
             </td>
 
             </tr>
