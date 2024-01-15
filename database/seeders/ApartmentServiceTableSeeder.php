@@ -14,7 +14,7 @@ class ApartmentServiceTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $services = [];
+
         for($i = 0; $i <24 ;$i++){
             $apartment = Apartment::inRandomOrder()->first();
 
@@ -22,9 +22,9 @@ class ApartmentServiceTableSeeder extends Seeder
 
             $apartment->services()->attach($service->id);
 
-            }
         }
     }
+}
 
 
 
