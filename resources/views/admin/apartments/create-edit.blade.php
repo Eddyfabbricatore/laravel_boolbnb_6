@@ -30,7 +30,7 @@
         <input type="text" name="address" id="address"> --}}
         <div>
             <label for="street_address">Indirizzo (via/piazza/...)</label>
-            <input type="text" name="street_address" id="street_address" value="{{old('street_address', $apartment?->street_address)}}">
+            <input type="text" name="street_address" id="street_address" value="{{old('street_address', $apartment?->address)}}">
         </div>
 
         <div>
