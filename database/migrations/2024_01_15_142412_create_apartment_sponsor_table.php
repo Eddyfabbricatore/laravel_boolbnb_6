@@ -12,8 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('apartment_sponsor', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('apartment_id');
+            $table->foreign('apartment_id')
+            ->references('id')
+            ->on('apartments')
+            ->cascadeOnDelete();
+
+            $table->unsignedBigInteger('sponsor_id');
+            $table->foreign('sponsor_id')
+            ->references('id')
+            ->on('sponsors')
+            ->cascadeOnDelete();
         });
     }
 
