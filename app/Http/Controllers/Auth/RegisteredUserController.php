@@ -20,7 +20,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $dateNow = now()->format('Y-m-d');
+        return view('auth.register', compact('dateNow'));
     }
 
     /**
@@ -30,7 +31,8 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $messages = 
+
+        $messages =
         [
             "name.max" => 'Il nome non può avere più di :max caratteri',
             "surname.max" => 'Il cognome non può avere più di :max caratteri',
@@ -44,7 +46,7 @@ class RegisteredUserController extends Controller
             "password.confirmed" => 'Le due password devono coincidere',
             "password.min" => 'La password deve avere almeno :min caratteri',
             "date_of_birth.date" => 'Inserisci una data di nascita corretta'
-        ]; 
+        ];
 
         $request->validate([
             'name' => ['max:255'],
@@ -53,7 +55,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', 'min:8', Rules\Password::defaults()],
             //'password-confirm' => ['required', 'confirmed'],
             'date_of_birth' => ['nullable', 'date']
-        ], $messages);          
+        ], $messages);
 
         $user = User::create([
             'name' => $request->name,
