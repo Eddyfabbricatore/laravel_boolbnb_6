@@ -93,6 +93,10 @@ class ApartmentController extends Controller
      */
     public function show(Apartment $apartment)
     {
+        /* AUTH CONTROL */
+        if (auth()->user()->id != $apartment->user_id) {
+            abort(404, 'Not Found');
+        }
         return view("admin.apartments.show", compact("apartment"));
     }
 
