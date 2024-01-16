@@ -100,16 +100,22 @@ class ApartmentController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Apartment $apartment)
-    {
-        $title = 'Modifica Appartamento';
-        $method = 'PUT';
-        $route = route('admin.apartments.update', $apartment);
-        $services = Service::all();
-
-        $form_data_address = Helper::getAddressDatas($apartment->lat, $apartment->lng);
-
-        return view("admin.apartments.create-edit", compact("apartment", "services", "title", "method", "route", "form_data_address"));
+{
+    /* AUTH CONTROL */
+    if (auth()->user()->id != $apartment->user_id) {
+        abort(404, 'Not Found');
     }
+
+    $title = 'Modifica Appartamento';
+    $method = 'PUT';
+    $route = route('admin.apartments.update', $apartment);
+    $services = Service::all();
+
+    $form_data_address = Helper::getAddressDatas($apartment->lat, $apartment->lng);
+
+    return view("admin.apartments.create-edit", compact("apartment", "services", "title", "method", "route", "form_data_address"));
+}
+
 
     /**
      * Update the specified resource in storage.
