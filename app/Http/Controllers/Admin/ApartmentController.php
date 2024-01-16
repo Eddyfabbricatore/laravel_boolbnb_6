@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Functions\Helper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ApartmentRequest;
 
 
 class ApartmentController extends Controller
@@ -39,10 +40,11 @@ class ApartmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ApartmentRequest $request)
     {
 
         $form_data_apartment = $request->all();
+        trim($form_data_apartment["title"]);
         $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
 
         if(array_key_exists('image',$form_data_apartment)){
@@ -112,7 +114,7 @@ class ApartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Apartment $apartment)
+    public function update(ApartmentRequest $request, Apartment $apartment)
     {
         $form_data_apartment = $request->all();
         $form_data_apartment['user_id'] = Auth::user()->id;
