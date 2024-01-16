@@ -115,23 +115,44 @@ class ApartmentController extends Controller
     public function update(Request $request, Apartment $apartment)
     {
         $form_data_apartment = $request->all();
+        $form_data_apartment['user_id'] = Auth::user()->id;
 
+        /* GET FULL ADDRESS BY USER*/
         $form_data_apartment["address"] =
-            Helper::generateFullAddress(
-                $form_data_apartment["street_address"],
-                $form_data_apartment["street_number"],
-                $form_data_apartment["cap"],
-                $form_data_apartment["city"],
-                $form_data_apartment["province"],
-                $form_data_apartment["region"],
-                $form_data_apartment["country"]
-            );
+        Helper::generateFullAddress(
+            $form_data_apartment["street_address"],
+            $form_data_apartment["street_number"],
+            $form_data_apartment["cap"],
+            $form_data_apartment["city"],
+            $form_data_apartment["province"],
+            $form_data_apartment["region"],
+            $form_data_apartment["country"]
+        );
+
+        if($form_data_apartment['address'] != $apartment->address){
+        /* GET LATITUTE E LONGITUDE */
+            $form_data_apartment['position_address'] = Helper::generateLatLng($form_data_apartment["address"], 'lat','lon');
+
+            $position = $form_data_apartment['position_address'][0];
+            $lat = $position['lat'];
+            $lon = $position['lon'];
+
+            $form_data_apartment['lat'] = $lat;
+            $form_data_apartment['lng'] = $lon;
+
+            $address = $form_data_apartment['position_address'][1];
+            $form_data_apartment['address'] = $address;
+        };
+
+
+        /* SLUG */
         if($form_data_apartment["title"] != $apartment->title){
             $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
         }else{
             $form_data_apartment["slug"] = $apartment->slug;
         }
 
+        /* IMAGE */
         if(array_key_exists('image',$form_data_apartment)){
             if($apartment->image){
                 Storage::disk('public')->delete($apartment->image);
@@ -139,13 +160,14 @@ class ApartmentController extends Controller
             $form_data_apartment['image'] = Storage::put('uploads',$form_data_apartment['image']);
         }
 
-        $apartment->update($form_data_apartment);
-
+        /* SERVICE */
         if(array_key_exists("services", $form_data_apartment)){
             $apartment->services()->sync($form_data_apartment["services"]);
         }else{
             $apartment->services()->detach();
         }
+
+        $apartment->update($form_data_apartment);
 
         return redirect()->route("admin.apartments.show", $apartment);
     }

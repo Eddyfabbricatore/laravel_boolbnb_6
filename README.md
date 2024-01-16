@@ -30,26 +30,27 @@ proprietario tramite la piattaforma, per chiedere maggiori dettagli.
 
   5) Fare i seeders degli elementi sopra
 
-## Collaboratori:
- 1. Eddy
- 2. Alessandro P.
- 3. Alessandro D.
- 4. Vincenzo
- 5. Veronica
-
- 
-
 Cose Da Ricordare per sistemare successivamente
 
 Ricordarsi di togliere il require su users nella migrations
 
 Ricordarsi di sistemare l'errore sulla conferma password
 
----
+## To do:
 1. Validazione client-side + server-side dati creazione/modifica apartment + gestione errori
 2. aggiungere funzionalità visibilità appartamento
-3. fix edit, dati nei propri campi (FATTO)
-4. fix edit, aggiornamento coordinate
-5. Sostituire chiave indice con chiave costante (es. [0] = [lat])
+3. (DONE) fix edit, dati nei propri campi 
+4. (DONE) fix edit, aggiornamento coordinate
+5. (DONE) Sostituire chiave indice con chiave costante (es. [0] = [lat])
         $form_data_apartment['lat'] = $form_data_apartment['position_address'][0][0];
         $form_data_apartment['lng'] = $form_data_apartment['position_address'][0][1];
+
+
+
+
+## Collaboratori:
+ 1. Eddy
+ 2. Alessandro P.
+ 3. Alessandro D.
+ 4. Vincenzo
+ 5. Veronica
