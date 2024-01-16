@@ -3,12 +3,42 @@
 @section('content')
     <h1>{{ $title }}</h1>
 
+    @foreach ($errors as $error)
+        {{$error}}
+    @endforeach
+
     <form class="col-8 " action="{{$route}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method($method)
+        <div class="mb-3">
+            <label for="title" class="form-label">Titolo</label>
+            <input
+              type="text"
+              name="title"
+              class="form-control @error('title') is-invalid @enderror"
+              id="title"
+              value="{{ old("title", $apartment?->title)}}"
+              placeholder="Inserisci un titolo">
+        </div>
+        @error('title')
+            <span>{{$message}}</span>
+        @enderror
 
-        <label for="title">Inserisci un titolo per l'annuncio del tuo appartamento</label>
-        <input type="text" name="title" id="title" value="{{ old("title", $apartment?->title) }}" required>
+        {{-- <label for="title">Inserisci un titolo per l'annuncio del tuo appartamento</label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          value="{{ old("title", $apartment?->title) }}"
+          required
+          minlength="3"
+          maxlength="255"
+          class="@error('title') is-invalid @enderror"
+          >
+
+          @error('title')
+              <span>{{$message}}</span>
+          @enderror --}}
 
         <div class="my-2">
             <label for="image" class="form-label">Immagine</label>
@@ -25,24 +55,28 @@
             {{-- in caso di errore del caricamento dell'immagine carico il placeholder --}}
 
             <img id="thumb" width="150" onerror="this.src='/img/Placeholder.png'" src="{{ asset('storage/'. $apartment?->image) }}">
-
+        @error('image')
+            <span>{{$message}}</span>
+        @enderror
 
         </div>
 
         <label for="rooms">Numero stanze</label>
-        <input type="number" name="rooms" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required>
+        <input type="number" name="rooms" min="1" max="255" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required>
 
         <label for="bathrooms">Numero di bagni</label>
-        <input type="number" name="bathrooms" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required>
+        <input type="number" name="bathrooms" min="1" max="255" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required>
 
         <label for="beds">Numero di letti</label>
-        <input type="number" name="beds" id="beds" value="{{old('beds', $apartment?->beds)}}"  required>
+        <input type="number" name="beds" id="beds" min="1" max="255" value="{{old('beds', $apartment?->beds)}}"  required>
 
         <label for="square_meters">Superficie m²</label>
         <input
           type="number"
           name="square_meters"
           id="square_meters"
+          min="1"
+          max="65535"
           value="{{old('square_meters', $apartment?->square_meters)}}"  required>
 
         {{-- <label for="address">Inserisci l'indirizzo</label>
@@ -131,4 +165,13 @@
         </div>
 
     </form>
+
+    <script>
+
+        function showImage(event) {
+            const thumb = document.getElementById('thumb');
+            thumb.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+    </script>
 @endsection
