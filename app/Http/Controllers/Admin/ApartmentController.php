@@ -14,6 +14,15 @@ use App\Http\Requests\ApartmentRequest;
 
 class ApartmentController extends Controller
 {
+
+    // front-end calls for all apartments
+    public function getApartments($slug) {
+        $apartments = Apartment::where('slug', $slug)->with('services', 'sponsors')->get()->order('id', 'DESC');
+
+        return response()->json(compact('apartments', 'success'));
+    }
+
+
     /**
      * Display a listing of the resource.
      */
