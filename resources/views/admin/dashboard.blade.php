@@ -2,11 +2,10 @@
 
 @section('content')
 
-    <div id="dashboard" class="container">
-        <h1 class="text-center">Bentornato {{$user->name}} {{$user->surname}}!!</h1>
+    <div id="dashboard" class="container">        
+        <div class="route-select border rounded-3 m-auto mt-5 p-5 w-100 d-flex flex-column">
+            <h1 class="text-center">Bentornato {{$user->name}} {{$user->surname}}!!</h1>
 
-
-        <div class=" m-auto w-100 d-flex flex-column">
             <h3>Scegli cosa fare:</h3>
             <ul class=" flex-column flex-md-row w-100 d-flex my-4 px-0 gap-5 list-unstyled ">
                 <li class="h-100 flex-grow-1">
