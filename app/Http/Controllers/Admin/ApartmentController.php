@@ -16,10 +16,10 @@ class ApartmentController extends Controller
 {
 
     // front-end calls for all apartments
-    public function getApartments($slug) {
-        $apartments = Apartment::where('slug', $slug)->with('services', 'sponsors')->get()->order('id', 'DESC');
+    public function getApartments() {
+        $apartments = Apartment::with('services', 'sponsors')->get();
 
-        return response()->json(compact('apartments', 'success'));
+        return response()->json(compact('apartments'));
     }
 
 

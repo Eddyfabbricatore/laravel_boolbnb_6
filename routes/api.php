@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/apartments/{$slug}', [ApartmentController::class, 'getApartments']);
+Route::get('/apartments', [ApartmentController::class, 'getApartments']);
