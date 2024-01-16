@@ -46,9 +46,13 @@ class ApartmentController extends Controller
         $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
 
         if(array_key_exists('image',$form_data_apartment)){
-            $form_data_apartment['image']  = Storage::put('uploads',$form_data_apartment['image']);
+            $form_data_apartment['image'] = Storage::put('uploads',$form_data_apartment['image']);
+        } else {
+            $form_data_apartment['image'] = 'no photo';
         }
+
         $form_data_apartment['user_id'] = Auth::user()->id;
+
         $form_data_apartment["address"] =
         Helper::generateFullAddress(
             $form_data_apartment["street_address"],
@@ -60,10 +64,18 @@ class ApartmentController extends Controller
             $form_data_apartment["country"]
         );
 
+        // chiamata api
         $form_data_apartment['position_address'] = Helper::generateLatLng($form_data_apartment["address"], 'lat','lon');
-        $form_data_apartment['lat'] = $form_data_apartment['position_address'][0][0];
-        $form_data_apartment['lng'] = $form_data_apartment['position_address'][0][1];
-        $form_data_apartment['address'] = $form_data_apartment['position_address'][1];
+
+        $position = $form_data_apartment['position_address'][0];
+        $lat = $position['lat'];
+        $lon = $position['lon'];
+
+        $form_data_apartment['lat'] = $lat;
+        $form_data_apartment['lng'] = $lon;
+
+        $address = $form_data_apartment['position_address'][1];
+        $form_data_apartment['address'] = $address;
 
         $new_apartment = Apartment::create($form_data_apartment);
 
@@ -91,7 +103,10 @@ class ApartmentController extends Controller
         $method = 'PUT';
         $route = route('admin.apartments.update', $apartment);
         $services = Service::all();
-        return view("admin.apartments.create-edit", compact("apartment", "services", "title", "method", "route"));
+
+        $form_data_address = Helper::getAddressDatas($apartment->lat, $apartment->lng);
+
+        return view("admin.apartments.create-edit", compact("apartment", "services", "title", "method", "route", "form_data_address"));
     }
 
     /**
