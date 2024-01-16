@@ -54,8 +54,13 @@ class Helper {
         $data = json_decode($response, true);
         $positionLat = $data['results'][0]['position'][$lat];
         $positionLon = $data['results'][0]['position'][$lon];
-        $positionLatLng[] = $positionLat;
-        $positionLatLng[] = $positionLon;
+        $positionLatLng = array(
+            $lat => $positionLat,
+            $lon => $positionLon
+        );
+
+        // $positionLatLng[] = $positionLat;
+        // $positionLatLng[] = $positionLon;
         $freeFormAddress = $data['results'][0]['address']['freeformAddress'];
     }
 
@@ -63,5 +68,24 @@ class Helper {
     return [$positionLatLng,$freeFormAddress];
 }
 
+
+    public static function getAddressDatas($lat, $lon) {
+        $apiUrlStart = 'https://api.tomtom.com/search/2/reverseGeocode/';
+        $apiUrlEnd = '.json?key=nq7V1UsXc4xKYSFcXm3BDbYjtFObpZl8';
+        $url = $apiUrlStart . $lat . ',' . $lon . $apiUrlEnd;
+
+        $response = file_get_contents($url);
+
+        if ($response === false) {
+            echo 'Errore nella richiesta HTTP';
+        } else {
+            $data = json_decode($response, true);
+
+            $api_address_response = $data['addresses'][0]['address'];
+        }
+
+        return $api_address_response;
+
+    }
 
 }
