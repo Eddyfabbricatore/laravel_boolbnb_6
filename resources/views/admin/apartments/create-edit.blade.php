@@ -8,7 +8,7 @@
         @method($method)
 
         <label for="title">Inserisci un titolo per l'annuncio del tuo appartamento</label>
-        <input type="text" name="title" id="title" value="{{ old("title", $apartment?->title) }}">
+        <input type="text" name="title" id="title" value="{{ old("title", $apartment?->title) }}" required>
 
         <div class="my-2">
             <label for="image" class="form-label">Immagine</label>
@@ -30,20 +30,20 @@
         </div>
 
         <label for="rooms">Numero stanze</label>
-        <input type="number" name="rooms" id="rooms" value="{{old('rooms', $apartment?->rooms)}}">
+        <input type="number" name="rooms" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required>
 
         <label for="bathrooms">Numero di bagni</label>
-        <input type="number" name="bathrooms" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}">
+        <input type="number" name="bathrooms" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required>
 
         <label for="beds">Numero di letti</label>
-        <input type="number" name="beds" id="beds" value="{{old('beds', $apartment?->beds)}}">
+        <input type="number" name="beds" id="beds" value="{{old('beds', $apartment?->beds)}}"  required>
 
         <label for="square_meters">Superficie m²</label>
         <input
           type="number"
           name="square_meters"
           id="square_meters"
-          value="{{old('square_meters', $apartment?->square_meters)}}">
+          value="{{old('square_meters', $apartment?->square_meters)}}"  required>
 
         {{-- <label for="address">Inserisci l'indirizzo</label>
         <input type="text" name="address" id="address"> --}}
@@ -53,7 +53,7 @@
               type="text"
               name="street_address"
               id="street_address"
-              value="{{old('street_address', $form_data_address['streetName'] ?? '')}}">
+              value="{{old('street_address', $form_data_address['streetName'] ?? '')}}"  required>
         </div>
 
         <div>
@@ -62,7 +62,7 @@
               type="text"
               name="street_number"
               id="street_number"
-              value="{{old('street_number', $form_data_address['streetNumber'] ?? '')}}">
+              value="{{old('street_number', $form_data_address['streetNumber'] ?? '')}}"  required>
         </div>
 
         <div>
@@ -71,7 +71,7 @@
               type="text"
               name="cap"
               id="cap"
-              value="{{old('cap', $form_data_address['postalCode'] ?? '')}}">
+              value="{{old('cap', $form_data_address['postalCode'] ?? '')}}"  required>
         </div>
 
         <div>
@@ -82,7 +82,7 @@
               id="city"
               value="{{old('city',
               $form_data_address['municipalitySubdivision'] ?? $form_data_address['municipality'] ?? '')}}"
-            >
+            required>
         </div>
 
         <div>
@@ -91,16 +91,16 @@
               type="text"
               name="province"
               id="province"
-              value="{{old('province', $form_data_address['countrySecondarySubdivision'] ?? '')}}">
+              value="{{old('province', $form_data_address['countrySecondarySubdivision'] ?? '')}}"  required>
         </div>
 
         <div>
             <label for="region">Regione</label>
-            <input type="text" name="region" id="region" value="{{old('region', $form_data_address['countrySubdivisionName'] ?? '')}}">
+            <input type="text" name="region" id="region" value="{{old('region', $form_data_address['countrySubdivisionName'] ?? '')}}"  required>
         </div>
 
         <div>
-            <label for="country">Nazione</label>
+            <label for="country">Nazione (solo se estero)</label>
             <input type="text" name="country" id="country" value="{{old('country', $form_data_address['country'] ?? '')}}">
         </div>
 
@@ -112,7 +112,7 @@
                 @elseif($apartment?->services->contains($service))
                     checked
                 @endif>
-                >
+
                 <label class="btn btn-outline-primary" for="{{$service->id}}">{{$service->name}}</label>
             @endforeach
         </div>
