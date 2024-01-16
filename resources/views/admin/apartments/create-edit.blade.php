@@ -39,43 +39,69 @@
         <input type="number" name="beds" id="beds" value="{{old('beds', $apartment?->beds)}}">
 
         <label for="square_meters">Superficie m²</label>
-        <input type="number" name="square_meters" id="square_meters" value="{{old('square_meters', $apartment?->square_meters)}}">
+        <input
+          type="number"
+          name="square_meters"
+          id="square_meters"
+          value="{{old('square_meters', $apartment?->square_meters)}}">
 
         {{-- <label for="address">Inserisci l'indirizzo</label>
         <input type="text" name="address" id="address"> --}}
         <div>
-            <label for="street_address">Indirizzo (via/piazza/...)</label>
-            <input type="text" name="street_address" id="street_address" value="{{old('street_address', $apartment?->address)}}">
+            <label for="street_address">Nome della strada (via/piazza/...)</label>
+            <input
+              type="text"
+              name="street_address"
+              id="street_address"
+              value="{{old('street_address', $form_data_address['streetName'] ?? '')}}">
         </div>
 
         <div>
             <label for="street_number">Numero civico</label>
-            <input type="text" name="street_number" id="street_number" value="{{old('street_number', $apartment?->street_number)}}">
+            <input
+              type="text"
+              name="street_number"
+              id="street_number"
+              value="{{old('street_number', $form_data_address['streetNumber'] ?? '')}}">
         </div>
 
         <div>
             <label for="cap">CAP</label>
-            <input type="text" name="cap" id="cap" value="{{old('cap', $apartment?->cap)}}">
+            <input
+              type="text"
+              name="cap"
+              id="cap"
+              value="{{old('cap', $form_data_address['postalCode'] ?? '')}}">
         </div>
 
         <div>
             <label for="city">Città</label>
-            <input type="text" name="city" id="city" value="{{old('city', $apartment?->city)}}">
+            <input
+              type="text"
+              name="city"
+              id="city"
+              value="{{old('city',
+              $form_data_address['municipalitySubdivision'] ?? $form_data_address['municipality'] ?? '')}}"
+            >
         </div>
 
         <div>
             <label for="province">Provincia</label>
-            <input type="text" name="province" id="province" value="{{old('province', $apartment?->province)}}">
+            <input
+              type="text"
+              name="province"
+              id="province"
+              value="{{old('province', $form_data_address['countrySecondarySubdivision'] ?? '')}}">
         </div>
 
         <div>
             <label for="region">Regione</label>
-            <input type="text" name="region" id="region" value="{{old('region', $apartment?->region)}}">
+            <input type="text" name="region" id="region" value="{{old('region', $form_data_address['countrySubdivisionName'] ?? '')}}">
         </div>
 
         <div>
             <label for="country">Nazione</label>
-            <input type="text" name="country" id="country" value="{{old('country', $apartment?->country)}}">
+            <input type="text" name="country" id="country" value="{{old('country', $form_data_address['country'] ?? '')}}">
         </div>
 
         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
