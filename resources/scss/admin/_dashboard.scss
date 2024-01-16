@@ -1,28 +1,38 @@
 #dashboard{
-    li{
+    .route-select{
+        background-color: #494949;
+        text-transform: capitalize;
+        font-weight: bold;
 
-        &:hover{
-            scale: 1.1;
-        }
+        li{
 
-        a{
-            margin-top: 15px;
-            text-decoration: none;
-
-            .icon{
-                padding: 25px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-
-                i{
-                    font-size: 14rem;
-                    width: auto !important;
+            &:hover{
+                scale: 1.1;
+            }
+    
+            a{
+                margin-top: 15px;
+                text-decoration: none;
+    
+                .icon{
+                    padding: 25px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+    
+                    i{
+                        font-size: 14rem;
+                        width: auto !important;
+                    }
+    
+                    p{
+                        margin-top: 15px;
+                        margin-bottom: 0;
+                        color: white;
+                    }
                 }
-
             }
         }
-    }
-
+    }  
 }
