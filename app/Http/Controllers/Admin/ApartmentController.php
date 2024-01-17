@@ -49,11 +49,16 @@ class ApartmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ApartmentRequest $request)
+    public function store(Request $request)
     {
-
         $form_data_apartment = $request->all();
+
+        if(!array_key_exists("services", $form_data_apartment)){
+            return redirect()->back()->with('createServiceError', 'Per favore seleziona almeno un servizio');
+        }
+        
         trim($form_data_apartment["title"]);
+
         $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
 
         if(array_key_exists('image',$form_data_apartment)){
@@ -90,9 +95,7 @@ class ApartmentController extends Controller
 
         $new_apartment = Apartment::create($form_data_apartment);
 
-        if(array_key_exists("services", $form_data_apartment)){
-            $new_apartment -> services()->attach($form_data_apartment["services"]);
-        }
+        $new_apartment->services()->attach($form_data_apartment["services"]);
 
         return redirect()->route("admin.apartments.show", $new_apartment);
     }
@@ -137,6 +140,10 @@ class ApartmentController extends Controller
     {
         $form_data_apartment = $request->all();
         $form_data_apartment['user_id'] = Auth::user()->id;
+
+        if(!array_key_exists("services", $form_data_apartment)){
+            return redirect()->back()->with('updateServiceError', 'Per favore seleziona almeno un servizio');
+        }
 
         /* GET FULL ADDRESS BY USER*/
         $form_data_apartment["address"] =

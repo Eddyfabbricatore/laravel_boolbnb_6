@@ -96,7 +96,7 @@
               type="text"
               name="street_number"
               id="street_number"
-              value="{{old('street_number', $form_data_address['streetNumber'] ?? '')}}"  required>
+              value="{{old('street_number', $form_data_address['streetNumber'] ?? '')}}">
         </div>
 
         <div>
@@ -105,7 +105,7 @@
               type="text"
               name="cap"
               id="cap"
-              value="{{old('cap', $form_data_address['postalCode'] ?? '')}}"  required>
+              value="{{old('cap', $form_data_address['postalCode'] ?? '')}}">
         </div>
 
         <div>
@@ -115,8 +115,7 @@
               name="city"
               id="city"
               value="{{old('city',
-              $form_data_address['municipalitySubdivision'] ?? $form_data_address['municipality'] ?? '')}}"
-            required>
+              $form_data_address['municipalitySubdivision'] ?? $form_data_address['municipality'] ?? '')}}">
         </div>
 
         <div>
@@ -125,12 +124,12 @@
               type="text"
               name="province"
               id="province"
-              value="{{old('province', $form_data_address['countrySecondarySubdivision'] ?? '')}}"  required>
+              value="{{old('province', $form_data_address['countrySecondarySubdivision'] ?? '')}}">
         </div>
 
         <div>
             <label for="region">Regione</label>
-            <input type="text" name="region" id="region" value="{{old('region', $form_data_address['countrySubdivisionName'] ?? '')}}"  required>
+            <input type="text" name="region" id="region" value="{{old('region', $form_data_address['countrySubdivisionName'] ?? '')}}">
         </div>
 
         <div>
@@ -149,7 +148,18 @@
 
                 <label class="btn btn-outline-primary" for="{{$service->id}}">{{$service->name}}</label>
             @endforeach
+
+            @if(session('createServiceError'))
+                <div class="alert alert-danger">
+                    {{ session('createServiceError') }}
+                </div>
+            @elseif(session('updateServiceError'))
+                <div class="alert alert-danger">
+                    {{ session('updateServiceError') }}
+                </div>
+            @endif
         </div>
+
         <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group">
             <p class="me-3">Visibile:</p>
             <input type="radio" class="btn-check" name="visible" id="yes" autocomplete="off" checked value='1'>
