@@ -1,180 +1,175 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>{{ $title }}</h1>
+    <div id="create-edit" class="h-100 w-100 bg-body-secondary ">
+        <h1 class="text-center text-dark fw-bolder pt-3">{{ $title }}</h1>
 
-    @foreach ($errors as $error)
-        {{$error}}
-    @endforeach
+        @foreach ($errors as $error)
+            {{$error}}
+        @endforeach
 
-    <form class="col-8 " action="{{$route}}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method($method)
-        <div class="mb-3">
-            <label for="title" class="form-label">Titolo</label>
-            <input
-              type="text"
-              name="title"
-              class="form-control @error('title') is-invalid @enderror"
-              id="title"
-              value="{{ old("title", $apartment?->title)}}"
-              placeholder="Inserisci un titolo">
-        </div>
-        @error('title')
-            <span>{{$message}}</span>
-        @enderror
+        <div class="box w-75 m-auto">
+            <form class="row rowForm p-3 rounded-4" action="{{$route}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method($method)
 
-        {{-- <label for="title">Inserisci un titolo per l'annuncio del tuo appartamento</label>
-        <input
-          type="text"
-          name="title"
-          id="title"
-          value="{{ old("title", $apartment?->title) }}"
-          required
-          minlength="3"
-          maxlength="255"
-          class="@error('title') is-invalid @enderror"
-          >
+                <div class="col-7">
+                    <div class="d-flex justify-content-around mb-4">
+                        {{-- TITLE --}}
+                        <div class="mb-3 d-flex justify-content-center flex-column">
+                            <label for="title" class="mb-4 form-label fs-2 w-100 text-center">Inserisci il nome del tuo locale</label>
+                            <input
+                            type="text"
+                            name="title"
+                            class="form-control @error('title') is-invalid @enderror"
+                            id="title"
+                            value="{{ old("title", $apartment?->title)}}"
+                            required
+                            minlength="3"
+                            maxlength="255"
+                            placeholder="Inserire un nome">
+                            @error('title')
+                                <span>{{$message}}</span>
+                            @enderror
+                        </div>
+                                            {{-- VISIBLE --}}
+                        <div class="d-flex flex-column align-content-center justify-content-center">
+                            <p class="fs-5 text-center">Rendilo visibile</p>
+                            <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group">
+                                <input type="radio" class="btn-check" name="visible" id="yes" autocomplete="off" checked value='1'>
+                                <label class="btn btn-outline-primary" for="yes"><i class="fa-solid fa-eye"></i> Sì</label>
 
-          @error('title')
-              <span>{{$message}}</span>
-          @enderror --}}
+                                <input type="radio" class="btn-check" name="visible" id="no" autocomplete="off" value="0">
+                                <label class="btn btn-outline-primary" for="no"><i class="fa-solid fa-eye-slash"></i> No</label>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="my-2">
-            <label for="image" class="form-label">Immagine</label>
-            <input
-                    type="file"
-                    onchange="showImage(event)"
-                    class="form-control
-                    @error('image')
-                    is-invalid
-                    @enderror"
-                    id="image"
-                    name="image"
-                    value="{{old('image', $apartment?->image)}}">
-            {{-- in caso di errore del caricamento dell'immagine carico il placeholder --}}
+                    {{-- ADDRESS --}}
+                    <div class="my-3 d-flex align-content-center">
+                        <label for="address" class=" form-label fs-4 fw-bold w-100 text-center">Inserisci l'indirizzo del tuo appartamento</label>
+                        <input
+                        type="text"
+                        name="address"
+                        id="address"
+                        class="form-control @error('address') is-invalid @enderror w-50 m-auto"
+                        placeholder="Inserire indirizzo"
+                        value="{{old('address', $form_data_address['address'] ?? '')}}"  required>
+                    </div>
 
-            <img id="thumb" width="150" onerror="this.src='/img/Placeholder.png'" src="{{ asset('storage/'. $apartment?->image) }}">
-        @error('image')
-            <span>{{$message}}</span>
-        @enderror
+                    <div class="h-25">
+                        <div class="d-flex h-50 gap-3">
+                            <div class="rooms w-50 d-flex flex-column">
+                                {{-- ROOMS --}}
+                                <label for="rooms">Numero stanze</label>
+                                <input class="form-control" type="number" name="rooms" min="1" max="255" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required placeholder="Stanze disponibili">
+                            </div>
+                            <div class="bathrooms w-50 d-flex flex-column">
+                                {{-- BATHROOMS --}}
+                                <label for="bathrooms">Numero di bagni</label>
+                                <input class="form-control" type="number" name="bathrooms" min="1" max="255" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required placeholder="Bagni disponibili">
+                            </div>
+                        </div>
+                        <div class="d-flex h-50 gap-3">
+                            <div class="beds w-50 d-flex flex-column">
+                                {{-- BEDS --}}
+                                <label for="beds">Numero di letti</label>
+                                <input class="form-control" type="number" name="beds" id="beds" min="1" max="255" value="{{old('beds', $apartment?->beds)}}"  required placeholder="Letti disponibili">
+                            </div>
+                            <div class="square_meters w-50 d-flex flex-column">
+                                {{-- SQUARE_METERS --}}
+                                <label for="square_meters">Superficie m²</label>
+                                <input
+                                class="form-control"
+                                type="number"
+                                name="square_meters"
+                                id="square_meters"
+                                min="1"
+                                max="65535"
+                                value="{{old('square_meters', $apartment?->square_meters)}}"  required placeholder="Inserire metri quadri">
+                            </div>
+                        </div>
 
-        </div>
 
-        <label for="rooms">Numero stanze</label>
-        <input type="number" name="rooms" min="1" max="255" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required>
+                    </div>
+                    <div class="">
+                        {{-- IMAGE --}}
+                        <div class="my-2 d-flex justify-content-evenly">
+                            <div class="d-flex justify-content-center align-items-center  flex-column ">
+                                <label for="image" class="form-label fs-3 fw-bold">Immagine</label>
+                                <input
+                                type="file"
+                                onchange="showImage(event)"
+                                class="form-control
+                                @error('image')
+                                is-invalid
+                                @enderror"
+                                id="image"
+                                name="image"
+                                value="{{old('image', $apartment?->image)}}">
+                                {{-- in caso di errore del caricamento dell'immagine carico il placeholder --}}
+                            </div>
 
-        <label for="bathrooms">Numero di bagni</label>
-        <input type="number" name="bathrooms" min="1" max="255" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required>
+                            @error('image')
+                            <span>{{$message}}</span>
+                            @enderror
+                            <img id="thumb" onerror="this.src='/img/Placeholder.png'" src="{{ asset('storage/'. $apartment?->image) }}">
+                        </div>
+                    </div>
 
-        <label for="beds">Numero di letti</label>
-        <input type="number" name="beds" id="beds" min="1" max="255" value="{{old('beds', $apartment?->beds)}}"  required>
 
-        <label for="square_meters">Superficie m²</label>
-        <input
-          type="number"
-          name="square_meters"
-          id="square_meters"
-          min="1"
-          max="65535"
-          value="{{old('square_meters', $apartment?->square_meters)}}"  required>
 
-        {{-- <label for="address">Inserisci l'indirizzo</label>
-        <input type="text" name="address" id="address"> --}}
-        <div>
-            <label for="street_address">Nome della strada (via/piazza/...)</label>
-            <input
-              type="text"
-              name="street_address"
-              id="street_address"
-              value="{{old('street_address', $form_data_address['streetName'] ?? '')}}"  required>
-        </div>
-
-        <div>
-            <label for="street_number">Numero civico</label>
-            <input
-              type="text"
-              name="street_number"
-              id="street_number"
-              value="{{old('street_number', $form_data_address['streetNumber'] ?? '')}}">
-        </div>
-
-        <div>
-            <label for="cap">CAP</label>
-            <input
-              type="text"
-              name="cap"
-              id="cap"
-              value="{{old('cap', $form_data_address['postalCode'] ?? '')}}">
-        </div>
-
-        <div>
-            <label for="city">Città</label>
-            <input
-              type="text"
-              name="city"
-              id="city"
-              value="{{old('city',
-              $form_data_address['municipalitySubdivision'] ?? $form_data_address['municipality'] ?? '')}}">
-        </div>
-
-        <div>
-            <label for="province">Provincia</label>
-            <input
-              type="text"
-              name="province"
-              id="province"
-              value="{{old('province', $form_data_address['countrySecondarySubdivision'] ?? '')}}">
-        </div>
-
-        <div>
-            <label for="region">Regione</label>
-            <input type="text" name="region" id="region" value="{{old('region', $form_data_address['countrySubdivisionName'] ?? '')}}">
-        </div>
-
-        <div>
-            <label for="country">Nazione (solo se estero)</label>
-            <input type="text" name="country" id="country" value="{{old('country', $form_data_address['country'] ?? '')}}">
-        </div>
-
-        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-            @foreach ($services as $service)
-                <input type="checkbox" class="btn-check" name="services[]" id="{{$service->id}}" value="{{$service->id}}" autocomplete="off"
-                @if (in_array($service->id,old('services',[])))
-                    checked
-                @elseif($apartment?->services->contains($service))
-                    checked
-                @endif>
-
-                <label class="btn btn-outline-primary" for="{{$service->id}}">{{$service->name}}</label>
-            @endforeach
-
-            @if(session('createServiceError'))
-                <div class="alert alert-danger">
-                    {{ session('createServiceError') }}
                 </div>
-            @elseif(session('updateServiceError'))
-                <div class="alert alert-danger">
-                    {{ session('updateServiceError') }}
+
+                {{-- SERVICES --}}
+                <div class="col-5 border rounded-3 p-2">
+                    <h2 class="text-center">Servizi disponibili</h2>
+                    <div role="group" class="all-service d-flex justify-content-center align-items-center flex-wrap rounded-5">
+                        @foreach ($services as $service)
+                            <div class="p-2 w-25 box-service">
+                                <input
+                                    type="checkbox"
+                                    class="btn-check"
+                                    name="services[]"
+                                    id="{{$service->id}}"
+                                    autocomplete="off"
+                                    value="{{$service->id}}"
+                                    @if (in_array($service->id, old('services', [])))
+                                        checked
+                                    @elseif($apartment?->services->contains($service))
+                                        checked
+                                    @endif>
+
+                                <label
+                                    class="h-100 btn d-flex flex-column justify-content-around"
+
+                                    for="{{$service->id}}">
+                                    <i class="{{ $service->description }}"></i>{{$service->name}}
+                                </label>
+                            </div>
+                        @endforeach
+
+                        @if(session('createServiceError'))
+                            <div class="alert alert-danger">
+                                {{ session('createServiceError') }}
+                            </div>
+                        @elseif(session('updateServiceError'))
+                            <div class="alert alert-danger">
+                                {{ session('updateServiceError') }}
+                            </div>
+                        @endif
+                    </div>
+
                 </div>
-            @endif
+
+                {{-- BUTTON FORM --}}
+                <div class="buttons d-block mt-3 gap-5 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Aggiungi il nuovo locale nel sito.</button>
+                    <button type="reset" class="btn btn-danger">Resetta tutti i campi</button>
+                </div>
+            </form>
         </div>
-
-        <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group">
-            <p class="me-3">Visibile:</p>
-            <input type="radio" class="btn-check" name="visible" id="yes" autocomplete="off" checked value='1'>
-            <label class="btn btn-outline-primary" for="yes">Sì</label>
-
-            <input type="radio" class="btn-check" name="visible" id="no" autocomplete="off" value="0">
-            <label class="btn btn-outline-primary" for="no">No</label>
-        </div>
-
-        <div class="buttons d-block mt-2">
-            <button type="submit" class="btn btn-primary">Invia</button>
-            <button type="reset" class="btn btn-danger">Reset</button>
-        </div>
-
-    </form>
+    </div>
 
     <script>
 
@@ -184,4 +179,5 @@
         }
 
     </script>
+
 @endsection
