@@ -3,85 +3,85 @@
 return [
     [
       'name' => 'Parcheggio',
-      'description' => 'fa-solid fa-square-parking',
-      'icon' => 'parking-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-square-parking',
     ],
 
     [
       'name' => 'Connessione WiFi gratuita',
-      'description' => 'fa-solid fa-house-signal',
-      'icon' => 'provide-wifi-wifi-internet-connection-amenity-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-house-signal',
     ],
 
     [
       'name' => 'Ristorante',
-      'description' => 'fa-solid fa-utensils',
-      'icon' => 'restaurant-waiter-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-utensils',
     ],
 
     [
       'name' => 'Animali ammessi',
-      'description' => 'fa-solid fa-dog',
-      'icon' => 'pets-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-dog',
     ],
 
     [
       'name' => 'Servizio in camera',
-      'description' => 'fa-solid fa-bell-concierge',
-      'icon' => 'room-service-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-bell-concierge',
     ],
 
     [
       'name' => 'Reception 24 ore su 24',
-      'description' => 'fa-solid fa-user-clock',
-      'icon' => '24-hours-service-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-user-clock',
     ],
 
     [
       'name' => 'Palestra',
-      'description' => 'fa-solid fa-dumbbell',
-      'icon' => 'gym-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-dumbbell',
     ],
 
     [
       'name' => 'Camere non fumatori',
-      'description' => 'fa-solid fa-ban-smoking',
-      'icon' => 'cigarette-no-prohibit-svgrepo-com_2.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-ban-smoking',
     ],
 
     [
       'name' => 'Navetta aeroportuale',
-      'description' => 'fa-solid fa-van-shuttle',
-      'icon' => 'airport-transfer-svgrepo-com_1.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-van-shuttle',
     ],
 
     [
       'name' => 'Camere & strutture per ospiti disabili',
-      'description' => 'fa-solid fa-wheelchair',
-      'icon' => 'disabled-toilet-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-wheelchair',
     ],
 
     [
       'name' => 'Disponibilità di camere familiari',
-      'description' => 'fa-solid fa-people-roof',
-      'icon' => 'family-planning-commission-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-people-roof',
     ],
 
     [
       'name' => 'Spa & centro benessere',
-      'description' => 'fa-solid fa-spa',
-      'icon' => 'spa-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-spa',
     ],
 
     [
       'name' => 'Stazione di ricarica per veicoli elettrici',
-      'description' => 'fa-solid fa-charging-station',
-      'icon' => 'electric-vehicle-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-charging-station',
     ],
 
     [
       'name' => 'Piscina',
-      'description' => 'fa-solid fa-person-swimming',
-      'icon' => 'swimming-pool-swimmer-svgrepo-com.svg',
+      'description' => '',
+      'icon' => 'fa-solid fa-person-swimming',
     ],
 ];
