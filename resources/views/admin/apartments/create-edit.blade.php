@@ -144,7 +144,7 @@
                                     class="h-100 btn d-flex flex-column justify-content-around"
 
                                     for="{{$service->id}}">
-                                    <i class="{{ $service->description }}"></i>{{$service->name}}
+                                    <i class="{{ $service->icon }}"></i>{{$service->name}}
                                 </label>
                             </div>
                         @endforeach
