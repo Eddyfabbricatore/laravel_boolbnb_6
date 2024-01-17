@@ -1,4 +1,4 @@
-<nav class="navbar full-navbar navbar-expand-md">
+<nav id="full-navbar" class="navbar navbar-expand-md">
   <div class="w-100 mx-5">
 
       <!-- BUTTON FOR MOBILE VIEW -->
@@ -36,7 +36,7 @@
                       {{ Auth::user()->name }}
                   </a>
 
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  <div class="dropdown-menu dropdown-menu-right bg-black" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item" href="{{ url('dashboard') }}">{{__('Dashboard')}}</a>
                       <a class="dropdown-item disabled" href="{{ url('profile') }}">{{__('Profile')}}</a>
                       <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
