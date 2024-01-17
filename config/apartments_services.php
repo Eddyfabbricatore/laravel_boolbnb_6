@@ -3,85 +3,85 @@
 return [
     [
       'name' => 'Parcheggio',
-      'description' => '',
+      'description' => 'fa-solid fa-square-parking',
       'icon' => 'parking-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Connessione WiFi gratuita',
-      'description' => '',
+      'description' => 'fa-solid fa-house-signal',
       'icon' => 'provide-wifi-wifi-internet-connection-amenity-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Ristorante',
-      'description' => '',
+      'description' => 'fa-solid fa-utensils',
       'icon' => 'restaurant-waiter-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Animali ammessi',
-      'description' => '',
+      'description' => 'fa-solid fa-dog',
       'icon' => 'pets-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Servizio in camera',
-      'description' => '',
+      'description' => 'fa-solid fa-bell-concierge',
       'icon' => 'room-service-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Reception 24 ore su 24',
-      'description' => '',
+      'description' => 'fa-solid fa-user-clock',
       'icon' => '24-hours-service-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Palestra',
-      'description' => '',
+      'description' => 'fa-solid fa-dumbbell',
       'icon' => 'gym-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Camere non fumatori',
-      'description' => '',
+      'description' => 'fa-solid fa-ban-smoking',
       'icon' => 'cigarette-no-prohibit-svgrepo-com_2.svg',
     ],
 
     [
       'name' => 'Navetta aeroportuale',
-      'description' => '',
+      'description' => 'fa-solid fa-van-shuttle',
       'icon' => 'airport-transfer-svgrepo-com_1.svg',
     ],
 
     [
-      'name' => 'Camere/strutture per ospiti disabili',
-      'description' => '',
+      'name' => 'Camere & strutture per ospiti disabili',
+      'description' => 'fa-solid fa-wheelchair',
       'icon' => 'disabled-toilet-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Disponibilità di camere familiari',
-      'description' => '',
+      'description' => 'fa-solid fa-people-roof',
       'icon' => 'family-planning-commission-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Spa & centro benessere',
-      'description' => '',
+      'description' => 'fa-solid fa-spa',
       'icon' => 'spa-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Stazione di ricarica per veicoli elettrici',
-      'description' => '',
+      'description' => 'fa-solid fa-charging-station',
       'icon' => 'electric-vehicle-svgrepo-com.svg',
     ],
 
     [
       'name' => 'Piscina',
-      'description' => '',
+      'description' => 'fa-solid fa-person-swimming',
       'icon' => 'swimming-pool-swimmer-svgrepo-com.svg',
     ],
 ];
