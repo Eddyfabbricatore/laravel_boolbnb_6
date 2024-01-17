@@ -52,11 +52,10 @@ class ApartmentController extends Controller
     public function store(Request $request)
     {
         $form_data_apartment = $request->all();
-
         if(!array_key_exists("services", $form_data_apartment)){
             return redirect()->back()->with('createServiceError', 'Per favore seleziona almeno un servizio');
         }
-        
+
         trim($form_data_apartment["title"]);
 
         $form_data_apartment["slug"] = Helper::generateSlug($form_data_apartment["title"], Apartment::class);
@@ -68,17 +67,6 @@ class ApartmentController extends Controller
         }
 
         $form_data_apartment['user_id'] = Auth::user()->id;
-
-        $form_data_apartment["address"] =
-        Helper::generateFullAddress(
-            $form_data_apartment["street_address"],
-            $form_data_apartment["street_number"],
-            $form_data_apartment["cap"],
-            $form_data_apartment["city"],
-            $form_data_apartment["province"],
-            $form_data_apartment["region"],
-            $form_data_apartment["country"]
-        );
 
         // chiamata api
         $form_data_apartment['position_address'] = Helper::generateLatLng($form_data_apartment["address"], 'lat','lon');
@@ -136,7 +124,7 @@ class ApartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ApartmentRequest $request, Apartment $apartment)
+    public function update(Request $request, Apartment $apartment)
     {
         $form_data_apartment = $request->all();
         $form_data_apartment['user_id'] = Auth::user()->id;
@@ -146,16 +134,6 @@ class ApartmentController extends Controller
         }
 
         /* GET FULL ADDRESS BY USER*/
-        $form_data_apartment["address"] =
-        Helper::generateFullAddress(
-            $form_data_apartment["street_address"],
-            $form_data_apartment["street_number"],
-            $form_data_apartment["cap"],
-            $form_data_apartment["city"],
-            $form_data_apartment["province"],
-            $form_data_apartment["region"],
-            $form_data_apartment["country"]
-        );
 
         if($form_data_apartment['address'] != $apartment->address){
         /* GET LATITUTE E LONGITUDE */
