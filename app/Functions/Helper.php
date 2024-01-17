@@ -22,24 +22,6 @@ class Helper {
     return $slug;
   }
 
-  public static function generateFullAddress($street_address, $street_number,$cap,$city,$province,$region,$country) {
-
-    return trim($street_address
-    . " " .
-    $street_number
-    . " " .
-    $cap
-    . " " .
-    $city
-    . " " .
-    $province
-    . " " .
-    $region
-    . " " .
-    $country);
-
-  }
-
   public static function generateLatLng($address, $lat, $lon) {
     $apiUrlStart = 'https://api.tomtom.com/search/2/geocode/';
     $apiUrlEnd = '.json?key=nq7V1UsXc4xKYSFcXm3BDbYjtFObpZl8';
@@ -47,7 +29,6 @@ class Helper {
 
 
     $response = file_get_contents($url);
-
     if ($response === false) {
         echo 'Errore nella richiesta HTTP';
     } else {
