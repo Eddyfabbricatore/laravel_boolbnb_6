@@ -1,4 +1,5 @@
 @import '~bootstrap/scss/bootstrap';
 @import './general';
-@import './admin/dashboard';
-@import './admin/header';
+@import './admin/partials/dashboard';
+@import './admin/partials/header';
+@import './admin/partials/createEdit_form';

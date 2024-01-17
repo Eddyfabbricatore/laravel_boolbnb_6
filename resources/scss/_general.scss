@@ -4,7 +4,15 @@
     box-sizing: border-box;
 }
 
+#app{
+    height: 100vh;
+    overflow: hidden;
+}
 body{
     background-color: #343639;
     color: white;
+}
+main{
+    height: calc(100% - 70px);
+    overflow-y: auto;
 }
