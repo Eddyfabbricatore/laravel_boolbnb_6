@@ -58,7 +58,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }} *</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password" required>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" onchange="checkPasswordMatch()" name="password" autocomplete="new-password" required>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -72,7 +72,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Conferma Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password" required>
+                                <input id="password-confirm" type="password" onkeyup="checkPasswordMatch()" class="form-control" name="password_confirmation" autocomplete="new-password" required>
                             </div>
                         </div>
 
@@ -81,7 +81,7 @@
                             <label for="date_of_birth" class="col-md-4 col-form-label text-md-right">{{ __('Data di nascita') }}</label>
 
                             <div class="col-md-6">
-                                <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}" autocomplete="date_of_birth" autofocus required min="1920-02-23" max="{{ $dateNow }}">
+                                <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}" autocomplete="date_of_birth" autofocus required min="1920-02-23" max="{{ $dateLimit }}">
                                 @error('date_of_birth')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -104,5 +104,36 @@
         </div>
     </div>
 </div>
+
+<script>
+    let passwordConfirmed = false;
+
+    let password = document.getElementById('password');
+    let passwordConfirm = document.getElementById('password-confirm');
+
+    function checkPasswordMatch() {
+        if (password.value != passwordConfirm.value) {
+            passwordConfirmed = false;
+            password.classList.remove('is-valid');
+            passwordConfirm.classList.remove('is-valid');
+            password.classList.add('is-invalid');
+            passwordConfirm.classList.add('is-invalid');
+        } else if (password.value == passwordConfirm.value && password.value.length > 7) {
+            passwordConfirmed = true;
+            password.classList.remove('is-invalid');
+            passwordConfirm.classList.remove('is-invalid');
+            password.classList.add('is-valid');
+            passwordConfirm.classList.add('is-valid');
+        }
+    }
+-
+
+    if (passwordConfirmed = true) {
+
+    }
+
+
+console.log()
+</script>
 
 @endsection
