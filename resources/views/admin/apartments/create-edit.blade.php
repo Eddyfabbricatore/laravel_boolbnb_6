@@ -36,10 +36,31 @@
                         <div class="d-flex flex-column align-content-center justify-content-center">
                             <p class="fs-5 text-center">Rendilo visibile</p>
                             <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" class="btn-check" name="visible" id="yes" autocomplete="off" checked value='1'>
+                                <input
+                                    type="radio"
+                                    class="btn-check"
+                                    name="visible"
+                                    id="yes"
+                                    autocomplete="off"
+                                    checked
+                                    value='1'
+                                    @if(old('visible', $apartment ? $apartment->visible : '1') == '1')
+                                        checked
+                                    @endif
+                                    >
                                 <label class="btn btn-outline-primary" for="yes"><i class="fa-solid fa-eye"></i> Sì</label>
 
-                                <input type="radio" class="btn-check" name="visible" id="no" autocomplete="off" value="0">
+                                <input
+                                    type="radio"
+                                    class="btn-check"
+                                    name="visible"
+                                    id="no"
+                                    autocomplete="off"
+                                    value="0"
+                                    @if(old('visible', $apartment ? $apartment->visible : '1') == '0')
+                                        checked
+                                    @endif
+                                    >
                                 <label class="btn btn-outline-primary" for="no"><i class="fa-solid fa-eye-slash"></i> No</label>
                             </div>
                         </div>
@@ -55,6 +76,7 @@
                         class="form-control @error('address') is-invalid @enderror w-50 m-auto"
                         placeholder="Inserire indirizzo"
                         value="{{old('address', $form_data_address['address'] ?? '')}}"  required>
+                        <ul id="autocompleteResults" cla></ul>
                     </div>
 
                     <div class="h-25">
@@ -130,11 +152,12 @@
                             <div class="p-2 w-25 box-service">
                                 <input
                                     type="checkbox"
-                                    class="btn-check"
+                                    class="btn-check services"
                                     name="services[]"
                                     id="{{$service->id}}"
                                     autocomplete="off"
                                     value="{{$service->id}}"
+                                    {{-- oninput="checkServices()" --}}
                                     @if (in_array($service->id, old('services', [])))
                                         checked
                                     @elseif($apartment?->services->contains($service))
@@ -172,6 +195,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
 
         function showImage(event) {
@@ -179,6 +203,37 @@
             thumb.src = URL.createObjectURL(event.target.files[0]);
         }
 
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let checkboxes = document.querySelectorAll('.services');
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    let checkedCheckboxes = document.querySelectorAll('.services:checked');
+                    checkboxes.forEach(function (checkboxRequired) {
+                        checkboxRequired.required = checkedCheckboxes.length === 0;
+                    });
+                });
+            });
+        });
+
+
+
+        // let test = document.getElementsByClassName('services');
+        // test.filter((element) => {
+        // })
+        // for (const element of test) {
+
+        // }
+        // function checkServices() {
+        //     let servicesButtons = document.getElementsByClassName('btn-check');
+        //     console.log(servicesButtons)
+        //     // servicesButtons.forEach((service) => {
+        //     //     console.log(service)
+        //     // })
+        // }
+
     </script>
+    <script src="../../../js/autocomplete.js"></script>
 
 @endsection
