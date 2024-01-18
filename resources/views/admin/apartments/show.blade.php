@@ -15,7 +15,7 @@
 
                 <form action={{route("admin.apartments.destroy", $apartment)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
                     <button class="btn btn-warning">
-                        <a class="nav-link btn btn-warning" href="{{route('admin.apartments.edit', $apartment->id)}}"><i class="fa-sharp fa-solid fa-pen"></i></a>
+                        <a class="nav-link btn btn-warning" href="{{route('admin.apartments.edit', $apartment)}}"><i class="fa-sharp fa-solid fa-pen"></i></a>
                     </button>
                     @csrf
                     @method('DELETE')
