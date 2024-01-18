@@ -45,6 +45,15 @@ Ricordarsi di sistemare l'errore sulla conferma password
         $form_data_apartment['lat'] = $form_data_apartment['position_address'][0][0];
         $form_data_apartment['lng'] = $form_data_apartment['position_address'][0][1];
 
+6. dobbiamo aggiungere nella registrazione il minimo 18+ che si possa anche fermare come limite di un minimo di anno passato
+anche controllo della coincidenza della password (FAtto)
+7. messaggi di errore in tutte nella pagina (back-end)
+8. sistemare l'old nell'inserimento dell'appartamento
+9. implementare la ricerca per raggio nel front-end 
+10. la ricerca deve essere fatta back-end
+11. dettaglio di principio del pagamento delle sponsorizzazioni 
+12. autocompletamento nel create-edit sull'indirizzo 
+13. aggiustare il form del create-edit 
 
 
 
