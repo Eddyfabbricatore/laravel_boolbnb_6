@@ -10,7 +10,7 @@ use App\Functions\Helper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ApartmentRequest;
-
+use Illuminate\Support\Facades\DB;
 
 class ApartmentController extends Controller
 {
@@ -22,9 +22,37 @@ class ApartmentController extends Controller
         return response()->json(compact('apartments'));
     }
 
-    public function viewApartamentsInSearchAdvance(){
-        $apartments = Apartment::with('services', 'sponsors')->get();
-        return response()->json(compact('apartments'));
+    public function viewApartamentsInSearchAdvance(Request $request){
+        $lonA = $request->input('lonA');
+        $latA = $request->input('latA');
+
+        $apartments = Apartment::all();
+
+        $results = [];
+
+
+        foreach ($apartments as $apartment) {
+            $lonB = $apartment->lng;
+            $latB = $apartment->lat;
+
+            $distance = DB::select(DB::raw('
+                SELECT ST_Distance_Sphere(
+                    point(:lonA, :latA),
+                    point(:lonB, :latB))
+            '), [
+                'lonA' => $lonA,
+                'latA' => $latA,
+                'lonB' => $lonB,
+                'latB' => $latB,
+            ]);
+
+            // Aggiungi i risultati all'array
+            $results[] = [
+                'appartamento' => $apartment,
+                'distance' => $distance[0]->distance,
+            ];
+        }
+        return response()->json($results);
     }
 
 
