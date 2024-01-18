@@ -1,8 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+
+
     <section class="container">
-        <h1>Il tuo appartamento</h1>
+        <div class="d-flex align-items-center gap-5">
+            <h1>Il tuo appartamento </h1>
+            @include('admin.partials.form_delete',[
+                        'route' => route('admin.apartments.destroy', $apartment),
+                        'message' => 'Sei sicuro di voler eliminare questo Appartamento?'
+                    ])
+        </div>
+
 
         <div class="card mb-3">
             <img src="{{asset('storage/'.$apartment->image)}}" onerror="this.src='/img/Placeholder.png'" class="card-img-top" alt="{{$apartment->title}}">
