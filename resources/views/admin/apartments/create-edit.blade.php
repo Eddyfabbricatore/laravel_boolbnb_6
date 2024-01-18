@@ -55,6 +55,7 @@
                         class="form-control @error('address') is-invalid @enderror w-50 m-auto"
                         placeholder="Inserire indirizzo"
                         value="{{old('address', $form_data_address['address'] ?? '')}}"  required>
+                        <ul id="autocompleteResults"></ul>
                     </div>
 
                     <div class="h-25">
@@ -172,6 +173,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
 
         function showImage(event) {
@@ -180,5 +182,6 @@
         }
 
     </script>
+    <script src="../../../js/autocomplete.js"></script>
 
 @endsection
