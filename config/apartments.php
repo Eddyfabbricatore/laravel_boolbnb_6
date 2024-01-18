@@ -4,7 +4,7 @@ return [
     [
         'user_id' => '1',
         'title' => 'Prima Casa',
-        'image' => 'house1',
+        'image' => 'house1.png',
         'rooms' => '4',
         'bathrooms' => '2',
         'beds' => '4',
@@ -18,7 +18,7 @@ return [
     [
         'user_id' => '2',
         'title' => 'Seconda',
-        'image' => 'house2',
+        'image' => 'house2.png',
         'rooms' => '2',
         'bathrooms' => '1',
         'beds' => '2',
@@ -32,7 +32,7 @@ return [
     [
         'user_id' => '2',
         'title' => 'Terza',
-        'image' => 'house3',
+        'image' => 'house3.png',
         'rooms' => '1',
         'bathrooms' => '1',
         'beds' => '1',
@@ -46,7 +46,7 @@ return [
     [
         'user_id' => '3',
         'title' => 'Quarta Casa',
-        'image' => 'pexels-binyamin-mellish-106399',
+        'image' => 'pexels-binyamin-mellish-106399.jpg',
         'rooms' => '4',
         'bathrooms' => '2',
         'beds' => '3',
@@ -60,7 +60,7 @@ return [
     [
         'user_id' => '5',
         'title' => 'Quinta',
-        'image' => 'pexels-binyamin-mellish-1396122',
+        'image' => 'pexels-binyamin-mellish-1396122.jpg',
         'rooms' => '4',
         'bathrooms' => '2',
         'beds' => '4',
@@ -74,7 +74,7 @@ return [
     [
         'user_id' => '4',
         'title' => 'Sesta',
-        'image' => 'pexels-fomstock-com-1115804',
+        'image' => 'pexels-fomstock-com-1115804.jpg',
         'rooms' => '5',
         'bathrooms' => '3',
         'beds' => '5',
@@ -88,7 +88,7 @@ return [
     [
         'user_id' => '4',
         'title' => 'Settima',
-        'image' => 'Placeholder.png',
+        'image' => 'pexels-luis-yanez-206172.jpg',
         'rooms' => '3',
         'bathrooms' => '1',
         'beds' => '2',
@@ -102,7 +102,7 @@ return [
     [
         'user_id' => '4',
         'title' => 'Ottava',
-        'image' => 'pexels-pixabay-164558',
+        'image' => 'pexels-pixabay-164558.jpg',
         'rooms' => '3',
         'bathrooms' => '1',
         'beds' => '3',
@@ -116,7 +116,7 @@ return [
     [
         'user_id' => '2',
         'title' => 'Nona',
-        'image' => 'pexels-pixabay-280222',
+        'image' => 'pexels-pixabay-280222.jpg',
         'rooms' => '3',
         'bathrooms' => '1',
         'beds' => '2',
@@ -130,7 +130,7 @@ return [
     [
         'user_id' => '3',
         'title' => 'Decima',
-        'image' => 'pexels-scott-webb-1029599',
+        'image' => 'pexels-scott-webb-1029599.jpg',
         'rooms' => '3',
         'bathrooms' => '1',
         'beds' => '2',
@@ -144,7 +144,7 @@ return [
     [
         'user_id' => '4',
         'title' => 'Bella',
-        'image' => 'pexels-sebastian-rensen-731082',
+        'image' => 'pexels-sebastian-rensen-731082.jpg',
         'rooms' => '3',
         'bathrooms' => '1',
         'beds' => '2',
@@ -158,7 +158,7 @@ return [
     [
         'user_id' => '2',
         'title' => 'Wow',
-        'image' => 'pexels-thgusstavo-santana-2102587',
+        'image' => 'pexels-thgusstavo-santana-2102587.jpg',
         'rooms' => '3',
         'bathrooms' => '1',
         'beds' => '2',
