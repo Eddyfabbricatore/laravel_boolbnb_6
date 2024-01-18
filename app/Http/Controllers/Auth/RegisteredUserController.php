@@ -21,7 +21,8 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
         $dateNow = now()->format('Y-m-d');
-        return view('auth.register', compact('dateNow'));
+        $dateLimit = now()->subYears(18)->format('Y-m-d');
+        return view('auth.register', compact('dateLimit'));
     }
 
     /**
