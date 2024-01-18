@@ -22,6 +22,11 @@ class ApartmentController extends Controller
         return response()->json(compact('apartments'));
     }
 
+    public function viewApartamentsInSearchAdvance(){
+        $apartments = Apartment::with('services', 'sponsors')->get();
+        return response()->json(compact('apartments'));
+    }
+
 
     /**
      * Display a listing of the resource.
