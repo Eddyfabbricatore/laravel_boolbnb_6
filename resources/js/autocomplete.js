@@ -31,7 +31,6 @@ function checkInputValue(inputSearch) {
 
 };
 autocompleteInput.addEventListener('input', async (event) => {
-        setTimeout(() => {
 
         const query = encodeURIComponent(event.target.value);
 
@@ -60,7 +59,6 @@ autocompleteInput.addEventListener('input', async (event) => {
         } catch (error) {
             console.error('Error fetching autocomplete results:', error);
         }
-    }, 10000)
     });
 
 
