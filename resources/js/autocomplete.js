@@ -38,10 +38,10 @@ autocompleteInput.addEventListener('input', async (event) => {
             const initUrl = 'https://api.tomtom.com/search/2/geocode/';
             const finalUrl = '.json?key=nq7V1UsXc4xKYSFcXm3BDbYjtFObpZl8'
             const queryUrl = initUrl + query + finalUrl;
-            const response =  fetch(queryUrl);
+            const response = await fetch(queryUrl);
 
 
-            const data =  response.json();
+            const data = await response.json();
             const results = data.results;
 
             console.log(results);
