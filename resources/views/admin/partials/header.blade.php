@@ -11,7 +11,7 @@
           <!-- Left Side -->
           <ul class="navbar-nav me-auto">
               <li class="nav-item">
-                  <a class="nav-link" href="{{url('/') }}">{{ __('Vai al sito') }}</a>
+                  <a class="nav-link" href="http://localhost:5173/">{{ __('Vai al sito') }}</a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" href="{{route('dashboard')}}">{{ __('Dashboard') }}</a>
