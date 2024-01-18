@@ -99,6 +99,7 @@
                                 <label for="image" class="form-label fs-3 fw-bold">Immagine</label>
                                 <input
                                 type="file"
+                                accept="image/*"
                                 onchange="showImage(event)"
                                 class="form-control
                                 @error('image')
