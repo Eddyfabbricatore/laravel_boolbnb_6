@@ -1,11 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="container">
+    <style>
+        section.container{
+            background-image: url('{{ asset("storage/".$apartment->image) }}');
+            background-size: cover;
+        }
+    </style>
+    <section class="container w-100 h-100">
         <h1>Il tuo appartamento</h1>
 
         <div class="card mb-3">
-            <img src="{{asset('storage/'.$apartment->image)}}" onerror="this.src='/img/Placeholder.png'" class="card-img-top" alt="{{$apartment->title}}">
+            <!-- <img src="{{asset('storage/'.$apartment->image)}}" onerror="this.src='/img/Placeholder.png'" class="card-img-top" alt="{{$apartment->title}}"> -->
             <div class="card-body">
                 <h5 class="card-title">{{ $apartment->title }}</h5>
                 <p>Numero di stanze: {{ $apartment->rooms }} | Numero di bagni:{{ $apartment->bathrooms }} | Numero di camere da letto:{{ $apartment->beds }}</p>
@@ -26,5 +32,4 @@
             </div>
         </div>
     </section>
-
 @endsection
