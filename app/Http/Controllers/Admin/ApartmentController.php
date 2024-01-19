@@ -108,7 +108,7 @@ class ApartmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ApartmentRequest $request)
     {
         $form_data_apartment = $request->all();
         if(!array_key_exists("services", $form_data_apartment)){
@@ -183,7 +183,7 @@ class ApartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Apartment $apartment)
+    public function update(ApartmentRequest $request, Apartment $apartment)
     {
         $form_data_apartment = $request->all();
         $form_data_apartment['user_id'] = Auth::user()->id;
@@ -240,7 +240,7 @@ class ApartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Apartment $apartment)
+    public function destroy(ApartmentRequest $apartment)
     {
         if($apartment->image){
             Storage::disk('public')->delete($apartment->image);
