@@ -170,7 +170,6 @@
                                     @elseif($apartment?->services->contains($service))
                                         checked
                                     @endif
-                                    onclick="removeRequired(this)"
                                     required
                                 >
 
@@ -201,15 +200,30 @@
             thumb.src = URL.createObjectURL(event.target.files[0]);
         }
 
-        function removeRequired(checkbox) {
-
+        document.addEventListener('DOMContentLoaded', function () {
             var checkboxes = document.querySelectorAll('.my-check');
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    removeRequired(checkbox, checkboxes);
+                });
+            });
+
+            var atLeastOneChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.required = !atLeastOneChecked;
+            });
+        });
+
+        function removeRequired(checkbox, checkboxes) {
             checkboxes.forEach(function (cb) {
                 if (cb !== checkbox) {
                     cb.required = !checkbox.checked;
                 }
             });
         }
+
 
     </script>
     <script src="../../../js/autocomplete.js"></script>
