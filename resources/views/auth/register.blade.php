@@ -112,17 +112,34 @@
     let passwordConfirm = document.getElementById('password-confirm');
 
     function checkPasswordMatch() {
-        if (password.value != passwordConfirm.value) {
-            passwordConfirmed = false;
-            password.classList.toggle('is-valid');
-            passwordConfirm.classList.toggle('is-valid');
+        const passwordValue = password.value;
+        const passwordConfirmValue = passwordConfirm.value;
+        const minLength = 8;
 
-        } else if (password.value == passwordConfirm.value && password.value.length > 7) {
+        const isValidLength = passwordValue.length >= minLength;
+        const isMatch = passwordValue === passwordConfirmValue;
+
+        if (isMatch && isValidLength) {
+            setValidState(password, passwordConfirm);
             passwordConfirmed = true;
-            password.classList.toggle('is-invalid');
-            passwordConfirm.classList.toggle('is-invalid');
-
+        } else {
+            setInvalidState(password, passwordConfirm);
+            passwordConfirmed = false;
         }
+    }
+
+    function setValidState(...elements) {
+        elements.forEach(element => {
+            element.classList.remove('is-invalid');
+            element.classList.add('is-valid');
+        });
+    }
+
+    function setInvalidState(...elements) {
+        elements.forEach(element => {
+            element.classList.remove('is-valid');
+            element.classList.add('is-invalid');
+        });
     }
 
 </script>
