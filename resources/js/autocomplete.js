@@ -52,9 +52,9 @@ autocompleteInput.addEventListener('input', async (event) => {
 
             // Display new results
             results.forEach(result => {
-                const li = document.createElement('li');
-                li.textContent = result.address.freeformAddress;
-                autocompleteResults.appendChild(li);
+                const options = document.createElement('option');
+                options.textContent = result.address.freeformAddress;
+                autocompleteResults.appendChild(options);
             });
         } catch (error) {
             console.error('Error fetching autocomplete results:', error);
