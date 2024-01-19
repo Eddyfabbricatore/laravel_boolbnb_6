@@ -69,9 +69,17 @@ class ApartmentController extends Controller
                     'distanza' => $realDistance
                 ];
             };
+
+            usort($results, function ($a, $b) {
+                return $a['distanza'] <=> $b['distanza'];
+            });
+
         }
         return response()->json($results);
     }
+
+
+
 
 
     /**
