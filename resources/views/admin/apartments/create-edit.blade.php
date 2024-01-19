@@ -75,8 +75,10 @@
                         id="address"
                         class="form-control @error('address') is-invalid @enderror w-50 m-auto"
                         placeholder="Inserire indirizzo"
-                        value="{{old('address', $form_data_address['address'] ?? '')}}"  required>
-                        <ul id="autocompleteResults"></ul>
+                        value="{{old('address', $apartment->address ?? '')}}"
+                        required
+                        list="autocompleteResults">
+                        <datalist id="autocompleteResults"></datalist>
                     </div>
 
                     <div class="h-25">
@@ -84,19 +86,19 @@
                             <div class="rooms w-50 d-flex flex-column">
                                 {{-- ROOMS --}}
                                 <label for="rooms">Numero stanze</label>
-                                <input class="form-control" type="number" name="rooms" min="1" max="255" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required placeholder="Stanze disponibili">
+                                <input class="form-control" type="number" name="rooms" value="1" min="1" max="255" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required placeholder="Stanze disponibili">
                             </div>
                             <div class="bathrooms w-50 d-flex flex-column">
                                 {{-- BATHROOMS --}}
                                 <label for="bathrooms">Numero di bagni</label>
-                                <input class="form-control" type="number" name="bathrooms" min="1" max="255" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required placeholder="Bagni disponibili">
+                                <input class="form-control" type="number" name="bathrooms" value="1" min="1" max="255" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required placeholder="Bagni disponibili">
                             </div>
                         </div>
                         <div class="d-flex h-50 gap-3">
                             <div class="beds w-50 d-flex flex-column">
                                 {{-- BEDS --}}
                                 <label for="beds">Numero di letti</label>
-                                <input class="form-control" type="number" name="beds" id="beds" min="1" max="255" value="{{old('beds', $apartment?->beds)}}"  required placeholder="Letti disponibili">
+                                <input class="form-control" type="number" name="beds" id="beds" value="1" min="1" max="255" value="{{old('beds', $apartment?->beds)}}"  required placeholder="Letti disponibili">
                             </div>
                             <div class="square_meters w-50 d-flex flex-column">
                                 {{-- SQUARE_METERS --}}
@@ -106,6 +108,7 @@
                                 type="number"
                                 name="square_meters"
                                 id="square_meters"
+                                value="1"
                                 min="1"
                                 max="65535"
                                 value="{{old('square_meters', $apartment?->square_meters)}}"  required placeholder="Inserire metri quadri">
@@ -148,42 +151,32 @@
                 <div class="col-5 border rounded-3 p-2">
                     <h2 class="text-center">Servizi disponibili</h2>
                     <div role="group" class="all-service d-flex justify-content-center align-items-center flex-wrap rounded-5">
-                        @foreach ($services as $service)
+                        @foreach ($services as $index => $service)
                             <div class="p-2 w-25 box-service">
                                 <input
                                     type="checkbox"
-                                    class="btn-check services"
+                                    class="btn-check my-check"
                                     name="services[]"
                                     id="{{$service->id}}"
                                     autocomplete="off"
                                     value="{{$service->id}}"
-                                    {{-- oninput="checkServices()" --}}
                                     @if (in_array($service->id, old('services', [])))
                                         checked
                                     @elseif($apartment?->services->contains($service))
                                         checked
-                                    @endif>
+                                    @endif
+                                    onclick="removeRequired(this)"
+                                    required
+                                >
 
                                 <label
                                     class="h-100 btn d-flex flex-column justify-content-around"
-
                                     for="{{$service->id}}">
                                     <i class="{{ $service->icon }}"></i>{{$service->name}}
                                 </label>
                             </div>
                         @endforeach
-
-                        @if(session('createServiceError'))
-                            <div class="alert alert-danger">
-                                {{ session('createServiceError') }}
-                            </div>
-                        @elseif(session('updateServiceError'))
-                            <div class="alert alert-danger">
-                                {{ session('updateServiceError') }}
-                            </div>
-                        @endif
                     </div>
-
                 </div>
 
                 {{-- BUTTON FORM --}}
@@ -203,35 +196,15 @@
             thumb.src = URL.createObjectURL(event.target.files[0]);
         }
 
+        function removeRequired(checkbox) {
 
-        document.addEventListener('DOMContentLoaded', function () {
-            let checkboxes = document.querySelectorAll('.services');
-
-            checkboxes.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
-                    let checkedCheckboxes = document.querySelectorAll('.services:checked');
-                    checkboxes.forEach(function (checkboxRequired) {
-                        checkboxRequired.required = checkedCheckboxes.length === 0;
-                    });
-                });
+            var checkboxes = document.querySelectorAll('.my-check');
+            checkboxes.forEach(function (cb) {
+                if (cb !== checkbox) {
+                    cb.required = !checkbox.checked;
+                }
             });
-        });
-
-
-
-        // let test = document.getElementsByClassName('services');
-        // test.filter((element) => {
-        // })
-        // for (const element of test) {
-
-        // }
-        // function checkServices() {
-        //     let servicesButtons = document.getElementsByClassName('btn-check');
-        //     console.log(servicesButtons)
-        //     // servicesButtons.forEach((service) => {
-        //     //     console.log(service)
-        //     // })
-        // }
+        }
 
     </script>
     <script src="../../../js/autocomplete.js"></script>
