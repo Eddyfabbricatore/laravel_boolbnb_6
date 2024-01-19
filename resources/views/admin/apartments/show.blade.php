@@ -8,7 +8,7 @@
         <div id="show-form" class="card p-5">
             <div class="d-flex gap-5 align-items-center ">
                 <h1 class="text-dark ">{{$apartment->title}}</h1>
-                <div class="d-flex">
+                <div class="d-flex gap-2">
 
                     <button class="btn btn-warning">
                         <a class="nav-link btn btn-warning" href="{{route('admin.apartments.edit', $apartment)}}"><i class="fa-sharp fa-solid fa-pen"></i></a>
@@ -25,13 +25,15 @@
 
 
             <div class="card-body">
-                <h5 class="card-title">{{ $apartment->title }}</h5>
-                <p>Numero di stanze: {{ $apartment->rooms }} | Numero di bagni:{{ $apartment->bathrooms }} | Numero di camere da letto:{{ $apartment->beds }}</p>
-                <p>Metri quadrati: {{ $apartment->square_meters }}</p>
                 <p>Indirizzo: {{ $apartment->address }}</p>
+                <p>Numero di stanze: {{ $apartment->rooms }}</p>
+                <p>Metri quadrati: {{ $apartment->square_meters }}</p>
+                <p>Numero di bagni:{{ $apartment->bathrooms }}</p>
+                <p>Numero di camere da letto:{{ $apartment->beds }}</p>
                 </div>
 
                 <div>
+                    <h5>Servizi</h5>
                     @forelse($apartment->services as $service)
                         <span class="badge text-bg-dark my-3">{{ $service->name }}</span>
                     @empty
