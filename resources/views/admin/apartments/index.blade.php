@@ -11,7 +11,7 @@
 <section id="index" class="w-100 row p-5">
 
     @forelse ($apartments as $apartment)
-        <a class=" text-decoration-none card w-100 h-50 px-0 overflow-hidden" href="{{route('admin.apartments.show',$apartment)}}">
+        <a class=" text-decoration-none mb-4 card w-100 h-50 px-0 overflow-hidden" href="{{route('admin.apartments.show',$apartment)}}">
             <div class="h-100 w-100 d-flex">
                 <div class="h-100 g-0">
                     <div class="box-img h-100">
@@ -35,14 +35,11 @@
                         @endif
                     </div>
                 </div>
-                </div>
             </div>
         </a>
     @empty
         <p>Non ci sono appartamenti</p>
     @endforelse
-
-
 </section>
 
 
