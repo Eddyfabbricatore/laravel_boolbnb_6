@@ -1,13 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-{{--     <style>
-        section.container{
-            background-image: url('{{ asset("storage/".$apartment->image) }}');
-            background-size: cover;
-        }
-    </style> --}}
-    <section class="container w-100 h-100 d-flex justify-content-center align-items-center" style="background-image: url('@if(file_exists(public_path('storage/' . $apartment->image))){{ asset('storage/' . $apartment->image) }}@else/img/{{$apartment->image}}@endif'); background-size: cover;">
+
+    <section class="container w-100 h-100 d-flex justify-content-center align-items-center" style="
+        background-image: url('@if(file_exists(public_path('storage/' . $apartment->image) )){{ asset('storage/' . $apartment->image) }}@else/img/{{$apartment->image}}@endif'); background-size: cover;">
 
         <div id="show-form" class="card p-5">
             <div class="d-flex gap-5 align-items-center ">
