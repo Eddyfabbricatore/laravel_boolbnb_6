@@ -139,7 +139,7 @@
                             @error('image')
                             <span>{{$message}}</span>
                             @enderror
-                            <img id="thumb" onerror="this.src='/img/Placeholder.png'" src="{{ asset('storage/'. $apartment?->image) }}">
+                            <img id="thumb" onerror="this.src='/img/'.$apartment?->image" src="{{ asset('storage/'. $apartment?->image) }}">
                         </div>
                     </div>
 
