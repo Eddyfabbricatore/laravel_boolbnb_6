@@ -10,7 +10,7 @@ use App\Functions\Helper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ApartmentRequest;
-
+use Illuminate\Support\Facades\DB;
 
 class ApartmentController extends Controller
 {
@@ -22,9 +22,55 @@ class ApartmentController extends Controller
         return response()->json(compact('apartments'));
     }
 
-    public function viewApartamentsInSearchAdvance(){
-        $apartments = Apartment::with('services', 'sponsors')->get();
-        return response()->json(compact('apartments'));
+    public function viewApartamentsInSearchAdvance($params){
+
+        // $lonA = $request->input('lonA');
+        // $latA = $request->input('latA');
+
+        // mi arriva una stringa con i due parametri, li divido usando ',' come separatore
+        $data = explode(',', $params);
+
+        // assegno ai miei parametri, i valori dell'array 'data' che mi sono arrivati dalla chiamata API
+        $lonA = $data[0];
+        $latA = $data[1];
+
+
+        $apartments = Apartment::all();
+
+        $results = [];
+
+
+        foreach ($apartments as $apartment) {
+            $lonB = $apartment->lng;
+            $latB = $apartment->lat;
+
+            $expression = DB::raw('SELECT ST_Distance_Sphere(point(:lonA, :latA), point(:lonB, :latB)) as distance');
+
+            // in laravel 10 la funzionalità Expression/Query/String è stata deprecata e per compatibilità aggiungiamo questa espressione
+            $string = $expression->getValue(DB::connection()->getQueryGrammar());
+
+            $distance = DB::select($string, [
+                'lonA' => $lonA,
+                'latA' => $latA,
+                'lonB' => $lonB,
+                'latB' => $latB,
+            ]);
+
+            // per comodità definisco in una variabile la distanza
+            $realDistance = $distance[0]->distance;
+
+            // questo elemento diventerà dinamico
+            $radius = 20001;
+
+            // condizione di validità - se la distanza è minore del raggio fornito allora pusho appartamento e distanza
+            if ($realDistance < $radius) {
+                $results[] = [
+                    'appartamento' => $apartment,
+                    'distanza' => $realDistance
+                ];
+            };
+        }
+        return response()->json($results);
     }
 
 

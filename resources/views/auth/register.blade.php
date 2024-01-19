@@ -114,26 +114,17 @@
     function checkPasswordMatch() {
         if (password.value != passwordConfirm.value) {
             passwordConfirmed = false;
-            password.classList.remove('is-valid');
-            passwordConfirm.classList.remove('is-valid');
-            password.classList.add('is-invalid');
-            passwordConfirm.classList.add('is-invalid');
+            password.classList.toggle('is-valid');
+            passwordConfirm.classList.toggle('is-valid');
+
         } else if (password.value == passwordConfirm.value && password.value.length > 7) {
             passwordConfirmed = true;
-            password.classList.remove('is-invalid');
-            passwordConfirm.classList.remove('is-invalid');
-            password.classList.add('is-valid');
-            passwordConfirm.classList.add('is-valid');
+            password.classList.toggle('is-invalid');
+            passwordConfirm.classList.toggle('is-invalid');
+
         }
     }
--
 
-    if (passwordConfirmed = true) {
-
-    }
-
-
-console.log()
 </script>
 
 @endsection
