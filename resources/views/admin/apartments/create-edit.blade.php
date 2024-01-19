@@ -64,6 +64,9 @@
                                 <label class="btn btn-outline-primary" for="no"><i class="fa-solid fa-eye-slash"></i> No</label>
                             </div>
                         </div>
+                        @error('visible')
+                            <span>{{$message}}</span>
+                        @enderror
                     </div>
 
                     {{-- ADDRESS --}}
@@ -78,29 +81,59 @@
                         value="{{old('address', $apartment->address ?? '')}}"
                         required
                         list="autocompleteResults">
+
                         <datalist id="autocompleteResults"></datalist>
+
+                        @error('address')
+                            <span>{{$message}}</span>
+                        @enderror
+
                     </div>
 
                     <div class="h-25">
+
                         <div class="d-flex h-50 gap-3">
+
                             <div class="rooms w-50 d-flex flex-column">
+
                                 {{-- ROOMS --}}
                                 <label for="rooms">Numero stanze</label>
                                 <input class="form-control" type="number" name="rooms" value="1" min="1" max="255" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required placeholder="Stanze disponibili">
+
+                                @error('rooms')
+                                    <span>{{$message}}</span>
+                                @enderror
+
                             </div>
+
                             <div class="bathrooms w-50 d-flex flex-column">
+
                                 {{-- BATHROOMS --}}
                                 <label for="bathrooms">Numero di bagni</label>
                                 <input class="form-control" type="number" name="bathrooms" value="1" min="1" max="255" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required placeholder="Bagni disponibili">
+
+                                @error('bathrooms')
+                                    <span>{{$message}}</span>
+                                @enderror
                             </div>
+
                         </div>
+
                         <div class="d-flex h-50 gap-3">
+
                             <div class="beds w-50 d-flex flex-column">
+
                                 {{-- BEDS --}}
                                 <label for="beds">Numero di letti</label>
                                 <input class="form-control" type="number" name="beds" id="beds" value="1" min="1" max="255" value="{{old('beds', $apartment?->beds)}}"  required placeholder="Letti disponibili">
+
+                                @error('beds')
+                                    <span>{{$message}}</span>
+                                @enderror
                             </div>
+
                             <div class="square_meters w-50 d-flex flex-column">
+
                                 {{-- SQUARE_METERS --}}
                                 <label for="square_meters">Superficie m²</label>
                                 <input
@@ -112,14 +145,22 @@
                                 min="1"
                                 max="65535"
                                 value="{{old('square_meters', $apartment?->square_meters)}}"  required placeholder="Inserire metri quadri">
+
+                                @error('square_meters')
+                                    <span>{{$message}}</span>
+                                @enderror
+
                             </div>
+
                         </div>
 
-
                     </div>
+
                     <div class="">
+
                         {{-- IMAGE --}}
                         <div class="my-2 d-flex justify-content-evenly">
+
                             <div class="d-flex justify-content-center align-items-center  flex-column ">
                                 <label for="image" class="form-label fs-3 fw-bold">Immagine</label>
                                 <input
@@ -137,8 +178,9 @@
                             </div>
 
                             @error('image')
-                            <span>{{$message}}</span>
+                                <span>{{$message}}</span>
                             @enderror
+
                             <img
                             id="thumb"
                             onerror="this.src='{{ $apartment ? asset('/img/'.$apartment->image) : asset('/img/Placeholder.png') }}'"
@@ -146,18 +188,21 @@
                             >
 
                         </div>
+
                     </div>
-
-
 
                 </div>
 
                 {{-- SERVICES --}}
                 <div class="col-5 border rounded-3 p-2">
+
                     <h2 class="text-center">Servizi disponibili</h2>
+
                     <div role="group" class="all-service d-flex justify-content-center align-items-center flex-wrap rounded-5">
+
                         @foreach ($services as $index => $service)
                             <div class="p-2 w-25 box-service">
+
                                 <input
                                     type="checkbox"
                                     class="btn-check my-check"
@@ -178,9 +223,17 @@
                                     for="{{$service->id}}">
                                     <i class="{{ $service->icon }}"></i>{{$service->name}}
                                 </label>
+
                             </div>
                         @endforeach
+
+
+                        {{-- //TODO: come??
+                        @error('image')
+                            <span>{{$message}}</span>
+                        @enderror --}}
                     </div>
+
                 </div>
 
                 {{-- BUTTON FORM --}}
@@ -188,7 +241,9 @@
                     <button type="submit" class="btn btn-primary">Aggiungi il nuovo locale nel sito.</button>
                     <button type="reset" class="btn btn-danger">Resetta tutti i campi</button>
                 </div>
+
             </form>
+
         </div>
     </div>
 
