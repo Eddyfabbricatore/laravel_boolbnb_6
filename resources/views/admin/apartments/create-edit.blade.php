@@ -67,7 +67,7 @@
                     </div>
 
                     {{-- ADDRESS --}}
-                    <div class="my-3 d-flex align-content-center">
+                    <div class="my-3 d-flex align-content-center flex-column">
                         <label for="address" class=" form-label fs-4 fw-bold w-100 text-center">Inserisci l'indirizzo del tuo appartamento</label>
                         <input
                         type="text"
@@ -76,7 +76,7 @@
                         class="form-control @error('address') is-invalid @enderror w-50 m-auto"
                         placeholder="Inserire indirizzo"
                         value="{{old('address', $form_data_address['address'] ?? '')}}"  required>
-                        <ul id="autocompleteResults" cla></ul>
+                        <ul id="autocompleteResults"></ul>
                     </div>
 
                     <div class="h-25">
