@@ -79,6 +79,12 @@ class ApartmentController extends Controller
     }
 
 
+    public function getSingleApartment($slug) {
+        $apartment = Apartment::where('slug', $slug)->with('services', 'sponsors')->get();
+
+        return response()->json(compact('apartment'));
+    }
+
 
 
 
