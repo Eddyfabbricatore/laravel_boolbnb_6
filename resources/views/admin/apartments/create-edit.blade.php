@@ -237,9 +237,9 @@
                 </div>
 
                 {{-- BUTTON FORM --}}
-                <div class="buttons d-block mt-3 gap-5 d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary">Aggiungi il nuovo locale nel sito.</button>
-                    <button type="reset" class="btn btn-danger">Resetta tutti i campi</button>
+                <div class="buttons d-block mt-3 gap-2 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Invia</button>
+                    <button type="reset" class="btn btn-danger">Reset</button>
                 </div>
 
             </form>
