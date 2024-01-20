@@ -240,7 +240,7 @@ class ApartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ApartmentRequest $apartment)
+    public function destroy(Apartment $apartment)
     {
         if($apartment->image){
             Storage::disk('public')->delete($apartment->image);
