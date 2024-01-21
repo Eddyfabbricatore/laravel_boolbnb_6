@@ -30,8 +30,8 @@ class ApartmentRequest extends FormRequest
             "beds" => "required | numeric | min:1 | max:255",
             "square_meters" => "required | numeric | min:1 | max:65535",
             "address" => "required | string | min:5 | max:255",
-            "lat" => "required | numeric",
-            "lng" => "required | numeric",
+/*             "lat" => "required | numeric",
+            "lng" => "required | numeric", */
             "visible" => "required | boolean",
         ];
     }
