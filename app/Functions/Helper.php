@@ -22,7 +22,7 @@ class Helper {
     return $slug;
   }
 
-  public static function generateLatLng($address, $lat, $lon) {
+  public static function generateLatLng($address) {
     $apiUrlStart = 'https://api.tomtom.com/search/2/geocode/';
     $apiUrlEnd = '.json?key=nq7V1UsXc4xKYSFcXm3BDbYjtFObpZl8';
     $url = $apiUrlStart . urlencode($address) . $apiUrlEnd;
@@ -33,15 +33,17 @@ class Helper {
         echo 'Errore nella richiesta HTTP';
     } else {
         $data = json_decode($response, true);
-        $positionLat = $data['results'][0]['position'][$lat];
-        $positionLon = $data['results'][0]['position'][$lon];
+        // dd($data['results'][0]['position']);
+        $positionLat = $data['results'][0]['position']["lat"];
+        $positionLon = $data['results'][0]['position']["lon"];
         $positionLatLng = array(
-            $lat => $positionLat,
-            $lon => $positionLon
+            "lat" => $positionLat,
+            "lon" => $positionLon
         );
 
-        // $positionLatLng[] = $positionLat;
-        // $positionLatLng[] = $positionLon;
+        $positionLatLng[] = $positionLat;
+        $positionLatLng[] = $positionLon;
+
         $freeFormAddress = $data['results'][0]['address']['freeformAddress'];
     }
 

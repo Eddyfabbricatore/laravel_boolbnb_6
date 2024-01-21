@@ -134,7 +134,7 @@ class ApartmentController extends Controller
         $form_data_apartment['user_id'] = Auth::user()->id;
 
         // chiamata api
-        $form_data_apartment['position_address'] = Helper::generateLatLng($form_data_apartment["address"], 'lat','lon');
+        $form_data_apartment['position_address'] = Helper::generateLatLng($form_data_apartment["address"]);
 
         $position = $form_data_apartment['position_address'][0];
         $lat = $position['lat'];
@@ -202,7 +202,7 @@ class ApartmentController extends Controller
 
         if($form_data_apartment['address'] != $apartment->address){
         /* GET LATITUTE E LONGITUDE */
-            $form_data_apartment['position_address'] = Helper::generateLatLng($form_data_apartment["address"], 'lat','lon');
+            $form_data_apartment['position_address'] = Helper::generateLatLng($form_data_apartment["address"]);
 
             $position = $form_data_apartment['position_address'][0];
             $lat = $position['lat'];
