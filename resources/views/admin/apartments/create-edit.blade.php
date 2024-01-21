@@ -9,7 +9,9 @@
         @endforeach
 
         <div class="box w-75 m-auto">
-            <form class="row rowForm p-3 rounded-4" action="{{$route}}" method="POST" enctype="multipart/form-data">
+            <form class="row rowForm p-3 rounded-4" action="{{$route}}" autocomplete="off" method="POST" enctype="multipart/form-data">
+                <input autocomplete="false" name="hidden" type="text" style="display:none;">
+
                 @csrf
                 @method($method)
 
@@ -80,7 +82,8 @@
                         placeholder="Inserire indirizzo"
                         value="{{old('address', $apartment->address ?? '')}}"
                         required
-                        list="autocompleteResults">
+                        list="autocompleteResults"
+                        autocomplete=“off”>
 
                         <datalist id="autocompleteResults"></datalist>
 
@@ -183,7 +186,7 @@
 
                             <img
                             id="thumb"
-                            onerror="this.src='{{ $apartment ? asset('/img/'.$apartment->image) : asset('/img/Placeholder.png') }}'"
+                            onerror="this.src='{{asset('/img/Placeholder.png') }}'"
                             src="{{ asset('/storage/'. $apartment?->image) }}"
                             >
 
