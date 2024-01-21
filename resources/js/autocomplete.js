@@ -18,7 +18,7 @@ function checkTimer(){
       if(this.inputSearch.length > 3){
         this.checkInputValue(this.inputSearch);
       }
-    },1000)
+    },500)
 
 };
 function checkInputValue(inputSearch) {
@@ -27,7 +27,7 @@ function checkInputValue(inputSearch) {
     setTimeout(() => {
 
       this.getFFAddress();
-    }, 4000)
+    }, 500)
 
 };
 autocompleteInput.addEventListener('input', async (event) => {
@@ -36,7 +36,7 @@ autocompleteInput.addEventListener('input', async (event) => {
 
         try {
             const initUrl = 'https://api.tomtom.com/search/2/geocode/';
-            const finalUrl = '.json?key=nq7V1UsXc4xKYSFcXm3BDbYjtFObpZl8'
+            const finalUrl = '.json?key=nq7V1UsXc4xKYSFcXm3BDbYjtFObpZl8&typeahead=true&countrySet=IT'
             const queryUrl = initUrl + query + finalUrl;
             const response = await fetch(queryUrl);
 
@@ -44,17 +44,22 @@ autocompleteInput.addEventListener('input', async (event) => {
             const data = await response.json();
             const results = data.results;
 
-            console.log(results);
+
+
+            // console.log(results);
 
 
             // Clear previous results
             autocompleteResults.innerHTML = '';
 
+
             // Display new results
             results.forEach(result => {
+                // console.log(result.type);
                 const options = document.createElement('option');
-                options.textContent = result.address.freeformAddress;
+                options.innerText = result.address.freeformAddress;
                 autocompleteResults.appendChild(options);
+                // console.log(autocompleteResults)
             });
         } catch (error) {
             console.error('Error fetching autocomplete results:', error);
