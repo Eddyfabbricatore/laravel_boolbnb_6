@@ -18,8 +18,9 @@ class ApartmentController extends Controller
     // front-end calls for all apartments
     public function getApartments() {
         $apartments = Apartment::with('services', 'sponsors')->get();
+        $services = Service::all();
 
-        return response()->json(compact('apartments'));
+        return response()->json(compact('apartments', "services"));
     }
 
     public function viewApartamentsInSearchAdvance($params){
