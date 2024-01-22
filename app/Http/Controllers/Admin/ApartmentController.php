@@ -23,7 +23,7 @@ class ApartmentController extends Controller
         return response()->json(compact('apartments', "services"));
     }
 
-    public function getFilteredApartments(Request $request){
+    public function getFilteredApartment(Request $request){
 
         $services = $request->input('services', []);
 
@@ -37,7 +37,15 @@ class ApartmentController extends Controller
             ->distinct()
             ->get();
 
-        return view('filtered_apartments', ['filteredApartments' => $filteredApartments]);
+            $response = response()->json(compact('services', 'filteredApartments'));
+
+            // Aggiungi gli header CORS manualmente
+            $response->header('Access-Control-Allow-Origin', 'http://localhost:5173'); // Sostituisci con il tuo dominio frontend
+            $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+            $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+
+            return $response;
+
     }
 
     public function viewApartamentsInSearchAdvance($params){
