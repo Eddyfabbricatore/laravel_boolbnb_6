@@ -24,29 +24,50 @@ class ApartmentController extends Controller
     }
 
     public function getFilteredApartment(Request $request){
-
         $services = $request->input('services', []);
+        $rooms = $request->input('rooms', null);
+        $bathrooms = $request->input('bathrooms', null);
+        $beds = $request->input('beds', null);
+        $square_meters = $request->input('square_meters', null);
 
-        $filteredApartments = DB::table('apartments as a')
+        $query = DB::table('apartments as a')
             ->join('apartment_service as sa', 'a.id', '=', 'sa.apartment_id')
             ->join('services as s', 'sa.service_id', '=', 's.id')
-            ->whereIn('s.name', $services)
+            ->whereIn('s.name', $services);
+
+        if ($rooms !== null) {
+            $query->where('a.rooms', '=', $rooms); // Cambiato da 'a.stanze' a 'a.rooms'
+        }
+
+        if ($bathrooms !== null) {
+            $query->where('a.bathrooms', '=', $bathrooms); // Cambiato da 'a.bagni' a 'a.bathrooms'
+        }
+
+        if ($beds !== null) {
+            $query->where('a.beds', '=', $beds); // Cambiato da 'a.camere' a 'a.beds'
+        }
+
+        if ($square_meters !== null) {
+            $query->where('a.square_meters', '=', $square_meters); // Cambiato da 'a.superficie' a 'a.square_meters'
+        }
+
+        $filteredApartments = $query
             ->groupBy('a.id')
             ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
             ->selectRaw('a.*, GROUP_CONCAT(s.name) AS service_names')
             ->distinct()
             ->get();
 
-            $response = response()->json(compact('services', 'filteredApartments'));
+        $response = response()->json(compact('services', 'filteredApartments'));
 
-            // Aggiungi gli header CORS manualmente
-            $response->header('Access-Control-Allow-Origin', 'http://localhost:5173'); // Sostituisci con il tuo dominio frontend
-            $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-            $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+        // Aggiungi gli header CORS manualmente
+        $response->header('Access-Control-Allow-Origin', 'http://localhost:5173'); // Sostituisci con il tuo dominio frontend
+        $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
 
-            return $response;
-
+        return $response;
     }
+
 
     public function viewApartamentsInSearchAdvance($params){
 
