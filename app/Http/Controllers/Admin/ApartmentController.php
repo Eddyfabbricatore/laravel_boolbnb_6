@@ -23,6 +23,23 @@ class ApartmentController extends Controller
         return response()->json(compact('apartments', "services"));
     }
 
+    public function getFilteredApartments(Request $request){
+
+        $services = $request->input('services', []);
+
+        $filteredApartments = DB::table('apartments as a')
+            ->join('apartment_service as sa', 'a.id', '=', 'sa.apartment_id')
+            ->join('services as s', 'sa.service_id', '=', 's.id')
+            ->whereIn('s.name', $services)
+            ->groupBy('a.id')
+            ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
+            ->selectRaw('a.*, GROUP_CONCAT(s.name) AS service_names')
+            ->distinct()
+            ->get();
+
+        return view('filtered_apartments', ['filteredApartments' => $filteredApartments]);
+    }
+
     public function viewApartamentsInSearchAdvance($params){
 
         // $lonA = $request->input('lonA');
