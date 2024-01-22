@@ -9,7 +9,8 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $fillable = ['full_name','email','message','date'];
+
 
     public function apartment(){
         return $this->belongsTo(Apartment::class);
