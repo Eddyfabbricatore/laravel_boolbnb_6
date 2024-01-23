@@ -26,9 +26,7 @@ class ApartmentController extends Controller
     public function getFilteredApartment(Request $request){
         $services = $request->input('services', []);
         $rooms = $request->input('rooms', null);
-        $bathrooms = $request->input('bathrooms', null);
         $beds = $request->input('beds', null);
-        $square_meters = $request->input('square_meters', null);
 
         $query = DB::table('apartments as a')
             ->join('apartment_service as sa', 'a.id', '=', 'sa.apartment_id')
@@ -36,19 +34,11 @@ class ApartmentController extends Controller
             ->whereIn('s.name', $services);
 
         if ($rooms !== null) {
-            $query->where('a.rooms', '<=', $rooms);
-        }
-
-        if ($bathrooms !== null) {
-            $query->where('a.bathrooms', '>=', $bathrooms);
+            $query->where('a.rooms', '>=', $rooms);
         }
 
         if ($beds !== null) {
-            $query->where('a.beds', '<=', $beds);
-        }
-
-        if ($square_meters !== null) {
-            $query->where('a.square_meters', '>=', $square_meters);
+            $query->where('a.beds', '>=', $beds);
         }
 
         $filteredApartments = $query
@@ -58,7 +48,7 @@ class ApartmentController extends Controller
             ->distinct()
             ->get();
 
-        $response = response()->json(compact('services', 'filteredApartments', "rooms", "bathrooms", "beds", "square_meters"));
+        $response = response()->json(compact('services', 'filteredApartments', "rooms", "beds"));
 
         // Aggiungi gli header CORS manualmente
         $response->header('Access-Control-Allow-Origin', 'http://localhost:5173');
