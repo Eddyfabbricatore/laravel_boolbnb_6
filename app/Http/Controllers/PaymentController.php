@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apartment;
+use App\Models\Sponsor;
 use Braintree\Gateway;
 use Illuminate\Http\Request;
 
@@ -42,16 +44,18 @@ class PaymentController extends Controller
         }
     }
 
-    public function index()
+    public function index($apartment)
     {
-        // Genero il client token
+        $apartment = Apartment::find($apartment);
+        $sponsors = Sponsor::all();
         $clientToken = $this->gateway->clientToken()->generate();
 
-        return view('payment.index', compact('clientToken'));
+        return view('payment.index', compact('clientToken' , 'apartment', 'sponsors'));
     }
 
-    public function processPayment(Request $request)
+    public function processPayment(Request $request, Apartment $apartment)
     {
+        $apartment = Apartment::find($apartment);
         //Prendo i valori in entrata
         $amount = $request->input('amount');
         $nonce = $request->input('payment_method_nonce');
@@ -67,15 +71,27 @@ class PaymentController extends Controller
 
         // Gestisco il risultato della transazione
         if ($result->success || !is_null($result->transaction)) {
+
+
             $transaction = $result->transaction;
-            return view('payment.transaction', compact('transaction'));
+
+            /* $selectedSponsorshipAmount = $request->input('selectedSponsorship');
+
+            // Find the sponsor based on the selected amount
+            $sponsor = Sponsor::where('price', $selectedSponsorshipAmount)->first();
+
+            // Attach the sponsorship with additional data to the pivot table
+            $apartment->sponsors()->attach($sponsor, [
+                'transaction_date' => now(),
+            ]); */
+            return view('payment.transaction', compact('transaction', 'apartment'));
         } else {
             $errorString = "";
             foreach ($result->errors->deepAll() as $error) {
                 $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
             }
             session()->flash('errors', $errorString);
-            return redirect()->route('admin.payment.processPayment');
+            return redirect()->route('admin.payment.processPayment', compact('apartment'));
         }
     }
 }

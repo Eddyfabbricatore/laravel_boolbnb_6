@@ -21,7 +21,7 @@
                         </button>
                     </form>
 
-                    <a class="nav-link" href="{{route('admin.payment')}}">
+                    <a class="nav-link" href="{{route('admin.payment', $apartment)}}">
                         <button class="btn btn-success"><i class="fa-solid fa-credit-card"></i></button>
                     </a>
                 </div>
