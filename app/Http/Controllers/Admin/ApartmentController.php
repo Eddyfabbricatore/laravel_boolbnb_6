@@ -36,19 +36,19 @@ class ApartmentController extends Controller
             ->whereIn('s.name', $services);
 
         if ($rooms !== null) {
-            $query->where('a.rooms', '=', $rooms);
+            $query->where('a.rooms', '<=', $rooms);
         }
 
         if ($bathrooms !== null) {
-            $query->where('a.bathrooms', '=', $bathrooms);
+            $query->where('a.bathrooms', '>=', $bathrooms);
         }
 
         if ($beds !== null) {
-            $query->where('a.beds', '=', $beds);
+            $query->where('a.beds', '<=', $beds);
         }
 
         if ($square_meters !== null) {
-            $query->where('a.square_meters', '=', $square_meters);
+            $query->where('a.square_meters', '>=', $square_meters);
         }
 
         $filteredApartments = $query
