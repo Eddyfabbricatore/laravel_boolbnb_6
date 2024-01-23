@@ -30,7 +30,7 @@ function checkInputValue(inputSearch) {
     }, 500)
 
 };
-autocompleteInput.addEventListener('input', async (event) => {
+autocompleteInput.addEventListener('keyup', async (event) => {
 
         const query = encodeURIComponent(event.target.value);
 
