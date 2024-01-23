@@ -6,6 +6,7 @@
         session_start();
 
         $_SESSION["loggedUser"] = auth();
+        $alfonso = auth()->user()->name;
 
     @endphp
     @dump($_SESSION);
@@ -41,9 +42,10 @@
 
     <script>
 
-        session_start();
-        console.log(session())
-        window.localStorage.setItem("name", luigi);
+        let alfonsoJS = {!! json_encode($alfonso, JSON_HEX_TAG) !!}
+
+
+        window.localStorage.setItem("name", alfonsoJS);
 
     </script>
 
