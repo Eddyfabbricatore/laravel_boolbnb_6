@@ -2,7 +2,15 @@
 
 @section('content')
 
-    <div id="dashboard" class="container">        
+    @php
+        session_start();
+
+        $_SESSION["loggedUser"] = auth();
+
+    @endphp
+    @dump($_SESSION);
+
+    <div id="dashboard" class="container">
         <div class="route-select border rounded-3 m-auto mt-5 p-5 w-100 d-flex flex-column">
             <h1 class="text-center">Bentornato {{$user->name}} {{$user->surname}}!!</h1>
 
@@ -31,17 +39,12 @@
         </div>
     </div>
 
-    {{-- <ul>
-        @foreach ($apartments as $apartment)
-            <li>
-                {{$apartment->title}}
-                @forelse ($apartment->services as $service)
-                    <span class="badge text-bg-info">{{ $service->name }}</span>
-                @empty
-                    -
-                @endforelse
-            </li>
-        @endforeach
-    </ul> --}}
+    <script>
+
+        session_start();
+        console.log(session())
+        window.localStorage.setItem("name", luigi);
+
+    </script>
 
 @endsection
