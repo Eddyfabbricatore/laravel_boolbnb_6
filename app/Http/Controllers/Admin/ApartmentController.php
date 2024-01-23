@@ -36,19 +36,19 @@ class ApartmentController extends Controller
             ->whereIn('s.name', $services);
 
         if ($rooms !== null) {
-            $query->where('a.rooms', '=', $rooms); // Cambiato da 'a.stanze' a 'a.rooms'
+            $query->where('a.rooms', '=', $rooms);
         }
 
         if ($bathrooms !== null) {
-            $query->where('a.bathrooms', '=', $bathrooms); // Cambiato da 'a.bagni' a 'a.bathrooms'
+            $query->where('a.bathrooms', '=', $bathrooms);
         }
 
         if ($beds !== null) {
-            $query->where('a.beds', '=', $beds); // Cambiato da 'a.camere' a 'a.beds'
+            $query->where('a.beds', '=', $beds);
         }
 
         if ($square_meters !== null) {
-            $query->where('a.square_meters', '=', $square_meters); // Cambiato da 'a.superficie' a 'a.square_meters'
+            $query->where('a.square_meters', '=', $square_meters);
         }
 
         $filteredApartments = $query
@@ -58,10 +58,10 @@ class ApartmentController extends Controller
             ->distinct()
             ->get();
 
-        $response = response()->json(compact('services', 'filteredApartments'));
+        $response = response()->json(compact('services', 'filteredApartments', "rooms", "bathrooms", "beds", "square_meters"));
 
         // Aggiungi gli header CORS manualmente
-        $response->header('Access-Control-Allow-Origin', 'http://localhost:5173'); // Sostituisci con il tuo dominio frontend
+        $response->header('Access-Control-Allow-Origin', 'http://localhost:5173');
         $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
         $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
 
