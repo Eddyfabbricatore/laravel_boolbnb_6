@@ -19,9 +19,33 @@ class ApartmentController extends Controller
     public function getApartments() {
         $apartments = Apartment::with('services', 'sponsors')->get();
         $services = Service::all();
+        // $sponsoredApartments = Apartment::with('services', 'sponsors')->where('sponsor_id', '!=', null)->get();
+        $sponsoredApartments = DB::table('apartment_sponsor')
+                                ->crossJoin('apartments', 'apartment_sponsor.apartment_id', '=', 'apartments.id')
+                                ->groupBy('apartments.id')
+                                ->select('apartments.*')
+                                ->distinct()
+                                ->get();
 
-        return response()->json(compact('apartments', "services"));
+
+        return response()->json(compact('apartments', "services", 'sponsoredApartments'));
     }
+
+    // public function getApartments() {
+    //     try {
+    //         $apartments = Apartment::with('services', 'sponsors')->get();
+    //         $services = Service::all();
+    //         $sponsoredApartments = Apartment::with('services', 'sponsors')->where('sponsor_id', '!=', null)->get();
+
+    //         // Debugging
+    //         dd(compact('apartments', 'services', 'sponsoredApartments'));
+
+    //         return response()->json(compact('apartments', 'services', 'sponsoredApartments'));
+    //     } catch (\Exception $e) {
+    //         // Log dell'eccezione
+    //         dd($e->getMessage());
+    //     }
+    // }
 
     public function getFilteredApartment(Request $request){
         $services = $request->input('services', []);
