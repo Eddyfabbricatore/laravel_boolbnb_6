@@ -11,21 +11,23 @@
     @endif
 
     <form method="POST" action="{{ route('admin.payment.processPayment') }}">
+        @csrf
         <label for="amount">Amount:</label>
         <input type="text" id="amount" name="amount" placeholder="Enter the amount">
 
         <div id="dropin-container"></div>
 
-        <input id="nonce" name="payment_method_nonce" type="hidden" />
+        <input id="nonce" name="payment_method_nonce" type="hidden" value="fake-valid-nonce" />
 
         <button type="submit">Submit Payment</button>
     </form>
+
 </div>
 
 <script src="https://js.braintreegateway.com/web/dropin/1.41.0/js/dropin.min.js"></script>
 <script>
     let form = document.querySelector('form');
-    let client_token = "{{$clientToken}}";
+    let client_token = "<?php echo $clientToken; ?>";
 
     braintree.dropin.create({
         authorization: client_token,
@@ -49,7 +51,7 @@
                 }
 
                 // Set the value of the existing hidden input
-                document.querySelector('[name="payment_method_nonce"]').value = payload.nonce;
+                document.querySelector('#nonce').value = payload.nonce;
 
                 // Continue with form submission
                 form.submit();
