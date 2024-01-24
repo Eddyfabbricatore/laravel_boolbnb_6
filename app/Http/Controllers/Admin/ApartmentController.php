@@ -17,6 +17,7 @@ class ApartmentController extends Controller
 
     // front-end calls for all apartments
     public function getApartments() {
+
         $apartments = Apartment::with('services', 'sponsors')->get();
         $services = Service::all();
         // $sponsoredApartments = Apartment::with('services', 'sponsors')->where('sponsor_id', '!=', null)->get();
@@ -26,7 +27,6 @@ class ApartmentController extends Controller
                                 ->select('apartments.*')
                                 ->distinct()
                                 ->get();
-
 
         return response()->json(compact('apartments', "services", 'sponsoredApartments'));
     }
@@ -48,6 +48,8 @@ class ApartmentController extends Controller
     // }
 
     public function getFilteredApartment(Request $request){
+
+
         $services = $request->input('services', []);
         $rooms = $request->input('rooms', null);
         $beds = $request->input('beds', null);
@@ -75,7 +77,7 @@ class ApartmentController extends Controller
         $response = response()->json(compact('services', 'filteredApartments', "rooms", "beds"));
 
         // Aggiungi gli header CORS manualmente
-        $response->header('Access-Control-Allow-Origin', 'http://localhost:5173');
+        $response->header('Access-Control-Allow-Origin', 'http://localhost:5174');
         $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
         $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
 
