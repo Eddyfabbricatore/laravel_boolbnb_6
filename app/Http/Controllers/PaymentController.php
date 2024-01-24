@@ -91,6 +91,7 @@ class PaymentController extends Controller
             //Aggiungo nella tabella pivot la data di transazione
             $apartment->sponsors()->attach($sponsor, [
                 'transaction_date' => now(),
+                'sponsorizzato' => true,
             ]);
 
             // Data di inizio della sponsorizzazione
@@ -98,18 +99,20 @@ class PaymentController extends Controller
 
             // Mi prendo la durata in ore dello sponsor per effettuare i calcoli
             // $sponsor_duration = $sponsor->duration_in_hours;
-            $sponsor_duration = $sponsor->duration_in_hours;
+            $sponsor_duration = 5;
 
             // Calcola la data di scadenza della sponsorizzazione
             $dataScadenza = $dataInizio->copy()->addSeconds($sponsor_duration);
 
             // Verifica se la sponsorizzazione è ancora attiva
             if (Carbon::now()->lt($dataScadenza)) {
-                // La sponsorizzazione è ancora attiva
                 $tempoRimanente = max(0, $dataScadenza->diffInSeconds(Carbon::now()));
+                $apartment->setAttribute('sponsorizzato', true);
+                $apartment->setAttribute('tempo_rimanente', $tempoRimanente);
                 $isSponsored = "La sponsorizzazione è attiva. Tempo rimanente: $tempoRimanente";
             } else {
-                // La sponsorizzazione è scaduta
+                $tempoRimanente = 0;
+                $apartment->setAttribute('sponsorizzato', false);
                 $isSponsored = "La sponsorizzazione è scaduta.";
             }
 

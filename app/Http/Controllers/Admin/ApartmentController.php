@@ -10,17 +10,53 @@ use App\Functions\Helper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ApartmentRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ApartmentController extends Controller
 {
 
+
     // front-end calls for all apartments
     public function getApartments() {
         $apartments = Apartment::with('services', 'sponsors')->get();
 
+        foreach ($apartments as $apartment) {
+            // Aggiungi l'attributo dinamico isSponsored
+            $apartment->setAttribute('isSponsored', $this->isSponsored($apartment));
+        }
+
         return response()->json(compact('apartments'));
     }
+
+    // Funzione per verificare se l'appartamento è sponsorizzato
+    protected function isSponsored($apartment)
+{
+    // Controlla se ci sono sponsorizzazioni associate
+    $sponsorships = $apartment->sponsors;
+
+    // Verifica se almeno una sponsorizzazione è attiva
+    foreach ($sponsorships as $sponsorship) {
+        if ($sponsorship->pivot->transaction_date !== null) {
+            // Verifica se la sponsorizzazione è ancora attiva
+            $sponsorEndTime = Carbon::parse($sponsorship->pivot->transaction_date)->addSeconds($sponsorship->duration_in_hours);
+
+            // Se la sponsorizzazione è ancora attiva, restituisce true
+            if (Carbon::now()->lt($sponsorEndTime)) {
+                return $sponsorEndTime;
+            }
+        }
+    }
+
+    // Nessuna sponsorizzazione attiva o il tempo è scaduto
+    return false;
+}
+
+
+
+
+
+
 
     public function viewApartamentsInSearchAdvance($params){
 

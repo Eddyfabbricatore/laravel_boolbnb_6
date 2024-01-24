@@ -24,6 +24,7 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
+                        <h3 class="card-title fs-1 text-center">{{$apartment->sponsorizzato}}</h3>
                         <h3 class="card-title fs-1 text-center">{{$apartment->title}}</h3>
                         <p class="card-text">Indirizzo di casa: {{$apartment->address}}</p>
                     </div>

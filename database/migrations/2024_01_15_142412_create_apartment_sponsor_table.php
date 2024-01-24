@@ -25,6 +25,8 @@ return new class extends Migration
             ->cascadeOnDelete();
 
             $table->dateTime('transaction_date')->nullable();
+            $table->text('sponsorizzato')->nullable();
+            $table->text('tempo_rimanente')->nullable();
         });
     }
 
