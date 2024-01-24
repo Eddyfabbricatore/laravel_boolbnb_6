@@ -49,15 +49,18 @@ class ApartmentController extends Controller
 
     public function getFilteredApartment(Request $request){
 
+        $results = $request->input("results[0]", []);
 
+
+        //$results = $request->input("results", []);
         $services = $request->input('services', []);
         $rooms = $request->input('rooms', null);
         $beds = $request->input('beds', null);
 
         $query = DB::table('apartments as a')
-            ->join('apartment_service as sa', 'a.id', '=', 'sa.apartment_id')
-            ->join('services as s', 'sa.service_id', '=', 's.id')
-            ->whereIn('s.name', $services);
+            // ->join('apartment_service as sa', 'a.id', '=', 'sa.apartment_id')
+            // ->join('services as s', 'sa.service_id', '=', 's.id')
+            ->whereIn('a.id', $results);
 
         if ($rooms !== null) {
             $query->where('a.rooms', '>=', $rooms);
@@ -67,21 +70,23 @@ class ApartmentController extends Controller
             $query->where('a.beds', '>=', $beds);
         }
 
-        $filteredApartments = $query
-            ->groupBy('a.id')
-            ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
-            ->selectRaw('a.*, GROUP_CONCAT(s.name) AS service_names')
-            ->distinct()
-            ->get();
+        $filteredApartments = $query->get();
 
-        $response = response()->json(compact('services', 'filteredApartments', "rooms", "beds"));
+        $response = response()->json(compact('services', 'results', 'rooms', 'beds', 'filteredApartments'));
 
-        // Aggiungi gli header CORS manualmente
-        $response->header('Access-Control-Allow-Origin', 'http://localhost:5174');
+        $response->header('Access-Control-Allow-Origin', '*');
         $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
         $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
 
         return $response;
+
+        // $results = $query
+        //     ->groupBy('a.id')
+        //     ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
+        //     ->selectRaw('a.*, GROUP_CONCAT(s.name) AS service_names')
+        //     ->distinct()
+        //     ->get();
+
     }
 
 
@@ -98,7 +103,7 @@ class ApartmentController extends Controller
         //$latA = $data[1];
 
 
-        $apartments = Apartment::all();
+        $apartments = Apartment::with('services', 'sponsors')->get();
 
         $results = [];
 
