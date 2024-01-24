@@ -83,17 +83,17 @@ class ApartmentController extends Controller
     }
 
 
-    public function viewApartamentsInSearchAdvance($params){
+    public function viewApartamentsInSearchAdvance(Request $request){
 
-        // $lonA = $request->input('lonA');
-        // $latA = $request->input('latA');
+        $lonA = $request->input('lonA');
+        $latA = $request->input('latA');
 
         // mi arriva una stringa con i due parametri, li divido usando ',' come separatore
-        $data = explode(',', $params);
+        //$data = explode(',', $params);
 
         // assegno ai miei parametri, i valori dell'array 'data' che mi sono arrivati dalla chiamata API
-        $lonA = $data[0];
-        $latA = $data[1];
+        //$lonA = $data[0];
+        //$latA = $data[1];
 
 
         $apartments = Apartment::all();
