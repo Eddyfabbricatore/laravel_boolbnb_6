@@ -7,6 +7,7 @@ use App\Models\Sponsor;
 use Braintree\Gateway;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
@@ -92,7 +93,27 @@ class PaymentController extends Controller
                 'transaction_date' => now(),
             ]);
 
-            return view('payment.transaction', compact('transaction', 'apartment'));
+            // Data di inizio della sponsorizzazione
+            $dataInizio = Carbon::parse($transaction->createdAt->format('Y-m-d H:i:s'));
+
+            // Mi prendo la durata in ore dello sponsor per effettuare i calcoli
+            // $sponsor_duration = $sponsor->duration_in_hours;
+            $sponsor_duration = $sponsor->duration_in_hours;
+
+            // Calcola la data di scadenza della sponsorizzazione
+            $dataScadenza = $dataInizio->copy()->addSeconds($sponsor_duration);
+
+            // Verifica se la sponsorizzazione è ancora attiva
+            if (Carbon::now()->lt($dataScadenza)) {
+                // La sponsorizzazione è ancora attiva
+                $tempoRimanente = max(0, $dataScadenza->diffInSeconds(Carbon::now()));
+                $isSponsored = "La sponsorizzazione è attiva. Tempo rimanente: $tempoRimanente";
+            } else {
+                // La sponsorizzazione è scaduta
+                $isSponsored = "La sponsorizzazione è scaduta.";
+            }
+
+            return view('payment.transaction', compact('transaction', 'apartment', 'sponsor_duration', 'tempoRimanente', 'isSponsored'));
 
         } else {
             $errorString = "";
