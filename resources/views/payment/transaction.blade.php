@@ -15,13 +15,15 @@
         @endif
 
         @isset($transaction)
+        <div class="card">
             <h2>Transaction Details:</h2>
             <ul>
-                <li>ID: {{ $transaction }}</li>
                 <li>Amount: {{ $transaction->amount }}</li>
                 <li>Status: {{ $transaction->status }}</li>
+                <li>Data di transizione: {{ $transaction->createdAt->format('Y-m-d H:i:s') }}</li>
                 <!-- Add more transaction details as needed -->
             </ul>
+        </div>
         @endisset
     </div>
 @endsection
