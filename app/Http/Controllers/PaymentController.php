@@ -6,6 +6,7 @@ use App\Models\Apartment;
 use App\Models\Sponsor;
 use Braintree\Gateway;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -46,12 +47,13 @@ class PaymentController extends Controller
 
     public function index(Apartment $apartment)
     {
-        session_start();
-        $apartment = Apartment::where('id', $apartment->id)->first();
+        if (auth()->user()->id != $apartment->user_id) {
+            abort(404, 'Not Found');
+        }
+
         dump($apartment);
         $sponsors = Sponsor::all();
         $clientToken = $this->gateway->clientToken()->generate();
-        $_SESSION['apartment_id'] = $apartment->id;
 
         return view('payment.index', compact('clientToken' , 'apartment', 'sponsors'));
     }

@@ -34,7 +34,7 @@ Route::middleware(['auth', 'verified'])
         // Route::get('/', [DashboardController::class,'index'])->name('home');
         Route::resource('apartments', ApartmentController::class);
         Route::get('{apartment}/payment', [PaymentController::class, 'index'])->name('payment');
-        Route::post('payment-checkout/{apartment}', [PaymentController::class, 'processPayment'])->name('payment.processPayment');
+        Route::post('{apartment}/payment-checkout', [PaymentController::class, 'processPayment'])->name('payment.processPayment');
         // Route::resource('technologies', TechnologyController::class);
         // Route::resource('types', TypeController::class);
         // Route::get('typeProjects', [TypeController::class, 'typeProjects'])->name('typeProjects');
