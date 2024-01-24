@@ -21,13 +21,13 @@
 
     @isset($sponsor)
     <div id="Mycontainer" class="d-none">
-        <form method="POST" action="{{ route('admin.payment.processPayment') }}" id="paymentForm">
+        <form method="POST" action="{{ route('admin.payment.processPayment', $apartment) }}" id="paymentForm">
             @csrf
             <p>Casa selezionata: {{ $apartment->title }}</p>
             <label for="amount">Prezzo:</label>
             <input type="text" id="amount" name="amount" readonly>
 
-
+            <input type="text" id="apartment_id" name="apartment_id" class="d-none" :value="$apartment->id" >
 
             <div id="dropin-container"></div>
 

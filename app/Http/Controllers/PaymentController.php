@@ -44,18 +44,23 @@ class PaymentController extends Controller
         }
     }
 
-    public function index($apartment)
+    public function index(Apartment $apartment)
     {
-        $apartment = Apartment::find($apartment);
+        session_start();
+        $apartment = Apartment::where('id', $apartment->id)->first();
+        dump($apartment);
         $sponsors = Sponsor::all();
         $clientToken = $this->gateway->clientToken()->generate();
+        $_SESSION['apartment_id'] = $apartment->id;
 
         return view('payment.index', compact('clientToken' , 'apartment', 'sponsors'));
     }
 
     public function processPayment(Request $request, Apartment $apartment)
     {
-        $apartment = Apartment::find($apartment);
+        dump($request->input('apartment_id'));
+        dump($apartment->sponsors());
+        $apartment = Apartment::where('id', $request->id)->first();
         //Prendo i valori in entrata
         $amount = $request->input('amount');
         $nonce = $request->input('payment_method_nonce');
