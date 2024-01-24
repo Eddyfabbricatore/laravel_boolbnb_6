@@ -49,7 +49,8 @@ class ApartmentController extends Controller
 
     public function getFilteredApartment(Request $request){
 
-        $results = $request->input("results[0]", []);
+        $results = json_decode($request->input("results", []), true);
+
 
 
         //$results = $request->input("results", []);
@@ -57,10 +58,30 @@ class ApartmentController extends Controller
         $rooms = $request->input('rooms', null);
         $beds = $request->input('beds', null);
 
+
+
+
+        // QUESTO FUNZIONAAAAAA
+        // $query = DB::table('apartments as a');
+        // $query->where(function ($query) use ($results) {
+        //     foreach($results as $result) {
+        //         $appartamento = $result['appartamento'];
+        //         $query->orWhere('a.id', $appartamento['id']);
+        //     }
+        // });
+
+        // $apartmentDistances = array_map(function($result) {
+        //     return $result['distanza'];
+        // }, $results);
+
+        $apartmentIds = array_map(function($result) {
+            return $result['appartamento']['id'];
+        }, $results);
+
         $query = DB::table('apartments as a')
-            // ->join('apartment_service as sa', 'a.id', '=', 'sa.apartment_id')
-            // ->join('services as s', 'sa.service_id', '=', 's.id')
-            ->whereIn('a.id', $results);
+            ->whereIn('a.id', $apartmentIds);
+
+
 
         if ($rooms !== null) {
             $query->where('a.rooms', '>=', $rooms);
@@ -70,9 +91,39 @@ class ApartmentController extends Controller
             $query->where('a.beds', '>=', $beds);
         }
 
+        // $query = DB::table('apartments as a')
+        // ->join('apartment_service as sa', 'a.id', '=', 'sa.apartment_id')
+        // ->join('services as s', 'sa.service_id', '=', 's.id')
+        // ->whereIn('a.id', $apartmentIds)
+        // ->groupBy('a.id')
+        // ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
+        // ->selectRaw('a.*, GROUP_CONCAT(s.name) AS service_names')
+        // ->distinct();
+
+
+
+
         $filteredApartments = $query->get();
 
-        $response = response()->json(compact('services', 'results', 'rooms', 'beds', 'filteredApartments'));
+            // Associare le distanze ai relativi appartamenti
+
+        // Associare le distanze ai relativi appartamenti
+        $filteredApartmentsWithDistance = $filteredApartments->map(function($apartment) use ($results) {
+
+            $apartmentId = $apartment->id;
+
+            $distance = array_values(array_filter($results, function($result) use ($apartmentId) {
+
+                return $result['appartamento']['id'] == $apartmentId;
+
+            }))[0]['distanza'];
+
+            $apartment->distanza = $distance;
+
+            return $apartment;
+        });
+
+        $response = response()->json(compact('services', 'results', 'rooms', 'filteredApartmentsWithDistance', 'filteredApartments' ,'beds', 'query'));
 
         $response->header('Access-Control-Allow-Origin', '*');
         $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -80,12 +131,15 @@ class ApartmentController extends Controller
 
         return $response;
 
-        // $results = $query
-        //     ->groupBy('a.id')
-        //     ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
-        //     ->selectRaw('a.*, GROUP_CONCAT(s.name) AS service_names')
-        //     ->distinct()
-        //     ->get();
+
+
+
+
+
+
+
+
+
 
     }
 
