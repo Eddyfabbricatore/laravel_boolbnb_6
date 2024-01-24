@@ -20,7 +20,6 @@ use App\Http\Controllers\Admin\MessageController;
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/filtered-apartments', [ApartmentController::class, 'getFilteredApartment']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
