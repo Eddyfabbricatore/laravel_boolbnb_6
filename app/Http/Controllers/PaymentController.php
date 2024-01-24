@@ -47,12 +47,15 @@ class PaymentController extends Controller
 
     public function index(Apartment $apartment)
     {
+        //Controllo navigazione appartamenti altrui
         if (auth()->user()->id != $apartment->user_id) {
             abort(404, 'Not Found');
         }
 
-        dump($apartment);
+        //Prendo tutti i sponsor
         $sponsors = Sponsor::all();
+
+        //Genero token per Braintree authorization
         $clientToken = $this->gateway->clientToken()->generate();
 
         return view('payment.index', compact('clientToken' , 'apartment', 'sponsors'));
@@ -60,9 +63,6 @@ class PaymentController extends Controller
 
     public function processPayment(Request $request, Apartment $apartment)
     {
-        dump($request->input('apartment_id'));
-        dump($apartment->sponsors());
-        $apartment = Apartment::where('id', $request->id)->first();
         //Prendo i valori in entrata
         $amount = $request->input('amount');
         $nonce = $request->input('payment_method_nonce');
@@ -78,20 +78,22 @@ class PaymentController extends Controller
 
         // Gestisco il risultato della transazione
         if ($result->success || !is_null($result->transaction)) {
-
-
+            //Impacchetto il rusultato della transazione
             $transaction = $result->transaction;
 
-            /* $selectedSponsorshipAmount = $request->input('selectedSponsorship');
+            //dump($apartment->sponsors());
 
-            // Find the sponsor based on the selected amount
+            //Mi prendo l'amount per trovare lo sponsor relativo
+            $selectedSponsorshipAmount = $request->input('amount');
             $sponsor = Sponsor::where('price', $selectedSponsorshipAmount)->first();
 
-            // Attach the sponsorship with additional data to the pivot table
+            //Aggiungo nella tabella pivot la data di transazione
             $apartment->sponsors()->attach($sponsor, [
                 'transaction_date' => now(),
-            ]); */
+            ]);
+
             return view('payment.transaction', compact('transaction', 'apartment'));
+
         } else {
             $errorString = "";
             foreach ($result->errors->deepAll() as $error) {
