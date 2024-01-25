@@ -149,6 +149,8 @@ class ApartmentController extends Controller
         $lonA = $request->input('lonA');
         $latA = $request->input('latA');
 
+        $formRadius = $request->input('radius', '20000');
+
         // mi arriva una stringa con i due parametri, li divido usando ',' come separatore
         //$data = explode(',', $params);
 
@@ -182,7 +184,7 @@ class ApartmentController extends Controller
             $realDistance = $distance[0]->distance;
 
             // questo elemento diventerà dinamico
-            $radius = 20001;
+            $radius = $formRadius;
 
             // condizione di validità - se la distanza è minore del raggio fornito allora pusho appartamento e distanza
             if ($realDistance < $radius) {
