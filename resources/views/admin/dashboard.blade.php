@@ -2,14 +2,14 @@
 
 @section('content')
 
-    @php
+    {{-- @php
         session_start();
 
         $_SESSION["loggedUser"] = auth();
         $alfonso = auth()->user()->name;
 
     @endphp
-    @dump($_SESSION);
+    @dump($_SESSION); --}}
 
     <div id="dashboard" class="container">
         <div class="route-select border rounded-3 m-auto mt-5 p-5 w-100 d-flex flex-column">
@@ -40,13 +40,13 @@
         </div>
     </div>
 
-    <script>
+    {{-- <script>
 
         let alfonsoJS = {!! json_encode($alfonso, JSON_HEX_TAG) !!}
 
 
         window.localStorage.setItem("name", alfonsoJS);
 
-    </script>
+    </script> --}}
 
 @endsection
