@@ -33,6 +33,28 @@ class ApartmentController extends Controller
         return response()->json(compact('apartments', 'services'));
     }
 
+    protected function isSponsored($apartment)
+{
+    // Controlla se ci sono sponsorizzazioni associate
+    $sponsorships = $apartment->sponsors;
+
+    // Verifica se almeno una sponsorizzazione è attiva
+    foreach ($sponsorships as $sponsorship) {
+        if ($sponsorship->pivot->transaction_date !== null) {
+            // Verifica se la sponsorizzazione è ancora attiva
+            $sponsorEndTime = Carbon::parse($sponsorship->pivot->transaction_date)->addSeconds($sponsorship->duration_in_hours);
+
+            // Se la sponsorizzazione è ancora attiva, restituisce true
+            if (Carbon::now()->lt($sponsorEndTime)) {
+                return $sponsorEndTime;
+            }
+        }
+    }
+
+    // Nessuna sponsorizzazione attiva o il tempo è scaduto
+    return false;
+}
+
     public function getApartmentsTotalOld(Request $request) {
 
         $lonA = $request->input('lonA',);
