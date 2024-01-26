@@ -38,8 +38,6 @@ class PaymentController extends Controller
 
         if ($result->success) {
             $creditCardToken = $result->creditCard->token;
-            // Puoi fare qualcosa con il token, ad esempio salvarlo nel database
-            // o utilizzarlo per una transazione successiva
             echo 'Credit card generated successfully. Token: ' . $creditCardToken;
         } else {
             echo 'Error generating credit card: ' . $result->message;
@@ -79,44 +77,47 @@ class PaymentController extends Controller
 
         // Gestisco il risultato della transazione
         if ($result->success || !is_null($result->transaction)) {
+
             //Impacchetto il rusultato della transazione
             $transaction = $result->transaction;
-
-            //dump($apartment->sponsors());
 
             //Mi prendo l'amount per trovare lo sponsor relativo
             $selectedSponsorshipAmount = $request->input('amount');
             $sponsor = Sponsor::where('price', $selectedSponsorshipAmount)->first();
 
-            //Aggiungo nella tabella pivot la data di transazione
-            $apartment->sponsors()->attach($sponsor, [
-                'transaction_date' => now(),
-                'sponsorizzato' => true,
-            ]);
-
             // Data di inizio della sponsorizzazione
             $dataInizio = Carbon::parse($transaction->createdAt->format('Y-m-d H:i:s'));
 
             // Mi prendo la durata in ore dello sponsor per effettuare i calcoli
-            // $sponsor_duration = $sponsor->duration_in_hours;
-            $sponsor_duration = 5;
+            $sponsor_duration = $sponsor->duration_in_hours;
 
-            // Calcola la data di scadenza della sponsorizzazione
-            $dataScadenza = $dataInizio->copy()->addSeconds($sponsor_duration);
+            // Calcolo la data di scadenza della sponsorizzazione
+            $dataScadenza = $dataInizio->copy()->addHours($sponsor_duration);
 
-            // Verifica se la sponsorizzazione è ancora attiva
-            if (Carbon::now()->lt($dataScadenza)) {
-                $tempoRimanente = max(0, $dataScadenza->diffInSeconds(Carbon::now()));
-                $apartment->setAttribute('sponsorizzato', true);
-                $apartment->setAttribute('tempo_rimanente', $tempoRimanente);
-                $isSponsored = "La sponsorizzazione è attiva. Tempo rimanente: $tempoRimanente";
+            //Controllo se esite una sponsorizzazione attiva
+            $existingSponsorship = $apartment->sponsors()
+                ->where('end_sponsor_date', '>', Carbon::now())
+                ->first();
+
+            if ($existingSponsorship) {
+                $newEndDate = Carbon::parse($existingSponsorship->pivot->end_sponsor_date)->addHours($sponsor_duration);
+                $apartment->sponsors()->attach($sponsor, [
+                    'end_sponsor_date' => $newEndDate,
+                    'transaction_date' => Carbon::parse($transaction->createdAt->format('Y-m-d H:i:s')),
+                ]);
             } else {
-                $tempoRimanente = 0;
-                $apartment->setAttribute('sponsorizzato', false);
-                $isSponsored = "La sponsorizzazione è scaduta.";
+                $apartment->sponsors()->attach($sponsor, [
+                    'transaction_date' => Carbon::parse($transaction->createdAt->format('Y-m-d H:i:s')),
+                    'end_sponsor_date' => $dataScadenza,
+                ]);
             }
 
-            return view('payment.transaction', compact('transaction', 'apartment', 'sponsor_duration', 'tempoRimanente', 'isSponsored'));
+            // Verifica se la sponsorizzazione è ancora attiva
+            $apartment->setAttribute('sponsorizzato', true);
+            $apartment->setAttribute('tempo_rimanente', $newEndDate);
+            $isSponsored = "La sponsorizzazione è attiva. Data di scadenza: $newEndDate";
+
+            return view('payment.transaction', compact('transaction', 'apartment', 'sponsor_duration', 'newEndDate', 'isSponsored'));
 
         } else {
             $errorString = "";

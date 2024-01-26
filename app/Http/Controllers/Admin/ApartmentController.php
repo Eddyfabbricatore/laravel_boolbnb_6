@@ -30,27 +30,26 @@ class ApartmentController extends Controller
     }
 
     // Funzione per verificare se l'appartamento è sponsorizzato
-    protected function isSponsored($apartment)
-{
-    // Controlla se ci sono sponsorizzazioni associate
-    $sponsorships = $apartment->sponsors;
+    protected function isSponsored($apartment){
 
-    // Verifica se almeno una sponsorizzazione è attiva
-    foreach ($sponsorships as $sponsorship) {
-        if ($sponsorship->pivot->transaction_date !== null) {
-            // Verifica se la sponsorizzazione è ancora attiva
-            $sponsorEndTime = Carbon::parse($sponsorship->pivot->transaction_date)->addSeconds($sponsorship->duration_in_hours);
+        // Controlla se ci sono sponsorizzazioni associate
+        $sponsorships = $apartment->sponsors;
 
-            // Se la sponsorizzazione è ancora attiva, restituisce true
-            if (Carbon::now()->lt($sponsorEndTime)) {
-                return $sponsorEndTime;
+        // Verifica se almeno una sponsorizzazione è attiva
+        foreach ($sponsorships as $sponsorship) {
+            if ($sponsorship->pivot->transaction_date !== null) {
+                // Verifica se la sponsorizzazione è ancora attiva
+                $sponsorEndTime = Carbon::parse($sponsorship->pivot->transaction_date)->addHours($sponsorship->duration_in_hours);
+
+                // Se la sponsorizzazione è ancora attiva, restituisce true
+                if (Carbon::now()->lt($sponsorEndTime)) {
+                    return true;
+                }
             }
         }
+        // Nessuna sponsorizzazione attiva o il tempo è scaduto
+        return false;
     }
-
-    // Nessuna sponsorizzazione attiva o il tempo è scaduto
-    return false;
-}
 
 
 
