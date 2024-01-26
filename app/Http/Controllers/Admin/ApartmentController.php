@@ -23,13 +23,14 @@ class ApartmentController extends Controller
     public function getApartments() {
 
         $apartments = Apartment::with('services', 'sponsors')->get();
+        $services = Service::all();
 
         foreach ($apartments as $apartment) {
             // Aggiungi l'attributo dinamico isSponsored
             $apartment->setAttribute('isSponsored', $this->isSponsored($apartment));
         }
 
-        return response()->json(compact('apartments'));
+        return response()->json(compact('apartments', 'services'));
     }
 
     public function getApartmentsTotalOld(Request $request) {
@@ -75,7 +76,7 @@ class ApartmentController extends Controller
         return $response;
     }
 
-public function getApartmentsTotalNew(Request $request) {
+public function getApartmentsTotal(Request $request) {
     // Recupera i valori precedenti dei parametri dalla query dell'URI
     $lonA = $request->input('lonA', 0);
     $latA = $request->input('latA', 0);
@@ -124,6 +125,15 @@ public function getApartmentsTotalNew(Request $request) {
 
     $apartments = $apartmentsQuery->get();
 
+
+
+    $response = response()->json(compact('apartments'));
+
+    $response->header('Access-Control-Allow-Origin', '*');
+    $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+
+    return $response;
 }
 
 
