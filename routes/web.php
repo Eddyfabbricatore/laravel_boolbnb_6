@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ApartmentController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\MessageController;
 
 /*
@@ -35,6 +36,8 @@ Route::middleware(['auth', 'verified'])
         // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         // Route::get('/', [DashboardController::class,'index'])->name('home');
         Route::resource('apartments', ApartmentController::class);
+        Route::get('{apartment}/payment', [PaymentController::class, 'index'])->name('payment');
+        Route::post('{apartment}/payment-checkout', [PaymentController::class, 'processPayment'])->name('payment.processPayment');
         Route::get('apartments/{id}/messages', [MessageController::class,'messagesForApartment'])->name('messages');
         // Route::resource('technologies', TechnologyController::class);
         // Route::resource('types', TypeController::class);

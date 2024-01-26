@@ -10,6 +10,7 @@ use App\Functions\Helper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ApartmentRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -22,19 +23,16 @@ class ApartmentController extends Controller
     public function getApartments() {
 
         $apartments = Apartment::with('services', 'sponsors')->get();
-        $services = Service::all();
-        // $sponsoredApartments = Apartment::with('services', 'sponsors')->where('sponsor_id', '!=', null)->get();
-        $sponsoredApartments = DB::table('apartment_sponsor')
-                                ->crossJoin('apartments', 'apartment_sponsor.apartment_id', '=', 'apartments.id')
-                                ->groupBy('apartments.id')
-                                ->select('apartments.*')
-                                ->distinct()
-                                ->get();
 
-        return response()->json(compact('apartments', "services", 'sponsoredApartments'));
+        foreach ($apartments as $apartment) {
+            // Aggiungi l'attributo dinamico isSponsored
+            $apartment->setAttribute('isSponsored', $this->isSponsored($apartment));
+        }
+
+        return response()->json(compact('apartments'));
     }
 
-    public function getApartmentsTotal(Request $request) {
+    public function getApartmentsTotalOld(Request $request) {
 
         $lonA = $request->input('lonA',);
         $latA = $request->input('latA',);
@@ -77,6 +75,59 @@ class ApartmentController extends Controller
         return $response;
     }
 
+public function getApartmentsTotalNew(Request $request) {
+    // Recupera i valori precedenti dei parametri dalla query dell'URI
+    $lonA = $request->input('lonA', 0);
+    $latA = $request->input('latA', 0);
+    $services = $request->input('services', []);
+    $rooms = $request->input('rooms', 0);
+    $beds = $request->input('beds', 0);
+    $formRadius = $request->input('radius', 20000);
+
+    // Salva i nuovi valori nella query dell'URI
+    $request->merge([
+        'lonA' => $lonA,
+        'latA' => $latA,
+        'services' => $services,
+        'rooms' => $rooms,
+        'beds' => $beds,
+        'radius' => $formRadius,
+    ]);
+
+    // Continua con il tuo codice...
+    // Ad esempio, la parte che segue la gestione dei parametri e la query
+
+    $apartmentsQuery = Apartment::select(
+        'apartments.*',
+        DB::raw("ST_Distance_Sphere(point(?, ?), point(apartments.lng, apartments.lat)) as distance")
+    )
+    ->orderBy('distance');
+
+    // Condizioni per il raggio
+    if ($formRadius > 0) {
+        $apartmentsQuery->whereRaw("ST_Distance_Sphere(point(?, ?), point(apartments.lng, apartments.lat)) <= ?", [$lonA, $latA, $lonA, $latA, $formRadius]);
+    }
+
+    // Condizioni per le stanze e i letti
+    $apartmentsQuery->where('rooms', '>=', $rooms)
+        ->where('beds', '>=', $beds);
+
+    // Condizioni per i servizi
+    if (!empty($services)) {
+        $apartmentsQuery->join('apartment_service as sa', 'apartments.id', '=', 'sa.apartment_id')
+            ->join('services as s', 'sa.service_id', '=', 's.id')
+            ->whereIn('s.name', $services)
+            ->groupBy('apartments.id')
+            ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
+            ->selectRaw('apartments.*, GROUP_CONCAT(s.name) AS service_names');
+    }
+
+    $apartments = $apartmentsQuery->get();
+
+}
+
+
+
     // public function getApartments() {
     //     try {
     //         $apartments = Apartment::with('services', 'sponsors')->get();
@@ -93,165 +144,68 @@ class ApartmentController extends Controller
     //     }
     // }
 
-    public function getFilteredApartment(Request $request){
-
-        $results = json_decode($request->input("results", []), true);
 
 
 
-        //$results = $request->input("results", []);
-        $services = $request->input('services', []);
-        $rooms = $request->input('rooms', null);
-        $beds = $request->input('beds', null);
+    // public function viewApartamentsInSearchAdvance(Request $request){
+
+    //     $lonA = $request->input('lonA');
+    //     $latA = $request->input('latA');
+
+    //     // mi arriva una stringa con i due parametri, li divido usando ',' come separatore
+    //     //$data = explode(',', $params);
+
+    //     // assegno ai miei parametri, i valori dell'array 'data' che mi sono arrivati dalla chiamata API
+    //     //$lonA = $data[0];
+    //     //$latA = $data[1];
 
 
+    //     $apartments = Apartment::with('services', 'sponsors')->get();
+
+    //     $results = [];
 
 
-        // QUESTO FUNZIONAAAAAA
-        // $query = DB::table('apartments as a');
-        // $query->where(function ($query) use ($results) {
-        //     foreach($results as $result) {
-        //         $appartamento = $result['appartamento'];
-        //         $query->orWhere('a.id', $appartamento['id']);
-        //     }
-        // });
+    //     foreach ($apartments as $apartment) {
+    //         $lonB = $apartment->lng;
+    //         $latB = $apartment->lat;
 
-        // $apartmentDistances = array_map(function($result) {
-        //     return $result['distanza'];
-        // }, $results);
+    //         $expression = DB::raw('SELECT ST_Distance_Sphere(point(:lonA, :latA), point(:lonB, :latB)) as distance');
 
-        $apartmentIds = array_map(function($result) {
-            return $result['appartamento']['id'];
-        }, $results);
+    //         // in laravel 10 la funzionalità Expression/Query/String è stata deprecata e per compatibilità aggiungiamo questa espressione
+    //         $string = $expression->getValue(DB::connection()->getQueryGrammar());
 
-        $query = DB::table('apartments as a')
-            ->whereIn('a.id', $apartmentIds);
+    //         $distance = DB::select($string, [
+    //             'lonA' => $lonA,
+    //             'latA' => $latA,
+    //             'lonB' => $lonB,
+    //             'latB' => $latB,
+    //         ]);
 
+    //         // per comodità definisco in una variabile la distanza
+    //         $realDistance = $distance[0]->distance;
 
+    //         // questo elemento diventerà dinamico
+    //         $radius = $formRadius;
 
-        if ($rooms !== null) {
-            $query->where('a.rooms', '>=', $rooms);
-        }
+    //         // condizione di validità - se la distanza è minore del raggio fornito allora pusho appartamento e distanza
+    //         if ($realDistance < $radius) {
+    //             $results[] = [
+    //                 'appartamento' => $apartment,
+    //                 'distanza' => $realDistance
+    //             ];
+    //         };
 
-        if ($beds !== null) {
-            $query->where('a.beds', '>=', $beds);
-        }
+    //         usort($results, function ($a, $b) {
+    //             return $a['distanza'] <=> $b['distanza'];
+    //         });
 
-        // $query = DB::table('apartments as a')
-        // ->join('apartment_service as sa', 'a.id', '=', 'sa.apartment_id')
-        // ->join('services as s', 'sa.service_id', '=', 's.id')
-        // ->whereIn('a.id', $apartmentIds)
-        // ->groupBy('a.id')
-        // ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
-        // ->selectRaw('a.*, GROUP_CONCAT(s.name) AS service_names')
-        // ->distinct();
-
-
-
-
-        $filteredApartments = $query->get();
-
-            // Associare le distanze ai relativi appartamenti
-
-        // Associare le distanze ai relativi appartamenti
-        $filteredApartmentsWithDistance = $filteredApartments->map(function($apartment) use ($results) {
-
-            $apartmentId = $apartment->id;
-
-            $distance = array_values(array_filter($results, function($result) use ($apartmentId) {
-
-                return $result['appartamento']['id'] == $apartmentId;
-
-            }))[0]['distanza'];
-
-            $apartment->distanza = $distance;
-
-            return $apartment;
-        });
-
-        $response = response()->json(compact('services', 'results', 'rooms', 'filteredApartmentsWithDistance', 'filteredApartments' ,'beds', 'query'));
-
-        $response->header('Access-Control-Allow-Origin', '*');
-        $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-        $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
-
-        return $response;
-
-
-
-
-
-
-
-
-
-
-
-    }
-
-
-    public function viewApartamentsInSearchAdvance(Request $request){
-
-        $lonA = $request->input('lonA');
-        $latA = $request->input('latA');
-
-        $formRadius = $request->input('radius', '20000');
-
-        // mi arriva una stringa con i due parametri, li divido usando ',' come separatore
-        //$data = explode(',', $params);
-
-        // assegno ai miei parametri, i valori dell'array 'data' che mi sono arrivati dalla chiamata API
-        //$lonA = $data[0];
-        //$latA = $data[1];
-
-
-        $apartments = Apartment::with('services', 'sponsors')->get();
-
-        $results = [];
-
-
-        foreach ($apartments as $apartment) {
-            $lonB = $apartment->lng;
-            $latB = $apartment->lat;
-
-            $expression = DB::raw('SELECT ST_Distance_Sphere(point(:lonA, :latA), point(:lonB, :latB)) as distance');
-
-            // in laravel 10 la funzionalità Expression/Query/String è stata deprecata e per compatibilità aggiungiamo questa espressione
-            $string = $expression->getValue(DB::connection()->getQueryGrammar());
-
-            $distance = DB::select($string, [
-                'lonA' => $lonA,
-                'latA' => $latA,
-                'lonB' => $lonB,
-                'latB' => $latB,
-            ]);
-
-            // per comodità definisco in una variabile la distanza
-            $realDistance = $distance[0]->distance;
-
-            // questo elemento diventerà dinamico
-            $radius = $formRadius;
-
-            // condizione di validità - se la distanza è minore del raggio fornito allora pusho appartamento e distanza
-            if ($realDistance < $radius) {
-                $results[] = [
-                    'appartamento' => $apartment,
-                    'distanza' => $realDistance
-                ];
-            };
-
-            usort($results, function ($a, $b) {
-                return $a['distanza'] <=> $b['distanza'];
-            });
-
-        }
-        return response()->json($results);
-    }
+    //     }
+    //     return response()->json($results);
+    // }
 
 
     public function getSingleApartment($slug) {
         $apartment = Apartment::where('slug', $slug)->with('services', 'sponsors', 'user')->get();
-
         return response()->json(compact('apartment'));
     }
 
