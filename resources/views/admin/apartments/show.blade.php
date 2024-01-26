@@ -10,9 +10,9 @@
                 <h1 class="text-dark ">{{$apartment->title}}</h1>
                 <div class="d-flex gap-2">
 
-                    <button class="btn btn-warning">
-                        <a class="nav-link btn btn-warning" href="{{route('admin.apartments.edit', $apartment)}}"><i class="fa-sharp fa-solid fa-pen"></i></a>
-                    </button>
+                    <a class="nav-link btn btn-warning" href="{{route('admin.apartments.edit', $apartment)}}">
+                        <button class="btn btn-warning"><i class="fa-sharp fa-solid fa-pen"></i></button>
+                    </a>
                     <button class="btn btn-secondary">
                         <a class="nav-link btn btn-warning" href="{{route('admin.messages',$apartment)}}"><i class="fa-solid fa-message"></i></a>
                     </button>
@@ -23,6 +23,10 @@
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </form>
+
+                    <a class="nav-link" href="{{route('admin.payment', $apartment)}}">
+                        <button class="btn btn-success"><i class="fa-solid fa-credit-card"></i></button>
+                    </a>
                 </div>
             </div>
 

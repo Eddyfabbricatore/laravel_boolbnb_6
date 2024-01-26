@@ -1,0 +1,70 @@
+#index_payment{
+    height: 100%;
+
+    h1{
+        height: 10%;
+    }
+
+    #sponsor_cards{
+
+        .sponsorship-card{
+            height: 400px;
+            margin: 40px auto;
+            background-color: gray;
+            color: white;
+            transition: all 0.3s ease-in-out;
+            &:hover{
+                color: black;
+                background: white;
+            }
+        }
+        #card_1{
+            h1{
+                color: rgb(194, 99, 44);
+            }
+            box-shadow: rgba(170, 88, 41, 0.75) 0px 22px 70px 7px;
+            &:hover{
+
+                scale: 1.1;
+                box-shadow: rgba(170, 88, 41, 0.75) 0px 22px 70px 20px;
+            }
+        }
+
+        #card_2{
+            h1{
+                color: rgb(145, 145, 145);
+            }
+            box-shadow: rgba(160, 160, 160, 0.75) 0px 22px 70px 7px;
+            &:hover{
+                scale: 1.1;
+                box-shadow: rgba(160, 160, 160, 0.85) 0px 22px 70px 40px;
+            }
+        }
+
+        #card_3{
+            h1{
+                color: rgba(223, 187, 103);
+            }
+            box-shadow: rgba(223, 187, 103, 0.75) 0px 22px 70px 4px;
+            &:hover{
+                scale: 1.1;
+                box-shadow: rgba(223, 187, 103, 0.75) 0px 22px 70px 15px;
+            }
+        }
+
+    }
+
+    #box_form{
+
+        #payment_form{
+
+            .payment-box{
+
+                .drop-in-box{
+
+                }
+            }
+        }
+    }
+
+}

@@ -10,146 +10,58 @@ use App\Functions\Helper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ApartmentRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ApartmentController extends Controller
 {
 
+
     // front-end calls for all apartments
     public function getApartments() {
 
         $apartments = Apartment::with('services', 'sponsors')->get();
-        $services = Service::all();
-        // $sponsoredApartments = Apartment::with('services', 'sponsors')->where('sponsor_id', '!=', null)->get();
-        $sponsoredApartments = DB::table('apartment_sponsor')
-                                ->crossJoin('apartments', 'apartment_sponsor.apartment_id', '=', 'apartments.id')
-                                ->groupBy('apartments.id')
-                                ->select('apartments.*')
-                                ->distinct()
-                                ->get();
 
-        return response()->json(compact('apartments', "services", 'sponsoredApartments'));
+        foreach ($apartments as $apartment) {
+            // Aggiungi l'attributo dinamico isSponsored
+            $apartment->setAttribute('isSponsored', $this->isSponsored($apartment));
+        }
+
+        return response()->json(compact('apartments'));
     }
 
-    // public function getApartments() {
-    //     try {
-    //         $apartments = Apartment::with('services', 'sponsors')->get();
-    //         $services = Service::all();
-    //         $sponsoredApartments = Apartment::with('services', 'sponsors')->where('sponsor_id', '!=', null)->get();
+    // Funzione per verificare se l'appartamento è sponsorizzato
+    protected function isSponsored($apartment){
 
-    //         // Debugging
-    //         dd(compact('apartments', 'services', 'sponsoredApartments'));
+        // Controlla se ci sono sponsorizzazioni associate
+        $sponsorships = $apartment->sponsors;
 
-    //         return response()->json(compact('apartments', 'services', 'sponsoredApartments'));
-    //     } catch (\Exception $e) {
-    //         // Log dell'eccezione
-    //         dd($e->getMessage());
-    //     }
-    // }
+        // Verifica se almeno una sponsorizzazione è attiva
+        foreach ($sponsorships as $sponsorship) {
+            if ($sponsorship->pivot->transaction_date !== null) {
+                // Verifica se la sponsorizzazione è ancora attiva
+                $sponsorEndTime = Carbon::parse($sponsorship->pivot->transaction_date)->addHours($sponsorship->duration_in_hours);
 
-    public function getFilteredApartment(Request $request){
-
-        $results = json_decode($request->input("results", []), true);
-
-
-
-        //$results = $request->input("results", []);
-        $services = $request->input('services', []);
-        $rooms = $request->input('rooms', null);
-        $beds = $request->input('beds', null);
-
-
-
-
-        // QUESTO FUNZIONAAAAAA
-        // $query = DB::table('apartments as a');
-        // $query->where(function ($query) use ($results) {
-        //     foreach($results as $result) {
-        //         $appartamento = $result['appartamento'];
-        //         $query->orWhere('a.id', $appartamento['id']);
-        //     }
-        // });
-
-        // $apartmentDistances = array_map(function($result) {
-        //     return $result['distanza'];
-        // }, $results);
-
-        $apartmentIds = array_map(function($result) {
-            return $result['appartamento']['id'];
-        }, $results);
-
-        $query = DB::table('apartments as a')
-            ->whereIn('a.id', $apartmentIds);
-
-
-
-        if ($rooms !== null) {
-            $query->where('a.rooms', '>=', $rooms);
+                // Se la sponsorizzazione è ancora attiva, restituisce true
+                if (Carbon::now()->lt($sponsorEndTime)) {
+                    return true;
+                }
+            }
         }
-
-        if ($beds !== null) {
-            $query->where('a.beds', '>=', $beds);
-        }
-
-        // $query = DB::table('apartments as a')
-        // ->join('apartment_service as sa', 'a.id', '=', 'sa.apartment_id')
-        // ->join('services as s', 'sa.service_id', '=', 's.id')
-        // ->whereIn('a.id', $apartmentIds)
-        // ->groupBy('a.id')
-        // ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
-        // ->selectRaw('a.*, GROUP_CONCAT(s.name) AS service_names')
-        // ->distinct();
-
-
-
-
-        $filteredApartments = $query->get();
-
-            // Associare le distanze ai relativi appartamenti
-
-        // Associare le distanze ai relativi appartamenti
-        $filteredApartmentsWithDistance = $filteredApartments->map(function($apartment) use ($results) {
-
-            $apartmentId = $apartment->id;
-
-            $distance = array_values(array_filter($results, function($result) use ($apartmentId) {
-
-                return $result['appartamento']['id'] == $apartmentId;
-
-            }))[0]['distanza'];
-
-            $apartment->distanza = $distance;
-
-            return $apartment;
-        });
-
-        $response = response()->json(compact('services', 'results', 'rooms', 'filteredApartmentsWithDistance', 'filteredApartments' ,'beds', 'query'));
-
-        $response->header('Access-Control-Allow-Origin', '*');
-        $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-        $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
-
-        return $response;
-
-
-
-
-
-
-
-
-
-
-
+        // Nessuna sponsorizzazione attiva o il tempo è scaduto
+        return false;
     }
 
 
-    public function viewApartamentsInSearchAdvance(Request $request){
 
-        $lonA = $request->input('lonA');
-        $latA = $request->input('latA');
 
-        $formRadius = $request->input('radius', '20000');
+
+
+
+    public function viewApartamentsInSearchAdvance($params){
+
+        // $lonA = $request->input('lonA');
+        // $latA = $request->input('latA');
 
         // mi arriva una stringa con i due parametri, li divido usando ',' come separatore
         //$data = explode(',', $params);
@@ -205,7 +117,6 @@ class ApartmentController extends Controller
 
     public function getSingleApartment($slug) {
         $apartment = Apartment::where('slug', $slug)->with('services', 'sponsors', 'user')->get();
-
         return response()->json(compact('apartment'));
     }
 

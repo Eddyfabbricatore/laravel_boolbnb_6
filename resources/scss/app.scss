@@ -1,6 +1,12 @@
 @import '~bootstrap/scss/bootstrap';
 @import './general';
+
+/* Apartment */
 @import './admin/partials/dashboard';
 @import './admin/partials/header';
 @import './admin/partials/createEdit_form';
 @import './admin/partials/show-form';
+
+/* Payment */
+@import './admin/payments/index';
+@import './admin/payments/transiction';
