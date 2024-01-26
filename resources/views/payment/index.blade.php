@@ -1,20 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="index_payment">
+<div id="index_payment" class="h-100 w-100 d-flex flex-column">
     @if(session('errors'))
     <div style="color: red;">
         {{ session('errors') }}
     </div>
     @endif
 
+    <div class="row w-100 ps-4">
+        <h1 id="sponsor_title" class="text-center ">Scegli la tua offerta</h1>
+        <p id="sponsor_paragraph" class="text-center alert alert-dark w-75 m-auto my-3 gap-sm-5">NB! Se hai gia una sponsorizzazione attiva il tempo di sponsorizzazione verrà sommato alla scadenza gia prefissata.</p>
+    </div>
 
-    <h1 id="sponsor_title" class="text-center m-0">Scegli la tua offerta</h1>
-    <p id="sponsor_paragraph" class="mt-2 text-center alert alert-dark w-50 m-auto my-0" role="alert">NB! Se hai gia una sponsorizzazione attiva il tempo di sponsorizzazione verrà sommato alla scadenza gia prefissata.</p>
-
-    <div id="sponsor_cards" class="w-75 d-flex flex-column justify-content-evenly m-auto my-0 flex-md-row">
+    <div id="sponsor_cards" class="w-100 row d-flex flex-md-row ps-4">
         @foreach ($sponsors as $sponsor)
-            <div id="card_{{$sponsor->id}}" class="btn d-flex flex-column justify-content-evenly flex-grow-1 flex-md-grow-0 sponsorship-card my-1" data-price="{{ $sponsor->price }}">
+            <div id="card_{{$sponsor->id}}" class="col-12 col-sm-3 btn justify-content-evenly flex-grow-1 flex-md-grow-0 sponsorship-card" data-price="{{ $sponsor->price }}">
                 <h1>{{ $sponsor->name }}</h1>
                 <h3>Prezzo: € {{ $sponsor->price }}</h3>
                 <h3>Durata: {{ $sponsor->duration_in_hours }}h</h3>
@@ -25,17 +26,17 @@
 
     @isset($sponsor)
     <div id="box_form" class="d-none h-100">
-        <form method="POST" action="{{ route('admin.payment.processPayment', $apartment) }}" id="payment_form" class="card d-flex flex-column justify-content-evenly w-50 m-auto h-100">
+        <form method="POST" action="{{ route('admin.payment.processPayment', $apartment) }}" id="payment_form" class="card d-flex flex-column align-items-center m-auto h-100 w-100 p-4">
             @csrf
-            <div class="payment-description d-flex flex-column justify-content-evenly gap-5 h-25">
+            <div class="payment-description d-flex flex-column justify-content-evenly">
                 <h1 class="text-center mb-4 h-50">Hai selezionato l'offerta {{$sponsor->name}} per <br> {{ $apartment->title }}</h1>
-                <h2 class="text-center">Il prezzo dell'offerta selezionata è di {{$sponsor->price}}€</h2>
+                <h2 class="text-center">Il prezzo dell'offerta: {{$sponsor->price}}€</h2>
             </div>
 
-            <div class="payment-box h-50 m-auto my-0">
-                <div class="drop-in-box d-flex flex-column align-items-center">
+            <div class="payment-box h-50 m-auto my-0 row">
+                <div class="drop-in-box h-100 w-75 d-flex flex-column align-items-center col-12 m-auto">
                     <div id="dropin_container"></div>
-                    <button class="btn btn-outline-dark mt-4 m-auto" type="button" id="submit_payment" disabled>Submit Payment</button>
+                    <button class="btn btn-outline-dark" type="button" id="submit_payment" disabled>Submit Payment</button>
                 </div>
 
                 <label class="d-none" for="amount"></label>
