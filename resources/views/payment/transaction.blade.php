@@ -10,26 +10,28 @@
             {{ session('errors') }}
         </div>
     @endif
-    <div class="container">
-        <h1>Payment Result</h1>
-
+    <div class="container h-100">
         @isset($transaction)
-        <div class="card">
-            <h2>Riepilogo transazione</h2>
+        <div class="card mt-3">
+            <h1>Riepilogo transazione</h1>
 
-            <!-- <div style="
-    background-image: url('@if(file_exists(public_path('storage/' . $apartment->image) )){{ asset('storage/' . $apartment->image) }}@else/img/{{$apartment->image}}@endif');
-    background-size: cover;"> -->
-            <div style="background-image: url(public_path('storage/' . $apartment->image));">
-                <p>Hai sponsorizzato: <span id="sponsored">{{ $apartment->title }}</span> con l'abbonamento {{$sponsor->name}}</p>
-                <p>Status: {{ $transaction }}</p>
-                <p>Data di transizione: {{ $transaction->createdAt->format('Y-m-d H:i:s') }}</p>
-                <p>{{ $isSponsored }}</p>
-                <p>Durata sponsorizzazione in ore: {{ $sponsor_duration }}</p>
-                <!-- <p id="tempo-rimanente">Rimangono {{ $newEndDate }} secondi alla fine della sponsorizzazione</p> -->
+
+            <div style="
+                background-image: url('@if(file_exists(public_path('storage/' . $apartment->image) )){{ asset('storage/' . $apartment->image) }}@else/img/{{$apartment->image}}@endif');
+                background-size: cover;
+                background-position: center;"
+                 class="d-flex">
+                <div class="glass-form w-50 flex-grow-1 flex-sm-grow-0">
+                    <h2>Hai sponsorizzato: <span id="sponsored">{{ $apartment->title }}</span> con l'abbonamento {{$sponsor->name}}</p>
+                    <h4>Data di transizione: {{ $transaction->createdAt->format('Y-m-d H:i:s') }}</h4>
+                    <h4>{{ $isSponsored }}</h4>
+                    <p>Durata sponsorizzazione in ore: {{ $sponsor_duration }}</p>
+                    <!-- <p id="tempo-rimanente">Rimangono {{ $newEndDate }} secondi alla fine della sponsorizzazione</p> -->
+                </div>
             </div>
+
         </div>
-        <div class="mt-3">
+        <div class="mt-3 d-flex justify-content-center">
             <a class="btn btn-secondary" href="{{route('admin.apartments.show', $apartment)}}">Torna all'appartamento</a>
         </div>
         @endisset
