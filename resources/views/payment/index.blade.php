@@ -25,10 +25,10 @@
 
     @isset($sponsor)
     <div id="box_form" class="d-none h-100">
-        <form method="POST" action="{{ route('admin.payment.processPayment', $apartment) }}" id="payment_form" class="card d-flex flex-column justify-content-between w-50 m-auto h-100">
+        <form method="POST" action="{{ route('admin.payment.processPayment', $apartment) }}" id="payment_form" class="card d-flex flex-column justify-content-evenly w-50 m-auto h-100">
             @csrf
-            <div class="payment-description d-flex flex-column justify-content-evenly gap-5 h-50">
-                <h1 class="text-center mb-2">Hai selezionato l'offerta {{$sponsor->name}} per <br> {{ $apartment->title }}</h1>
+            <div class="payment-description d-flex flex-column justify-content-evenly gap-5 h-25">
+                <h1 class="text-center mb-4 h-50">Hai selezionato l'offerta {{$sponsor->name}} per <br> {{ $apartment->title }}</h1>
                 <h2 class="text-center">Il prezzo dell'offerta selezionata è di {{$sponsor->price}}€</h2>
             </div>
 
