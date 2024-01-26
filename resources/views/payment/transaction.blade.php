@@ -21,12 +21,10 @@
             <ul>
                 <li>Sponsorizzato: <span id="sponsored">{{ $apartment->sponsorizzato }}</span></li>
                 <li>Status: {{ $transaction }}</li>
-                <li>Status: {{ $currentSponsorships }}</li>
                 <li>Data di transizione: {{ $transaction->createdAt->format('Y-m-d H:i:s') }}</li>
                 <li>Durata sponsorizzazione in ore: {{ $sponsor_duration }}</li>
                 <li>{{ $isSponsored }}</li>
-                <li>Tempo rimanente: <span id="tempo-rimanente">{{ $tempoRimanente }}</span> secondi</li>
-                <!-- Add more transaction details as needed -->
+                <li>Tempo rimanente: <span id="tempo-rimanente">{{ $newEndDate }}</span> secondi</li>
             </ul>
         </div>
         <div>
