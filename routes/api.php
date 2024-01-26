@@ -26,3 +26,10 @@ Route::get('search/', [ApartmentController::class, 'viewApartamentsInSearchAdvan
 
 Route::get('singleApartment/{slug}', [ApartmentController::class, 'getSingleApartment']);
 Route::post('send-message', [MessageController::class, 'store']);
+
+
+
+
+
+
+Route::get('test-api/', [ApartmentController::class, 'getApartmentsTotal']);

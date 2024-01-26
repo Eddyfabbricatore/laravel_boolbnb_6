@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ApartmentRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
+
 
 class ApartmentController extends Controller
 {
@@ -29,6 +32,49 @@ class ApartmentController extends Controller
                                 ->get();
 
         return response()->json(compact('apartments', "services", 'sponsoredApartments'));
+    }
+
+    public function getApartmentsTotal(Request $request) {
+
+        $lonA = $request->input('lonA',);
+        $latA = $request->input('latA',);
+        $services = $request->input('services', []);
+        $rooms = $request->input('rooms', 0);
+        $beds = $request->input('beds', 0);
+
+        $formRadius = $request->input('radius', 20000);
+
+        if ($formRadius == 0) $formRadius = 2000;
+
+
+        $apartmentsQuery = Apartment::select(
+            'apartments.*',
+            DB::raw("ST_Distance_Sphere(point(?, ?), point(apartments.lng, apartments.lat)) as distance")
+        )
+        ->whereRaw("ST_Distance_Sphere(point(?, ?), point(apartments.lng, apartments.lat)) <= ?", [$lonA, $latA, $lonA, $latA, $formRadius])
+        ->where('rooms', '>=', $rooms)
+        ->where('beds', '>=', $beds)
+        ->orderBy('distance');
+
+        if (!empty($services)) {
+            $apartmentsQuery->join('apartment_service as sa', 'apartments.id', '=', 'sa.apartment_id')
+                ->join('services as s', 'sa.service_id', '=', 's.id')
+                ->whereIn('s.name', $services)
+                ->groupBy('apartments.id')
+                ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
+                ->selectRaw('apartments.*, GROUP_CONCAT(s.name) AS service_names');
+        }
+
+        $apartments = $apartmentsQuery->get();
+        // Log::info("lonA: $lonA, latA: $latA, services: " . json_encode($services) . ", rooms: $rooms, beds: $beds, radius: $formRadius, servicesQuery: $servicesQuery");
+
+        $response = response()->json(compact('apartments'));
+
+        $response->header('Access-Control-Allow-Origin', '*');
+        $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
+
+        return $response;
     }
 
     // public function getApartments() {
