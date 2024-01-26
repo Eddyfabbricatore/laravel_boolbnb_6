@@ -115,9 +115,9 @@ class PaymentController extends Controller
             // Verifica se la sponsorizzazione è ancora attiva
             $apartment->setAttribute('sponsorizzato', true);
             $apartment->setAttribute('tempo_rimanente', $newEndDate);
-            $isSponsored = "La sponsorizzazione è attiva. Data di scadenza: $newEndDate";
+            $isSponsored = "Data di scadenza: $newEndDate";
 
-            return view('payment.transaction', compact('transaction', 'apartment', 'sponsor_duration', 'newEndDate', 'isSponsored'));
+            return view('payment.transaction', compact('transaction', 'apartment', 'sponsor', 'sponsor_duration', 'newEndDate', 'isSponsored'));
 
         } else {
             $errorString = "";
