@@ -20,7 +20,8 @@
             <h2>Transaction Details:</h2>
             <ul>
                 <li>Sponsorizzato: <span id="sponsored">{{ $apartment->sponsorizzato }}</span></li>
-                <li>Status: {{ $transaction->status }}</li>
+                <li>Status: {{ $transaction }}</li>
+                <li>Status: {{ $currentSponsorships }}</li>
                 <li>Data di transizione: {{ $transaction->createdAt->format('Y-m-d H:i:s') }}</li>
                 <li>Durata sponsorizzazione in ore: {{ $sponsor_duration }}</li>
                 <li>{{ $isSponsored }}</li>
@@ -35,9 +36,6 @@
     </div>
 
     <script>
-        // Passa il valore di $apartment->sponsorizzato a una variabile JavaScript
-        let sponsoredApartment = @json($apartment->sponsorizzato);
-
         setInterval(function() {
             let tempoRimanente = parseInt(document.getElementById('tempo-rimanente').innerText);
             let sponsored = document.getElementById('sponsored');
