@@ -105,19 +105,21 @@ class PaymentController extends Controller
                     'end_sponsor_date' => $newEndDate,
                     'transaction_date' => Carbon::parse($transaction->createdAt->format('Y-m-d H:i:s')),
                 ]);
+                $isSponsored = "Data di scadenza: $newEndDate";
+
             } else {
                 $apartment->sponsors()->attach($sponsor, [
                     'transaction_date' => Carbon::parse($transaction->createdAt->format('Y-m-d H:i:s')),
                     'end_sponsor_date' => $dataScadenza,
                 ]);
+                $isSponsored = "Data di scadenza: $dataScadenza";
+
             }
 
             // Verifica se la sponsorizzazione è ancora attiva
             $apartment->setAttribute('sponsorizzato', true);
-            $apartment->setAttribute('tempo_rimanente', $newEndDate);
-            $isSponsored = "Data di scadenza: $newEndDate";
 
-            return view('payment.transaction', compact('transaction', 'apartment', 'sponsor', 'sponsor_duration', 'newEndDate', 'isSponsored'));
+            return view('payment.transaction', compact('transaction', 'apartment', 'sponsor', 'sponsor_duration', 'isSponsored'));
 
         } else {
             $errorString = "";

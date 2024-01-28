@@ -26,7 +26,7 @@
                     <h4>Data di transizione: {{ $transaction->createdAt->format('Y-m-d H:i:s') }}</h4>
                     <h4>{{ $isSponsored }}</h4>
                     <p>Durata sponsorizzazione in ore: {{ $sponsor_duration }}</p>
-                    <!-- <p id="tempo-rimanente">Rimangono {{ $newEndDate }} secondi alla fine della sponsorizzazione</p> -->
+                    {{-- <p>Rimangono <span id="tempo_rimanente"></span> secondi alla fine della sponsorizzazione</p> --}}
                 </div>
             </div>
 
@@ -39,12 +39,12 @@
 
     <script>
         setInterval(function() {
-            let tempoRimanente = parseInt(document.getElementById('tempo-rimanente').innerText);
+            let tempoRimanente = parseInt(document.getElementById('tempo_rimanente').innerText);
             let sponsored = document.getElementById('sponsored');
 
             if (tempoRimanente > 0) {
                 tempoRimanente--;
-                document.getElementById('tempo-rimanente').innerText = tempoRimanente;
+                document.getElementById('tempo_rimanente').innerText = tempoRimanente;
             } else if (tempoRimanente === 0) {
                 sponsored.innerText = sponsoredApartment = 'no';
             }
