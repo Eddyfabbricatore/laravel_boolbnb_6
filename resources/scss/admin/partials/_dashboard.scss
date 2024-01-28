@@ -1,6 +1,7 @@
 #dashboard{
     .route-select{
         background-color: #494949;
+        box-shadow: 10px 4px 25px rgba(0, 0, 0, 0.9);
         text-transform: capitalize;
         font-weight: bold;
 
@@ -9,23 +10,29 @@
             &:hover{
                 scale: 1.1;
             }
-    
+
             a{
                 margin-top: 15px;
                 text-decoration: none;
-    
+                color: rgb(123, 152, 104);
+
+                &:hover{
+                    color: rgb(132, 204, 84);
+                }
+
                 .icon{
                     padding: 25px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     flex-direction: column;
-    
+
                     i{
-                        font-size: 14rem;
+                        padding: 10px;
+                        font-size: 10rem;
                         width: auto !important;
                     }
-    
+
                     p{
                         margin-top: 15px;
                         margin-bottom: 0;
@@ -34,5 +41,5 @@
                 }
             }
         }
-    }  
+    }
 }
