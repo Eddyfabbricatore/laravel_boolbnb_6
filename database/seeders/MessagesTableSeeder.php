@@ -16,7 +16,7 @@ class MessagesTableSeeder extends Seeder
     public function run(Faker $faker): void
     {
 
-        for($i = 0; $i < 500 ; $i++) {
+        for($i = 0; $i < 1000 ; $i++) {
 
             $newMessage = new Message();
             $newMessage->apartment_id = Apartment::inRandomOrder()->first()->id;
