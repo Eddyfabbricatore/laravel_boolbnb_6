@@ -15,11 +15,11 @@
                 @csrf
                 @method($method)
 
-                <div class="col-7">
-                    <div class="d-flex justify-content-around mb-4">
+                <div class="col-xl-7 col-12">
+                    <div class="d-flex">
                         {{-- TITLE --}}
-                        <div class="mb-3 d-flex justify-content-center flex-column">
-                            <label for="title" class="mb-4 form-label fs-2 w-100 text-center">Inserisci il nome del tuo locale</label>
+                        <div class="d-flex flex-column me-4">
+                            <label for="title" class="form-label fs-5 w-100">Nome del locale</label>
                             <input
                             type="text"
                             name="title"
@@ -35,9 +35,9 @@
                             @enderror
                         </div>
                                             {{-- VISIBLE --}}
-                        <div class="d-flex flex-column align-content-center justify-content-center">
-                            <p class="fs-5 text-center">Rendilo visibile</p>
-                            <div class="btn-group mt-2" role="group" aria-label="Basic radio toggle button group">
+                        <div class="d-flex flex-column">
+                            <p class="fs-5 mb-2">Rendilo visibile</p>
+                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                 <input
                                     type="radio"
                                     class="btn-check"
@@ -73,12 +73,12 @@
 
                     {{-- ADDRESS --}}
                     <div class="my-3 d-flex align-content-center flex-column">
-                        <label for="address" class=" form-label fs-4 fw-bold w-100 text-center">Inserisci l'indirizzo del tuo appartamento</label>
+                        <label for="address" class=" form-label fs-5 w-100">Indirizzo</label>
                         <input
                         type="text"
                         name="address"
                         id="address"
-                        class="form-control @error('address') is-invalid @enderror w-50 m-auto"
+                        class="form-control @error('address') is-invalid @enderror w-100"
                         placeholder="Inserire indirizzo"
                         value="{{old('address', $apartment->address ?? '')}}"
                         required
@@ -93,14 +93,14 @@
 
                     </div>
 
-                    <div class="h-25">
+                    <div>
 
-                        <div class="d-flex h-50 gap-3">
+                        <div class="d-flex flex-column flex-md-row gap-3 fs-5 mb-3">
 
-                            <div class="rooms w-50 d-flex flex-column">
+                            <div class="rooms w-100 d-flex flex-column">
 
                                 {{-- ROOMS --}}
-                                <label for="rooms">Numero stanze</label>
+                                <label for="rooms">Numero di stanze</label>
                                 <input class="form-control" type="number" name="rooms" value="1" min="1" max="255" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required placeholder="Stanze disponibili">
 
                                 @error('rooms')
@@ -109,7 +109,7 @@
 
                             </div>
 
-                            <div class="bathrooms w-50 d-flex flex-column">
+                            <div class="bathrooms w-100 d-flex flex-column">
 
                                 {{-- BATHROOMS --}}
                                 <label for="bathrooms">Numero di bagni</label>
@@ -122,9 +122,9 @@
 
                         </div>
 
-                        <div class="d-flex h-50 gap-3">
+                        <div class="d-flex flex-column flex-md-row gap-3 fs-5 mb-3">
 
-                            <div class="beds w-50 d-flex flex-column">
+                            <div class="beds w-100 d-flex flex-column">
 
                                 {{-- BEDS --}}
                                 <label for="beds">Numero di letti</label>
@@ -135,7 +135,7 @@
                                 @enderror
                             </div>
 
-                            <div class="square_meters w-50 d-flex flex-column">
+                            <div class="square_meters w-100 d-flex flex-column">
 
                                 {{-- SQUARE_METERS --}}
                                 <label for="square_meters">Superficie m²</label>
@@ -159,13 +159,13 @@
 
                     </div>
 
-                    <div class="">
+                    <div>
 
                         {{-- IMAGE --}}
-                        <div class="my-2 d-flex justify-content-evenly">
+                        <div class="my-2 d-flex flex-column w-100">
 
-                            <div class="d-flex justify-content-center align-items-center  flex-column ">
-                                <label for="image" class="form-label fs-3 fw-bold">Immagine</label>
+                            <div class="d-flex flex-column mb-4 object-fit-contain">
+                                <label for="image" class="form-label fs-5">Immagine</label>
                                 <input
                                 type="file"
                                 accept="image/*"
@@ -197,14 +197,14 @@
                 </div>
 
                 {{-- SERVICES --}}
-                <div class="col-5 border rounded-3 p-2">
+                <div class="col-12 col-xl-5 border rounded-3 p-2">
 
                     <h2 class="text-center">Servizi disponibili</h2>
 
-                    <div role="group" class="all-service d-flex justify-content-center align-items-center flex-wrap rounded-5">
+                    <div role="group" class="all-service d-flex flex-wrap rounded-5">
 
                         @foreach ($services as $index => $service)
-                            <div class="p-2 w-25 box-service">
+                            <div class="box-service m-2">
 
                                 <input
                                     type="checkbox"
@@ -222,19 +222,14 @@
                                 >
 
                                 <label
-                                    class="h-100 btn d-flex flex-column justify-content-around"
+                                    class="h-100 btn d-flex flex-column"
                                     for="{{$service->id}}">
                                     <i class="{{ $service->icon }}"></i>{{$service->name}}
                                 </label>
 
                             </div>
+
                         @endforeach
-
-
-                        {{-- //TODO: come??
-                        @error('image')
-                            <span>{{$message}}</span>
-                        @enderror --}}
                     </div>
 
                 </div>

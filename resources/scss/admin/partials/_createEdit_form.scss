@@ -9,15 +9,11 @@
             }
             background-color: #494949;
             .all-service{
-                .box-service{
-                    width: 100px;
-                    height: 150px;
-                    label{
-                        background-color: rgba(255, 255, 255, 0.473);
-                        &:hover{
-                            color: white;
-                            border: white;
-                        }
+                label{
+                    background-color: rgba(255, 255, 255, 0.473);
+                    &:hover{
+                        color: white;
+                        border: white;
                     }
                 }
             }
