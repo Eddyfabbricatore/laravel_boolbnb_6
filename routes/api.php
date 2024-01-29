@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ApartmentController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\StatsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,10 +23,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/apartments', [ApartmentController::class, 'getApartments']);
 
+
 Route::get('search/', [ApartmentController::class, 'viewApartamentsInSearchAdvance']);
 
 Route::get('singleApartment/{slug}', [ApartmentController::class, 'getSingleApartment']);
 Route::post('send-message', [MessageController::class, 'store']);
+
+
+Route::get('updateChart', [StatsController::class, 'updateChart']);
 
 
 

@@ -17,12 +17,12 @@ class ViewsTableSeeder extends Seeder
     {
 
 
-        for($i = 0; $i < 50 ; $i++){
+        for($i = 0; $i < 1500 ; $i++){
 
             $newView = new View();
             $newView->apartment_id = Apartment::inRandomOrder()->first()->id;
             $newView->ip = $faker->ipv4();
-            $newView->view_date = $faker->dateTime();
+            $newView->view_date = $faker->dateTimeBetween('-4 years', 'yesterday');
 
             $newView->save();
         }
