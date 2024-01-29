@@ -7,12 +7,13 @@ use App\Models\Apartment;
 use App\Models\Message;
 use App\Models\Sponsor;
 use App\Models\View;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class StatsController extends Controller
 {
     public function index(Apartment $apartment, Request $request){
-        $selectedYear = '';
+        $selectedYear = Carbon::now()->format('Y');
 
         $viewStats = View::selectRaw('COUNT(*) as count, DATE(view_date) as date')
                         ->groupBy('date')
