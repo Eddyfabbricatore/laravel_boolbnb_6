@@ -16,9 +16,9 @@
                 @method($method)
 
                 <div class="col-xl-7 col-12">
-                    <div class="d-flex">
+                    <div class="d-flex flex-column flex-md-row">
                         {{-- TITLE --}}
-                        <div class="d-flex flex-column me-4">
+                        <div class="d-flex flex-column me-md-4">
                             <label for="title" class="form-label fs-5 w-100">Nome del locale</label>
                             <input
                             type="text"
@@ -35,7 +35,7 @@
                             @enderror
                         </div>
                                             {{-- VISIBLE --}}
-                        <div class="d-flex flex-column">
+                        <div class="d-flex flex-column my-2 my-md-0">
                             <p class="fs-5 mb-2">Rendilo visibile</p>
                             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                 <input
@@ -72,7 +72,7 @@
                     </div>
 
                     {{-- ADDRESS --}}
-                    <div class="my-3 d-flex align-content-center flex-column">
+                    <div class="mb-3 d-flex align-content-center flex-column">
                         <label for="address" class=" form-label fs-5 w-100">Indirizzo</label>
                         <input
                         type="text"
@@ -164,7 +164,7 @@
                         {{-- IMAGE --}}
                         <div class="my-2 d-flex flex-column w-100">
 
-                            <div class="d-flex flex-column mb-4 object-fit-contain">
+                            <div class="d-flex flex-column mb-4">
                                 <label for="image" class="form-label fs-5">Immagine</label>
                                 <input
                                 type="file"
@@ -185,6 +185,7 @@
                             @enderror
 
                             <img
+                            class="img-fluid mx-auto"
                             id="thumb"
                             onerror="this.src='{{asset('/img/Placeholder.png') }}'"
                             src="{{ asset('/storage/'. $apartment?->image) }}"
@@ -196,8 +197,51 @@
 
                 </div>
 
+                <div class="d-xl-none">
+                    <button class="btn btn-primary w-100 my-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Servizi disponibili</button>
+
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasRightLabel">Servizi disponibili</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+
+                            <div class="border rounded-3 p-2">
+                                    @foreach ($services as $index => $service)
+                                        <div class="box-service m-2">
+
+                                            <input
+                                                type="checkbox"
+                                                class="btn-check my-check"
+                                                name="services[]"
+                                                id="{{$service->id}}"
+                                                autocomplete="off"
+                                                value="{{$service->id}}"
+                                                @if (in_array($service->id, old('services', [])))
+                                                    checked
+                                                @elseif($apartment?->services->contains($service))
+                                                    checked
+                                                @endif
+                                                required
+                                            >
+
+                                            <label
+                                                class="h-100 btn d-flex flex-column"
+                                                for="{{$service->id}}">
+                                                <i class="{{ $service->icon }}"></i>{{$service->name}}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
                 {{-- SERVICES --}}
-                <div class="col-12 col-xl-5 border rounded-3 p-2">
+                <div class="d-none d-xl-block col-xl-5 border rounded-3 p-2">
 
                     <h2 class="text-center">Servizi disponibili</h2>
 
