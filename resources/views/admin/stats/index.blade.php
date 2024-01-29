@@ -23,8 +23,9 @@
             <div class="content w-25 h-100 p-2">
                 <label for="yearSelector">Group By:</label>
                 <select id="yearSelector" onchange="updateChart()">
-                    @for ($year = date('Y'); $year >= (date('Y') - 5); $year--)
-                        <option value="{{ $year }}" @if($selectedYear == $year) selected @endif>{{ $year }}</option>
+                    @for ($year = date('Y'); $year >= (date('Y') - 3); $year--)
+                        <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
+
                     @endfor
                 </select>
                 <h4>Messaggi ricevuti dell appartamento XXX</h4>
@@ -101,7 +102,7 @@
 
 
     // Chart.js
-    new Chart(messageStats, {
+    let messageStatsElem = new Chart(messageStats, {
         type: 'bar',
         data: {
         labels: month,
@@ -169,6 +170,8 @@
 });
 
 
+let messagesXMonth = [];
+
 function updateChart() {
     var selectedYear = document.getElementById('yearSelector').value;
 
@@ -177,16 +180,25 @@ function updateChart() {
             selectedYear: selectedYear
         }
     }).then(function (response) {
-        // Aggiorna i dati del grafico con i nuovi dati ottenuti dalla risposta
+        console.log(response.data);
+
+        // Assicurati che la risposta contenga il campo messageResponseStats
         var updatedMessageStats = response.data.messageStats;
         console.log(updatedMessageStats);
+        if (updatedMessageStats) {
+            // Estrai le informazioni necessarie dalla risposta
+            var labels = updatedMessageStats.map(entry => entry.month);
+            console.log(labels);
+            var values = updatedMessageStats.map(entry => entry.count);
 
-        // Esempio: Aggiorna il grafico usando Chart.js
-        messageStats.data.labels = updatedMessageStats.labels;
-        messageStats.data.datasets[0].data = updatedMessageStats.values;
-        messageStats.update();
+            // Aggiorna il grafico con i nuovi dati ottenuti dalla risposta
+            messageStatsElem.data.labels = month;
+            messageStatsElem.data.datasets[0].data = values;
+            messageStatsElem.update();
+        } else {
+            console.error('Il campo messageResponseStats non è presente nella risposta.');
+        }
 
-        // Aggiorna il grafico usando il tuo metodo specifico
     }).catch(function (error) {
         console.error('Errore durante la richiesta Axios:', error);
     });
