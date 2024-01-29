@@ -15,8 +15,9 @@ class StatsController extends Controller
     public function index(Apartment $apartment, Request $request){
         $selectedYear = Carbon::now()->format('Y');
 
-        $viewStats = View::selectRaw('COUNT(*) as count, DATE(view_date) as date')
-                        ->groupBy('date')
+        $viewStats = View::selectRaw('COUNT(*) as count, YEAR(view_date) as year, MONTH(view_date) as month')
+                        ->whereYear('view_date', $selectedYear)
+                        ->groupBy('year', 'month')
                         ->get();
 
         $messageStats = Message::selectRaw('COUNT(*) as count, YEAR(date) as year, MONTH(date) as month')
@@ -27,21 +28,27 @@ class StatsController extends Controller
 
         return view('admin.stats.index', compact('apartment', 'viewStats', 'messageStats', 'selectedYear'));
     }
-        public function updateChart(Request $request)
-        {
-            $selectedYear = $request->input('selectedYear', date('Y'));
+    public function updateChart(Request $request)
+    {
+        $selectedYear = $request->input('selectedYear', date('Y'));
 
-            $messageStats = Message::selectRaw('COUNT(*) as count, YEAR(date) as year, MONTH(date) as month')
-                            ->whereYear('date', $selectedYear)
-                            ->groupBy('year', 'month')
-                            ->get();
+        $messageStats = Message::selectRaw('COUNT(*) as count, YEAR(date) as year, MONTH(date) as month')
+                        ->whereYear('date', $selectedYear)
+                        ->groupBy('year', 'month')
+                        ->get();
 
-            // Esegui le operazioni necessarie con il valore dell'anno selezionato
-            // ...
+        $viewStats = View::selectRaw('COUNT(*) as count, YEAR(view_date) as year, MONTH(view_date) as month')
+                        ->whereYear('view_date', $selectedYear)
+                        ->groupBy('year', 'month')
+                        ->get();
 
-            // Restituisci i dati aggiornati al frontend
-            return response()->json(['messageStats' => $messageStats]);
-        }
+        // Esegui le operazioni necessarie con il valore dell'anno selezionato
+        // ...
+
+        // Restituisci i dati aggiornati al frontend
+        return response()->json(['messageStats' => $messageStats, 'viewStats' => $viewStats]);
+    }
+
 
 
 
