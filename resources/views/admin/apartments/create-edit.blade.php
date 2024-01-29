@@ -18,12 +18,12 @@
                 <div class="col-xl-7 col-12">
                     <div class="d-flex flex-column flex-md-row">
                         {{-- TITLE --}}
-                        <div class="d-flex flex-column me-md-4">
+                        <div class="col-md-7 d-flex flex-column">
                             <label for="title" class="form-label fs-5 w-100">Nome del locale</label>
                             <input
                             type="text"
                             name="title"
-                            class="form-control @error('title') is-invalid @enderror"
+                            class="w-100 form-control @error('title') is-invalid @enderror"
                             id="title"
                             value="{{ old("title", $apartment?->title)}}"
                             required
@@ -35,7 +35,7 @@
                             @enderror
                         </div>
                                             {{-- VISIBLE --}}
-                        <div class="d-flex flex-column my-2 my-md-0">
+                        <div class="col-md-3 d-flex flex-column my-2 my-md-0 ms-md-3">
                             <p class="fs-5 mb-2">Rendilo visibile</p>
                             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                 <input
@@ -192,58 +192,14 @@
                             >
 
                         </div>
-
-                    </div>
-
-                </div>
-
-                <div class="d-xl-none">
-                    <button class="btn btn-primary w-100 my-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Servizi disponibili</button>
-
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                        <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="offcanvasRightLabel">Servizi disponibili</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-
-                            <div class="border rounded-3 p-2">
-                                    @foreach ($services as $index => $service)
-                                        <div class="box-service m-2">
-
-                                            <input
-                                                type="checkbox"
-                                                class="btn-check my-check"
-                                                name="services[]"
-                                                id="{{$service->id}}"
-                                                autocomplete="off"
-                                                value="{{$service->id}}"
-                                                @if (in_array($service->id, old('services', [])))
-                                                    checked
-                                                @elseif($apartment?->services->contains($service))
-                                                    checked
-                                                @endif
-                                                required
-                                            >
-
-                                            <label
-                                                class="h-100 btn d-flex flex-column"
-                                                for="{{$service->id}}">
-                                                <i class="{{ $service->icon }}"></i>{{$service->name}}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                            </div>
-
-                        </div>
                     </div>
                 </div>
 
 
                 {{-- SERVICES --}}
-                <div class="d-none d-xl-block col-xl-5 border rounded-3 p-2">
+                <div class="col-xl-5 border rounded-3 p-2">
 
-                    <h2 class="text-center">Servizi disponibili</h2>
+                    <h2 class="text-center">Seleziona i servizi disponibili</h2>
 
                     <div role="group" class="all-service d-flex flex-wrap justify-content-center rounded-5">
 
