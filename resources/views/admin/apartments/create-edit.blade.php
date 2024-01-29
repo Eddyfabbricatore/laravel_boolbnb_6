@@ -245,7 +245,7 @@
 
                     <h2 class="text-center">Servizi disponibili</h2>
 
-                    <div role="group" class="all-service d-flex flex-wrap rounded-5">
+                    <div role="group" class="all-service d-flex flex-wrap justify-content-center rounded-5">
 
                         @foreach ($services as $index => $service)
                             <div class="box-service m-2">
