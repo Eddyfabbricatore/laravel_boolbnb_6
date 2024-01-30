@@ -21,11 +21,11 @@
                 background-size: cover;
                 background-position: center;"
                  class="d-flex">
-                <div class="glass-form w-50 flex-grow-1 flex-sm-grow-0">
-                    <h2>Hai sponsorizzato: <span id="sponsored">{{ $apartment->title }}</span> con l'abbonamento {{$sponsor->name}}</p>
-                    <h4>Data di transizione: {{ $transaction->createdAt->format('Y-m-d H:i:s') }}</h4>
-                    <h4>{{ $isSponsored }}</h4>
-                    <p>Durata sponsorizzazione in ore: {{ $sponsor_duration }}</p>
+                <div class="glass-form w-50 flex-grow-1 flex-sm-grow-0 d-flex flex-column justify-content-evenly">
+                    <h2 class="text-center">Hai sponsorizzato <br><span id="sponsored"><strong>{{ $apartment->title }}</strong></span> con l'abbonamento <strong>{{$sponsor->name}}</strong></h2>
+                    <h4 class="text-center">Data di transizione: {{ $transaction->createdAt->format('Y-m-d H:i:s') }}</h4>
+                    <h4 class="text-center">{{ $isSponsored }}</h4>
+                    <p class="text-center">Durata sponsorizzazione in ore: {{ $sponsor_duration }}</p>
                     {{-- <p>Rimangono <span id="tempo_rimanente"></span> secondi alla fine della sponsorizzazione</p> --}}
                 </div>
             </div>
