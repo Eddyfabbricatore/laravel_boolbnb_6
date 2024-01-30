@@ -33,16 +33,13 @@ Route::middleware(['auth', 'verified'])
     ->name('admin.')
     ->prefix('admin')
     ->group(function () {
-        // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        // Route::get('/', [DashboardController::class,'index'])->name('home');
         Route::resource('apartments', ApartmentController::class);
-        Route::get('{apartment}/payment', [PaymentController::class, 'index'])->name('payment');
-        Route::post('{apartment}/payment-checkout', [PaymentController::class, 'processPayment'])->name('payment.processPayment');
-        Route::get('apartments/{id}/messages', [MessageController::class,'messagesForApartment'])->name('messages');
-        // Route::resource('technologies', TechnologyController::class);
-        // Route::resource('types', TypeController::class);
-        // Route::get('typeProjects', [TypeController::class, 'typeProjects'])->name('typeProjects');
-        // Route::get('projects-technology/{technology}', [TechnologyController::class, 'projectsTechnology'])->name('projects-technology');
+
+        Route::get('apartments/{slug}/payment', [PaymentController::class, 'index'])->name('payment');
+        Route::post('apartments/{slug}/payment-checkout', [PaymentController::class, 'processPayment'])->name('payment.processPayment');
+
+        Route::get('apartments/{slug}/messages', [MessageController::class,'messagesForApartment'])->name('messages');
+
     });
 
 require __DIR__.'/auth.php';
