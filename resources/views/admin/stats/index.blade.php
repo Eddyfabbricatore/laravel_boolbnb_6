@@ -13,7 +13,7 @@
                     <p>{{$apartment->title}}</p>
                 </div>
                 <div>
-                    <select id="yearSelector"  onchange="updateChart()">
+                    <select id="yearViewSelector"  onchange="updateChart(viewStatsElem, apiViewStats, 0, 'yearViewSelector')">
                         @for ($year = date('Y'); $year >= (date('Y') - 2); $year--)
                             <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
                         @endfor
@@ -35,7 +35,7 @@
                     <p>{{$apartment->title}}</p>
                 </div>
                 <div>
-                    <select id="" onchange="" >
+                    <select id="yearMessageSelector"  onchange="updateChart(messageStatsElem, apiMessageStats, 0, 'yearMessageSelector')">
                         @for ($year = date('Y'); $year >= (date('Y') - 2); $year--)
                         <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
                         @endfor
@@ -62,6 +62,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    /* Api call */
+    let apiViewStats = 'http://127.0.0.1:8000/api/updateViewChart';
+    let apiMessageStats = 'http://127.0.0.1:8000/api/updateMessageChart';
+
     /* General */
     let month = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set' ,'Ott', 'Nov', 'Dic'];
     let sponsors = ['bronze', 'silver', 'gold'];
@@ -172,42 +176,44 @@
             'rgba(200, 200, 200, 0.7)',
             'rgba(255, 220, 0, 0.7)'
             ],
-            hoverOffset: 2
+            hoverOffset: 2,
+            /* options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                aspectRatio: 1,
+            } */
+
+
         }]
         }
     });
 
 
-    function updateChart() {
-        var selectedYear = document.getElementById('yearSelector').value;
+    function updateChart(chartElem, apiUrl, datasetIndex, yearSelected) {
+    var selectedYear = document.getElementById(yearSelected).value;
 
-        axios.get('http://127.0.0.1:8000/api/updateChart', {
-            params: {
-                selectedYear: selectedYear
-            }
-        }).then(function (response) {
-            var updatedMessageStats = response.data.messageStats;
-            if (updatedMessageStats) {
-                var labels = updatedMessageStats.map(entry => entry.month);
-                var values = updatedMessageStats.map(entry => entry.count);
+    axios.get(apiUrl, {
+        params: {
+            selectedYear: selectedYear
+        }
+    }).then(function (response) {
+        var updatedStats = response.data.response;
 
-                messageStatsElem.data.labels = month;
-                messageStatsElem.data.datasets[0].data = values;
-                messageStatsElem.update();
+        if (updatedStats) {
+            var labels = updatedStats.map(entry => entry.month);
+            var values = updatedStats.map(entry => entry.count);
 
-                viewStatsElem.data.labels = month;
-                viewStatsElem.data.datasets[0].data = values;
-                viewStatsElem.update();
+            chartElem.data.labels = labels;
+            chartElem.data.datasets[datasetIndex].data = values;
+            chartElem.update();
+        } else {
+            console.error('Il campo stats non è presente nella risposta.');
+        }
+    }).catch(function (error) {
+        console.error('Errore durante la richiesta Axios:', error);
+    });
+}
 
-                // Add the logic to update viewStats (similar to messageStatsElem)
-            } else {
-                console.error('Il campo messageResponseStats non è presente nella risposta.');
-            }
-
-        }).catch(function (error) {
-            console.error('Errore durante la richiesta Axios:', error);
-        });
-    }
 
 </script>
 
