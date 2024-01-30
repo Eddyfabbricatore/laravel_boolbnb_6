@@ -2,17 +2,17 @@
 
 return [
     [
-      'name' => 'Pippo',
-      'surname' => 'Francos',
-      'email' => 'pippofrancos@example.com',
+      'name' => 'Marco',
+      'surname' => 'Rossi',
+      'email' => 'marcorossi@example.com',
       'password' => '12345678',
       'date_of_birth' => '1995/01/01'
     ],
 
     [
       'name' => 'Gino',
-      'surname' => 'Baudo',
-      'email' => 'ginobaudo@example.com',
+      'surname' => 'Bianchi',
+      'email' => 'ginobianchi@example.com',
       'password' => '12345678',
       'date_of_birth' => '1995/05/02',
     ],
@@ -34,9 +34,9 @@ return [
     ],
 
     [
-      'name' => 'Bill',
-      'surname' => 'Gates',
-      'email' => 'billgates@example.com',
+      'name' => 'Giuseppe',
+      'surname' => 'Verdi',
+      'email' => 'giuseppeverdi@example.com',
       'password' => '12345678',
       'date_of_birth' => '1976/01/01',
     ],
