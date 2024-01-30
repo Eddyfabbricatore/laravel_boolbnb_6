@@ -39,26 +39,39 @@ class StatsController extends Controller
 
         return view('admin.stats.index', compact('apartment', 'viewStats', 'messageStats', 'selectedYear','sponsorAllYears'));
     }
-    public function updateChart(Request $request)
+
+    public function updateViewChart(Request $request)
     {
         $selectedYear = $request->input('selectedYear', date('Y'));
 
-        $messageStats = Message::selectRaw('COUNT(*) as count, YEAR(date) as year, MONTH(date) as month')
-                        ->whereYear('date', $selectedYear)
-                        ->groupBy('year', 'month')
-                        ->get();
-
-        $viewStats = View::selectRaw('COUNT(*) as count, YEAR(view_date) as year, MONTH(view_date) as month')
+        $viewStatsResponse = View::selectRaw('COUNT(*) as count, YEAR(view_date) as year, MONTH(view_date) as month')
                         ->whereYear('view_date', $selectedYear)
                         ->groupBy('year', 'month')
                         ->get();
 
-        // Esegui le operazioni necessarie con il valore dell'anno selezionato
-        // ...
-
-        // Restituisci i dati aggiornati al frontend
-        return response()->json(['messageStats' => $messageStats, 'viewStats' => $viewStats]);
+        return response()->json(['response' => $viewStatsResponse]);
     }
+
+    public function updateMessageChart(Request $request)
+    {
+        $selectedYear = $request->input('selectedYear', date('Y'));
+
+        $messageStatsResponse = Message::selectRaw('COUNT(*) as count, YEAR(date) as year, MONTH(date) as month')
+                        ->whereYear('date', $selectedYear)
+                        ->groupBy('year', 'month')
+                        ->get();
+
+        return response()->json(['response' => $messageStatsResponse]);
+    }
+
+
+
+/*     public function updateSponsorChart(Request $request)
+    {
+        $selectedYear = $request->input('selectedYear', date('Y'));
+
+        return response()->json(['messageStats' => $messageStats]);
+    } */
 
 
 
