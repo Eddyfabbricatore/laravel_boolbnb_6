@@ -42,7 +42,7 @@ class ApartmentController extends Controller
     foreach ($sponsorships as $sponsorship) {
         if ($sponsorship->pivot->transaction_date !== null) {
             // Verifica se la sponsorizzazione è ancora attiva
-            $sponsorEndTime = Carbon::parse($sponsorship->pivot->transaction_date)->addSeconds($sponsorship->duration_in_hours);
+            $sponsorEndTime = Carbon::parse($sponsorship->pivot->transaction_date)->addHours($sponsorship->duration_in_hours);
 
             // Se la sponsorizzazione è ancora attiva, restituisce true
             if (Carbon::now()->lt($sponsorEndTime)) {
