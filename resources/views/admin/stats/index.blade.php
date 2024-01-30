@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="h-100 w-100 d-flex flex-column flex-md-row">
-    <div class="h-100 d-flex flex-column gap-2 p-2 flex-grow-1">
+    <div class="h-100 d-flex flex-column gap-2 p-2 flex-grow-1 mb-3">
 
         <div class="card d-flex flex-grow-1">
 
@@ -55,7 +55,7 @@
         </div> --}}
         <div class="card h-50 w-100">
             <h4>Sponsorizzazione preferita:</h4>
-            <canvas id="view_year_stats" class="p-5 w-100 h-100"></canvas>
+            <canvas id="view_year_stats" class="px-5 w-100 h-100"></canvas>
         </div>
     </div>
 </div>
@@ -165,7 +165,7 @@
         data: {
         labels: sponsors,
         datasets: [{
-            label: 'My First Dataset',
+            label: 'Numero totale di sponsorizzazioni',
             data: sponsorAllYearsCount,
             backgroundColor: [
             'rgba(219, 112, 42, 0.7)',
