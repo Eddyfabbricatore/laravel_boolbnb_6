@@ -306,7 +306,7 @@ public function getApartmentsTotal(Request $request) {
 
         $new_apartment->services()->attach($form_data_apartment["services"]);
 
-        return redirect()->route("admin.apartments.show", $new_apartment);
+        return redirect()->route("admin.apartments.show", $new_apartment->slug);
     }
 
     /**
@@ -315,6 +315,7 @@ public function getApartmentsTotal(Request $request) {
     public function show($slug)
     {
         $apartment = Apartment::where('slug', $slug)->with('user', 'sponsors', 'services')->firstOrFail();
+
 
         /* AUTH CONTROL */
         if (auth()->user()->id != $apartment->user_id) {
@@ -330,6 +331,7 @@ public function getApartmentsTotal(Request $request) {
     {
         $apartment = Apartment::where('slug', $slug)->with('user', 'sponsors', 'services')->firstOrFail();
 
+        $apartmentSlug = $apartment->slug;
         /* AUTH CONTROL */
         if (auth()->user()->id != $apartment->user_id) {
             abort(404, 'Not Found');
@@ -337,7 +339,7 @@ public function getApartmentsTotal(Request $request) {
 
         $title = 'Modifica Appartamento';
         $method = 'PUT';
-        $route = route('admin.apartments.update', $apartment);
+        $route = route('admin.apartments.update', $apartmentSlug);
         $services = Service::all();
 
         $form_data_address = Helper::getAddressDatas($apartment->lat, $apartment->lng);
@@ -402,7 +404,7 @@ public function getApartmentsTotal(Request $request) {
 
         $apartment->update($form_data_apartment);
 
-        return redirect()->route("admin.apartments.show", $apartment);
+        return redirect()->route("admin.apartments.show", $apartment->slug);
     }
 
     /**
