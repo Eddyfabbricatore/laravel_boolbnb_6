@@ -9,17 +9,17 @@
     @endif
 
     <div class="row w-100 ps-4">
-        <h1 id="sponsor_title" class="text-center ">Scegli la tua offerta</h1>
-        <p id="sponsor_paragraph" class="text-center alert alert-dark w-75 m-auto my-3 gap-sm-5">NB! Se hai gia una sponsorizzazione attiva il tempo di sponsorizzazione verrà sommato alla scadenza gia prefissata.</p>
+        <h1 id="sponsor_title" class="text-center text-dark">Scegli la tua offerta</h1>
+        <p id="sponsor_paragraph" class="text-center text-light pt-3 px-5 rounded w-75 m-auto my-3 gap-sm-5">NB! Se hai gia una sponsorizzazione attiva il tempo di sponsorizzazione verrà sommato alla scadenza gia prefissata!</p>
     </div>
 
     <div id="sponsor_cards" class="w-100 row d-flex flex-md-row ps-4">
         @foreach ($sponsors as $sponsor)
-            <div id="card_{{$sponsor->id}}" class="col-12 col-sm-3 btn justify-content-evenly flex-grow-1 flex-md-grow-0 sponsorship-card" data-price="{{ $sponsor->price }}">
+            <div id="card_{{$sponsor->id}}" class="col-12 col-sm-3 btn sponsorship-card d-flex flex-column justify-content-evenly" data-price="{{ $sponsor->price }}">
                 <h1>{{ $sponsor->name }}</h1>
                 <h3>Prezzo: € {{ $sponsor->price }}</h3>
                 <h3>Durata: {{ $sponsor->duration_in_hours }}h</h3>
-                <p class="h-25 w-75 m-auto my-0">La sponsorizzazione {{ $sponsor->name }} ti da la possibilità di metterre in evidenza {{ $apartment->title }} per la durata di {{ $sponsor->duration_in_hours }}h. <br>Questo aumenta la possibilita che tu riesca ad affittarlo!!</p>
+                <p class="w-75 m-auto my-4 py-2 px-3 glass-form">La sponsorizzazione {{ $sponsor->name }} ti da la possibilità di metterre in evidenza {{ $apartment->title }} per la durata di {{ $sponsor->duration_in_hours }}h. <br>Questo aumenta la possibilita che tu riesca ad affittarlo!!</p>
             </div>
         @endforeach
     </div>
