@@ -30,13 +30,13 @@
 
             <div class="card-content position-relative w-50 p-3">
                 <div class="set-icons position-absolute p-4 z-1">
-                    <div class="btn-group dropend">
+                    <div class="btn-group dropdown">
                         <button type="button" class="btn btn-secondary rounded" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-sharp fa-solid fa-gear fs-1"></i>
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu bg-transparent border-0">
                             <li>
-                                <a class="nav-link flex-grow-1" href="{{route('admin.apartments.edit', $apartment->slug)}}">
+                                <a class="nav-link flex-grow-1 mb-2 w-75" href="{{route('admin.apartments.edit', $apartment->slug)}}">
                                     <button class="btn btn-warning w-100">
                                     Modifica
                                         <i class="fa-sharp fa-solid fa-pen"></i>
@@ -44,7 +44,7 @@
                                 </a>
                             </li>
                             <li>
-                                <form class="flex-grow-1" action={{route("admin.apartments.destroy", $apartment->slug)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
+                                <form class="flex-grow-1 w-75" action={{route("admin.apartments.destroy", $apartment->slug)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger w-100">
