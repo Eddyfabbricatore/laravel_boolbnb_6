@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ApartmentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\StatsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,10 +37,9 @@ Route::middleware(['auth', 'verified'])
         Route::resource('apartments', ApartmentController::class);
 
         Route::get('apartments/{slug}/payment', [PaymentController::class, 'index'])->name('payment');
+        Route::get('{apartment}/stats', [StatsController::class, 'index'])->name('stats');
         Route::post('apartments/{slug}/payment-checkout', [PaymentController::class, 'processPayment'])->name('payment.processPayment');
-
         Route::get('apartments/{slug}/messages', [MessageController::class,'messagesForApartment'])->name('messages');
-
     });
 
 require __DIR__.'/auth.php';

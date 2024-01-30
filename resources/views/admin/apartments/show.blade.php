@@ -27,6 +27,11 @@
                     <a class="nav-link" href="{{route('admin.payment', $apartment->slug)}}">
                         <button class="btn btn-success"><i class="fa-solid fa-credit-card"></i></button>
                     </a>
+
+                    <a class="nav-link" href="{{route('admin.stats', $apartment)}}">
+                        <button class="btn btn-success"><i class="fa-solid fa-chart-line"></i></button>
+                    </a>
+
                 </div>
             </div>
 
