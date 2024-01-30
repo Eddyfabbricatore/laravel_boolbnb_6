@@ -28,7 +28,35 @@
     <div class="d-md-flex align-items-center flex-wrap mb-4">
         @forelse ($apartments as $apartment)
 
-            <div class="card-content w-50 p-3">
+            <div class="card-content position-relative w-50 p-3">
+                <div class="set-icons position-absolute p-4 z-1">
+                    <div class="btn-group dropend">
+                        <button type="button" class="btn btn-secondary rounded" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-sharp fa-solid fa-gear fs-1"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="nav-link flex-grow-1" href="{{route('admin.apartments.edit', $apartment->slug)}}">
+                                    <button class="btn btn-warning w-100">
+                                    Modifica
+                                        <i class="fa-sharp fa-solid fa-pen"></i>
+                                    </button>
+                                </a>
+                            </li>
+                            <li>
+                                <form class="flex-grow-1" action={{route("admin.apartments.destroy", $apartment->slug)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger w-100">
+                                        Elimina
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
                 <a class=" text-decoration-none card flex-grow-1 w-100 h-50 px-0 overflow-hidden" href="{{route('admin.apartments.show',$apartment->slug)}}">
                     <div class="h-100 w-100 d-flex flex-column">
                         <div class="h-100 g-0">
@@ -43,7 +71,7 @@
                         <div class="w-100 text-center">
                             <div class="w-100 p-3">
                                 <div class="d-flex w-100 justify-content-center">
-                                    <h3 class="card-title fs-1 text-center">{{$apartment->title}}</h3>
+                                    <h3 class="card-title fs-1 text-center">{{$apartment->title}} </h3>
                                     <div class="icon d-flex align-items-center ms-3 fs-5">
                                         @if($apartment->visible)
                                         <i class="fa-solid fa-eye text-success my-auto"></i>
@@ -54,44 +82,44 @@
                                 </div>
                                 <p class="card-text">Indirizzo di casa: {{$apartment->address}}</p>
                             </div>
+
                         </div>
                     </div>
                 </a>
                 <div class="d-flex flex-grow w-100">
 
-                    {{-- CREATE --}}
-                    <a class="nav-link flex-grow-1" href="{{route('admin.apartments.edit', $apartment->slug)}}">
-                        <button class="btn btn-warning w-100"><i class="fa-sharp fa-solid fa-pen"></i></button>
-                    </a>
-                    
-                    {{-- EDIT --}}
-                    <a class="nav-link flex-grow-1" href="{{route('admin.messages',$apartment->slug)}}">
-                        <button class="btn btn-secondary w-100">
-                            <i class="fa-solid fa-message"></i>
-                        </button>
-                    </a>
-                    
-                    {{-- DELETE --}}
-                    <form class="flex-grow-1" action={{route("admin.apartments.destroy", $apartment->slug)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger w-100">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </form>
+
 
                     {{-- SPONSOR --}}
                     <a class="nav-link flex-grow-1" href="{{route('admin.payment', $apartment->slug)}}">
                         <button class="btn btn-success w-100">
-                            <i class="fa-solid fa-credit-card"></i>
+                            <div>
+                                <i class="fa-solid fa-credit-card"></i>
+                                <p>Sponsorizza</p>
+                            </div>
                         </button>
                     </a>
-                    
+
+                    {{-- MESSAGE --}}
+                    <a class="nav-link flex-grow-1" href="{{route('admin.messages',$apartment->slug)}}">
+                        <button class="btn btn-secondary w-100">
+                            <div class="">
+                                <i class="fa-solid fa-message"></i>
+                                <p>Messaggi</p>
+                            </div>
+                        </button>
+                    </a>
+
                     {{-- STATS --}}
                     <a class="nav-link flex-grow-1" href="{{route('admin.stats', $apartment)}}">
-                        <button class="btn btn-success w-100"><i class="fa-solid fa-chart-line"></i></button>
+                        <button class="btn btn-success w-100">
+                            <div>
+                                <i class="fa-solid fa-chart-line"></i>
+                                <p>Statistiche</p>
+                            </div>
+                        </button>
                     </a>
-                    
+
                 </div>
             </div>
         @empty
