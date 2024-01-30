@@ -9,6 +9,7 @@ use App\Models\Sponsor;
 use App\Models\View;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StatsController extends Controller
 {
@@ -25,8 +26,18 @@ class StatsController extends Controller
                         ->groupBy('year', 'month')
                         ->get();
 
+        // Assuming you have relationships defined in your Apartment and Sponsor models
 
-        return view('admin.stats.index', compact('apartment', 'viewStats', 'messageStats', 'selectedYear'));
+        $sponsorAllYears = Sponsor::select('sponsors.id as sponsor_id', DB::raw('COUNT(*) as count'))
+                    ->join('apartment_sponsor', 'sponsors.id', '=', 'apartment_sponsor.sponsor_id')
+                    ->join('apartments', 'apartment_sponsor.apartment_id', '=', 'apartments.id')
+                    ->where('apartments.id', $apartment->id)
+                    ->groupBy('sponsors.id')
+                    ->get();
+
+
+
+        return view('admin.stats.index', compact('apartment', 'viewStats', 'messageStats', 'selectedYear','sponsorAllYears'));
     }
     public function updateChart(Request $request)
     {
