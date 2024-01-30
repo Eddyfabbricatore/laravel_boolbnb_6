@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+
 
 class ProfileController extends Controller
 {
@@ -16,8 +18,14 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+
+        $user = $request->user();
+
+        $dateOfBirth = Carbon::parse($user->date_of_birth)->format('d-m-Y');
+
         return view('profile.edit', [
             'user' => $request->user(),
+            'formattedDateOfB' => $dateOfBirth
         ]);
     }
 

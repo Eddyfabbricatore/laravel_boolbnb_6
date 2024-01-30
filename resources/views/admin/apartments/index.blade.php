@@ -29,7 +29,7 @@
         @forelse ($apartments as $apartment)
 
             <div class="card-content w-50 p-3">
-                <a class=" text-decoration-none card flex-grow-1 w-100 h-50 px-0 overflow-hidden" href="{{route('admin.apartments.show',$apartment)}}">
+                <a class=" text-decoration-none card flex-grow-1 w-100 h-50 px-0 overflow-hidden" href="{{route('admin.apartments.show',$apartment->slug)}}">
                     <div class="h-100 w-100 d-flex flex-column">
                         <div class="h-100 g-0">
                             <div class="box-img h-100">
@@ -58,34 +58,40 @@
                     </div>
                 </a>
                 <div class="d-flex flex-grow w-100">
+
                     {{-- CREATE --}}
-                    <a class="nav-link flex-grow-1" href="{{route('admin.apartments.edit', $apartment)}}">
+                    <a class="nav-link flex-grow-1" href="{{route('admin.apartments.edit', $apartment->slug)}}">
                         <button class="btn btn-warning w-100"><i class="fa-sharp fa-solid fa-pen"></i></button>
                     </a>
+                    
                     {{-- EDIT --}}
-                    <a class="nav-link flex-grow-1" href="{{route('admin.messages',$apartment)}}">
+                    <a class="nav-link flex-grow-1" href="{{route('admin.messages',$apartment->slug)}}">
                         <button class="btn btn-secondary w-100">
                             <i class="fa-solid fa-message"></i>
                         </button>
                     </a>
+                    
                     {{-- DELETE --}}
-                    <form class="flex-grow-1" action={{route("admin.apartments.destroy", $apartment)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
+                    <form class="flex-grow-1" action={{route("admin.apartments.destroy", $apartment->slug)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger w-100">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     </form>
+
                     {{-- SPONSOR --}}
-                    <a class="nav-link flex-grow-1" href="{{route('admin.payment', $apartment)}}">
+                    <a class="nav-link flex-grow-1" href="{{route('admin.payment', $apartment->slug)}}">
                         <button class="btn btn-success w-100">
                             <i class="fa-solid fa-credit-card"></i>
                         </button>
                     </a>
+                    
                     {{-- STATS --}}
                     <a class="nav-link flex-grow-1" href="{{route('admin.stats', $apartment)}}">
                         <button class="btn btn-success w-100"><i class="fa-solid fa-chart-line"></i></button>
                     </a>
+                    
                 </div>
             </div>
         @empty

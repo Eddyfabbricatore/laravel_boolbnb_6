@@ -25,8 +25,9 @@
     </div>
 
     @isset($sponsor)
-    <div id="box_form" class="d-none h-100 py-3">
-        <form method="POST" action="{{ route('admin.payment.processPayment', $apartment) }}" id="payment_form" class="card d-flex flex-column align-items-center justify-content-evenly m-auto h-100 w-50 p-4">
+    <div id="box_form" class="d-none h-100">
+        <form method="POST" action="{{ route('admin.payment.processPayment', $apartment->slug) }}" id="payment_form" class="card d-flex flex-column align-items-center m-auto h-100 w-100 p-4">
+
             @csrf
             <div class="payment-description d-flex flex-column justify-content-evenly">
                 <h1 class="text-center mb-4 h-50">Hai selezionato l'offerta {{$sponsor->name}} per <br> {{ $apartment->title }}</h1>

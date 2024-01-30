@@ -312,8 +312,10 @@ public function getApartmentsTotal(Request $request) {
     /**
      * Display the specified resource.
      */
-    public function show(Apartment $apartment)
+    public function show($slug)
     {
+        $apartment = Apartment::where('slug', $slug)->with('user', 'sponsors', 'services')->firstOrFail();
+
         /* AUTH CONTROL */
         if (auth()->user()->id != $apartment->user_id) {
             abort(404, 'Not Found');
@@ -324,29 +326,33 @@ public function getApartmentsTotal(Request $request) {
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Apartment $apartment)
-{
-    /* AUTH CONTROL */
-    if (auth()->user()->id != $apartment->user_id) {
-        abort(404, 'Not Found');
+    public function edit($slug)
+    {
+        $apartment = Apartment::where('slug', $slug)->with('user', 'sponsors', 'services')->firstOrFail();
+
+        /* AUTH CONTROL */
+        if (auth()->user()->id != $apartment->user_id) {
+            abort(404, 'Not Found');
+        }
+
+        $title = 'Modifica Appartamento';
+        $method = 'PUT';
+        $route = route('admin.apartments.update', $apartment);
+        $services = Service::all();
+
+        $form_data_address = Helper::getAddressDatas($apartment->lat, $apartment->lng);
+
+        return view("admin.apartments.create-edit", compact("apartment", "services", "title", "method", "route", "form_data_address"));
     }
-
-    $title = 'Modifica Appartamento';
-    $method = 'PUT';
-    $route = route('admin.apartments.update', $apartment);
-    $services = Service::all();
-
-    $form_data_address = Helper::getAddressDatas($apartment->lat, $apartment->lng);
-
-    return view("admin.apartments.create-edit", compact("apartment", "services", "title", "method", "route", "form_data_address"));
-}
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ApartmentRequest $request, Apartment $apartment)
+    public function update(ApartmentRequest $request, $slug)
     {
+        $apartment = Apartment::where('slug', $slug)->with('user', 'sponsors', 'services')->firstOrFail();
+
         $form_data_apartment = $request->all();
         $form_data_apartment['user_id'] = Auth::user()->id;
 
@@ -402,8 +408,10 @@ public function getApartmentsTotal(Request $request) {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Apartment $apartment)
+    public function destroy($slug)
     {
+        $apartment = Apartment::where('slug', $slug)->with('user', 'sponsors', 'services')->firstOrFail();
+
         if($apartment->image){
             Storage::disk('public')->delete($apartment->image);
         }

@@ -44,12 +44,15 @@ class PaymentController extends Controller
         }
     }
 
-    public function index(Apartment $apartment)
+    public function index($slug)
     {
+        $apartment = Apartment::where('slug', $slug)->with('user','sponsors','services')->first();
         //Controllo navigazione appartamenti altrui
         if (auth()->user()->id != $apartment->user_id) {
             abort(404, 'Not Found');
         }
+        // $apartment = $selectedApartment[0];
+
 
         //Prendo tutti i sponsor
         $sponsors = Sponsor::all();
@@ -60,8 +63,11 @@ class PaymentController extends Controller
         return view('payment.index', compact('clientToken' , 'apartment', 'sponsors'));
     }
 
-    public function processPayment(Request $request, Apartment $apartment)
+    public function processPayment(Request $request, $slug)
     {
+
+        $apartment = Apartment::where('slug', $slug)->with('user', 'sponsors', 'services')->firstOrFail();
+
         //Prendo i valori in entrata
         $amount = $request->input('amount');
         $nonce = $request->input('payment_method_nonce');

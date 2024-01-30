@@ -12,7 +12,12 @@ use Illuminate\Support\Facades\Validator;
 
 class MessageController extends Controller
 {
-    public function messagesForApartment($id){
+    public function messagesForApartment($slug){
+
+        $apartment = Apartment::where('slug', $slug)->with('messages')->firstOrFail();
+
+        $id = $apartment->id;
+
         // dd($apartment);
         $messages = Message::with('apartment')->where('apartment_id' , $id)->get();
         return view('admin.apartments.messages', compact('messages'));
@@ -22,6 +27,7 @@ class MessageController extends Controller
 
     public function store(Request $request){
         $data_message_user = $request->all();
+
         $validator = Validator::make($data_message_user,[
             'email'=> 'required|min:2|max:255',
             'message'=> 'required|min:2',
@@ -42,6 +48,8 @@ class MessageController extends Controller
     $new_message = new Message();
     $new_message->fill($data_message_user);
     $new_message->save();
+
+    // $apartment_id = $data_message_user['apartment_id'];
 
     // Mail::to('provamessaggio@example.com')->send(new NewContact($new_message));
 

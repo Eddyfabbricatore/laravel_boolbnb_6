@@ -32,7 +32,7 @@
 
         </div>
         <div class="mt-3 d-flex justify-content-center">
-            <a class="btn btn-secondary" href="{{route('admin.apartments.show', $apartment)}}">Torna all'appartamento</a>
+            <a class="btn btn-secondary" href="{{route('admin.apartments.show', $apartment->slug)}}">Torna all'appartamento</a>
         </div>
         @endisset
     </div>

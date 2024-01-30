@@ -1,12 +1,17 @@
 <section>
     <header>
         <h2 class="text-secondary">
-            {{ __('Profile Information') }}
+            {{ __('Profilo') }}
         </h2>
 
         <p class="mt-1 text-muted">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Visualizza i dati per il tuo profilo") }}
         </p>
+
+        {{-- PROFILE ICON BOX --}}
+        <div class="icon_box">
+            <i class="fa-solid fa-circle-user"></i>
+        </div>
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
@@ -16,6 +21,26 @@
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
+
+        <div class="mb-2 text-center ">
+            <p class="fs-2">{{$user->name}} {{$user->surname}}</p>
+            <p class="fs-4">{{$formattedDateOfB}}</p>
+            <p class="fs-4"> {{$user->email}}</p>
+        </div>
+
+<!--
+        {{-- NAME --}}
+        <div class="input-group flex-nowrap mb-2">
+            <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-signature"></i></span>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Nome" aria-label="Username" aria-describedby="addon-wrapping">
+        </div>
+
+        {{-- SURNAME --}}
+        <div class="input-group flex-nowrap mb-2">
+            <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-signature"></i></span>
+            <input type="text" class="form-control" id="surname" name="surname"  placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+        </div>
+
 
         <div class="mb-2">
             <label for="name">{{__('Name')}}</label>
@@ -58,7 +83,6 @@
             </div>
             @endif
         </div>
-
         <div class="d-flex align-items-center gap-4">
             <button class="btn btn-primary" type="submit">{{ __('Save') }}</button>
 
@@ -74,5 +98,23 @@
             <p id='profile-status' class="fs-5 text-muted">{{ __('Saved.') }}</p>
             @endif
         </div>
+    -->
+
+    {{-- TORNO SEMPRE INDIETRO SK SK --}}
+    @php
+        $current = url()->current();
+
+        if(url()->previous() != $current) {
+            $previous = url()->previous();
+        } else {
+            $previous = route('dashboard');
+        }
+
+    @endphp
+
+<div class="text-center">
+    <a class="btn btn-dark" href="{{$previous}}">Torna indietro</a>
+</div>
+
     </form>
 </section>
