@@ -10,13 +10,13 @@
                 <h1 class="text-dark ">{{$apartment->title}}</h1>
                 <div class="d-flex gap-2">
 
-                    <a class="nav-link btn btn-warning" href="{{route('admin.apartments.edit', $apartment)}}">
+                    <a class="nav-link btn btn-warning" href="{{route('admin.apartments.edit', $apartment->slug)}}">
                         <button class="btn btn-warning"><i class="fa-sharp fa-solid fa-pen"></i></button>
                     </a>
                     <button class="btn btn-secondary">
-                        <a class="nav-link btn btn-warning" href="{{route('admin.messages',$apartment)}}"><i class="fa-solid fa-message"></i></a>
+                        <a class="nav-link btn btn-warning" href="{{route('admin.messages',$apartment->slug)}}"><i class="fa-solid fa-message"></i></a>
                     </button>
-                    <form action={{route("admin.apartments.destroy", $apartment)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
+                    <form action={{route("admin.apartments.destroy", $apartment->slug)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">
@@ -24,7 +24,7 @@
                         </button>
                     </form>
 
-                    <a class="nav-link" href="{{route('admin.payment', $apartment)}}">
+                    <a class="nav-link" href="{{route('admin.payment', $apartment->slug)}}">
                         <button class="btn btn-success"><i class="fa-solid fa-credit-card"></i></button>
                     </a>
                 </div>
