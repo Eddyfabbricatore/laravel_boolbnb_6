@@ -16,14 +16,14 @@ class MessagesTableSeeder extends Seeder
     public function run(Faker $faker): void
     {
 
-        for($i = 0; $i < 20 ; $i++) {
+        for($i = 0; $i < 1000 ; $i++) {
 
             $newMessage = new Message();
             $newMessage->apartment_id = Apartment::inRandomOrder()->first()->id;
             $newMessage->full_name = $faker->name();
             $newMessage->email = $faker->email();
             $newMessage->message = $faker->sentence();
-            $newMessage->date = $faker->dateTimeBetween('-4 week', 'yesterday');
+            $newMessage->date = $faker->dateTimeBetween('-2 years', 'yesterday');
 
             $newMessage->save();
         }
