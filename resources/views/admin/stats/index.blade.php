@@ -168,11 +168,11 @@
             label: 'My First Dataset',
             data: sponsorAllYearsCount,
             backgroundColor: [
-            'rgb(219, 112, 42)',
-            'rgb(200, 200, 200)',
-            'rgb(255, 220, 0)'
+            'rgba(219, 112, 42, 0.7)',
+            'rgba(200, 200, 200, 0.7)',
+            'rgba(255, 220, 0, 0.7)'
             ],
-            hoverOffset: 4
+            hoverOffset: 2
         }]
         }
     });
