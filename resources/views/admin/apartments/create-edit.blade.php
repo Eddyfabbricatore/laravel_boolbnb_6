@@ -101,7 +101,7 @@
 
                                 {{-- ROOMS --}}
                                 <label for="rooms">Numero di stanze</label>
-                                <input class="form-control" type="number" name="rooms" value="1" min="1" max="255" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required placeholder="Stanze disponibili">
+                                <input class="form-control" type="number" name="rooms" placeholder="min: 1" min="1" max="255" id="rooms" value="{{old('rooms', $apartment?->rooms)}}" required placeholder="Stanze disponibili">
 
                                 @error('rooms')
                                     <span>{{$message}}</span>
@@ -113,7 +113,7 @@
 
                                 {{-- BATHROOMS --}}
                                 <label for="bathrooms">Numero di bagni</label>
-                                <input class="form-control" type="number" name="bathrooms" value="1" min="1" max="255" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required placeholder="Bagni disponibili">
+                                <input class="form-control" type="number" name="bathrooms" placeholder="min: 1" min="1" max="255" id="bathrooms" value="{{old('bathrooms', $apartment?->bathrooms)}}"  required placeholder="Bagni disponibili">
 
                                 @error('bathrooms')
                                     <span>{{$message}}</span>
@@ -128,7 +128,7 @@
 
                                 {{-- BEDS --}}
                                 <label for="beds">Numero di letti</label>
-                                <input class="form-control" type="number" name="beds" id="beds" value="1" min="1" max="255" value="{{old('beds', $apartment?->beds)}}"  required placeholder="Letti disponibili">
+                                <input class="form-control" type="number" name="beds" id="beds" placeholder="min: 1" min="1" max="255" value="{{old('beds', $apartment?->beds)}}"  required placeholder="Letti disponibili">
 
                                 @error('beds')
                                     <span>{{$message}}</span>
@@ -144,7 +144,6 @@
                                 type="number"
                                 name="square_meters"
                                 id="square_meters"
-                                value="1"
                                 min="1"
                                 max="65535"
                                 value="{{old('square_meters', $apartment?->square_meters)}}"  required placeholder="Inserire metri quadri">
