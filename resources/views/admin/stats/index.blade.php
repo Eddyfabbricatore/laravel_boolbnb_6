@@ -2,61 +2,62 @@
 
 @section('content')
 
-<div class="h-100 w-100 d-flex flex-column flex-md-row">
-    <div class="h-100 d-flex flex-column gap-2 p-2 flex-grow-1 mb-3">
+<div class="w-100 d-flex flex-column flex-md-row gap-3 my-2 px-2 position-relative">
+    <a href="{{route('admin.apartments.show',$apartment->slug)}}">
+        <button class="btn btn-danger position-fixed z-1 bottom-0 start-50 mb-3">Torna su {{$apartment->title}}</button>
+    </a>
+    <div class="w-auto">
+        <section class="mb-3">
+            <div class="h-100 card d-flex flex-grow-1">
 
-        <div class="card d-flex flex-grow-1">
-
-            <div class="content p-2 d-flex justify-content-evenly">
-                <div class="me-4">
-                    <h4>Views dell appartamento:</h4>
-                    <p>{{$apartment->title}}</p>
+                <div class="content p-2 d-flex justify-content-evenly">
+                    <div class="me-4">
+                        <h4>Views dell appartamento:</h4>
+                        <p>{{$apartment->title}}</p>
+                    </div>
+                    <div>
+                        <select id="yearViewSelector"  onchange="updateChart(viewStatsElem, apiViewStats, 0, 'yearViewSelector')">
+                            @for ($year = date('Y'); $year >= (date('Y') - 2); $year--)
+                                <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
+                            @endfor
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <select id="yearViewSelector"  onchange="updateChart(viewStatsElem, apiViewStats, 0, 'yearViewSelector')">
-                        @for ($year = date('Y'); $year >= (date('Y') - 2); $year--)
+
+                <div class="canv flex-grow-1 w-100 p-3">
+                    <canvas id="view_stats" class="p-4 w-100 h-100"></canvas>
+                </div>
+
+            </div>
+        </section>
+        <section class="mb-3">
+            <div class="h-100 card d-flex flex-grow-1">
+
+                <div  class="content d-flex justify-content-evenly">
+                    <div class="me-4">
+                        <h4>Messaggi ricevuti dell appartamento</h4>
+                        <p>{{$apartment->title}}</p>
+                    </div>
+                    <div>
+                        <select id="yearMessageSelector"  onchange="updateChart(messageStatsElem, apiMessageStats, 0, 'yearMessageSelector')">
+                            @for ($year = date('Y'); $year >= (date('Y') - 2); $year--)
                             <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
-                        @endfor
-                    </select>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+
+                <div  class="canv flex-grow-1 w-100 p-3">
+                    <canvas id="message_stats" class="p-4 w-100 h-100">
                 </div>
             </div>
-
-            <div class="canv flex-grow-1">
-                <canvas id="view_stats" class="p-2 w-100 h-100"></canvas>
-            </div>
-
-        </div>
-
-        <div class="card d-flex flex-grow-1">
-
-            <div class="content p-2 d-flex justify-content-evenly">
-                <div class="me-4">
-                    <h4>Messaggi ricevuti dell appartamento</h4>
-                    <p>{{$apartment->title}}</p>
-                </div>
-                <div>
-                    <select id="yearMessageSelector"  onchange="updateChart(messageStatsElem, apiMessageStats, 0, 'yearMessageSelector')">
-                        @for ($year = date('Y'); $year >= (date('Y') - 2); $year--)
-                        <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>{{ $year }}</option>
-                        @endfor
-                    </select>
-                </div>
-            </div>
-
-            <div class="canv flex-grow-1">
-                <canvas id="message_stats" class="p-2 w-100 h-100">
-            </div>
-        </div>
+        </section>
     </div>
-    <div class="d-flex flex-md-column gap-2 p-2 flex-wrap flex-md-nowrap">
-{{--         <div class="card h-50 w-100">
+    <div class="card mx-auto p-3" style="height: 575px; width: 575px">
+        <section class="">
             <h4>Sponsorizzazione preferita:</h4>
-            <canvas id="sponsor_stats" class="p-5 w-100 h-100"></canvas>
-        </div> --}}
-        <div class="card h-50 w-100">
-            <h4>Sponsorizzazione preferita:</h4>
-            <canvas id="view_year_stats" class="px-5 w-100 h-100"></canvas>
-        </div>
+            <canvas id="view_year_stats" style="height: 500px; width: 500px"></canvas>
+        </section>
     </div>
 </div>
 
@@ -88,28 +89,32 @@
     //console.log('viewcounts:', viewcounts);
 
     let viewStatsElem = new Chart(viewStats, {
-        type: 'line',
-        data: {
-            labels: month,
-            datasets: [{
-                label: 'Visualizzazioni',
-                data: viewcounts,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-                tension: 0.3,
-                pointHoverRadius: 9,
-                pointRadius: 7,
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+    type: 'line',
+    data: {
+        labels: month,
+        datasets: [{
+            label: 'Visualizzazioni',
+            data: viewcounts,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            tension: 0.3,
+            pointHoverRadius: 9,
+            pointRadius: 7,
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
             }
-        }
-    });
+        },
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 8/3,
+    }
+});
+
 
     /* MESSAGE Stats BAR */
     let messaegeStats = @json($messageStats);
@@ -123,17 +128,20 @@
         data: {
         labels: month,
         datasets: [{
-            label: '# of Votes',
+            label: 'Messaggi ricevuti',
             data: messaegecounts,
             borderWidth: 1
         }]
         },
         options: {
-        scales: {
-            y: {
-            beginAtZero: true
-            }
-        }
+            scales: {
+                y: {
+                beginAtZero: true
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 8/3
         }
     });
 
@@ -203,7 +211,7 @@
             var labels = updatedStats.map(entry => entry.month);
             var values = updatedStats.map(entry => entry.count);
 
-            chartElem.data.labels = labels;
+            chartElem.data.labels = month;
             chartElem.data.datasets[datasetIndex].data = values;
             chartElem.update();
         } else {

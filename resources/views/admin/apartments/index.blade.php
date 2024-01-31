@@ -27,8 +27,8 @@
 
     <div class="d-md-flex align-items-center flex-wrap mb-4">
         @forelse ($apartments as $apartment)
-
-            <div class="card-content position-relative w-50 p-3">
+        <div style="max-height: 750px" class="w-50 mb-3">
+            <div class="card-content position-relative m-3 p-3">
                 <div class="set-icons position-absolute p-4 z-1">
                     <div class="btn-group dropdown">
                         <button type="button" class="btn btn-secondary rounded" data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,7 +57,7 @@
                     </div>
 
                 </div>
-                <a class=" text-decoration-none card flex-grow-1 w-100 h-50 px-0 overflow-hidden" href="{{route('admin.apartments.show',$apartment->slug)}}">
+                <a class=" text-decoration-none card flex-grow-1 w-100 px-0 overflow-hidden" href="{{route('admin.apartments.show',$apartment->slug)}}">
                     <div class="h-100 w-100 d-flex flex-column">
                         <div class="h-100 g-0">
                             <div class="box-img h-100">
@@ -87,9 +87,6 @@
                     </div>
                 </a>
                 <div class="d-flex flex-grow w-100">
-
-
-
                     {{-- SPONSOR --}}
                     <a class="nav-link flex-grow-1" href="{{route('admin.payment', $apartment->slug)}}">
                         <button class="btn btn-success w-100">
@@ -122,6 +119,7 @@
 
                 </div>
             </div>
+        </div>
         @empty
             <p>Non ci sono appartamenti</p>
         @endforelse
