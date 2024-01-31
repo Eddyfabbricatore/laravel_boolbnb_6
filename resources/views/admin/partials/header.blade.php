@@ -10,7 +10,7 @@
 
       <!-- FULL NAVBAR -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <a class="nav-link navbar-nav me-auto" href="http://localhost:5173/">{{ __('Vai al sito') }}</a>
+          <a class="nav-link navbar-nav" href="http://localhost:5173/">{{ __('Vai al sito') }}</a>
           <!-- Left Side -->
           <ul class="navbar-nav me-auto">
               <li class="nav-item">
