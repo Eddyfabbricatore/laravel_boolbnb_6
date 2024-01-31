@@ -66,6 +66,8 @@ public function getApartmentsTotal(Request $request) {
     $beds = $request->input('beds', 0);
     $formRadius = $request->input('radius', 20000);
 
+    if ($formRadius == 0) $formRadius = 2000;
+
     // Salva i nuovi valori nella query dell'URI
     $request->merge([
         'lonA' => $lonA,
