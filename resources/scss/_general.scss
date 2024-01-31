@@ -24,6 +24,10 @@ main{
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+input:focus {
+    box-shadow: 0 0 5px 0 rgba(25, 61, 18,0.7) !important;
+}
+
 .icon_box {
     font-size: 100px;
     text-align: center;
