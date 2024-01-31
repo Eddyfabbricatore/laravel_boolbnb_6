@@ -28,6 +28,9 @@ class MessageController extends Controller
     public function store(Request $request){
         $data_message_user = $request->all();
 
+        $apt_id = $data_message_user['apartment_id'];
+
+
         $validator = Validator::make($data_message_user,[
             'email'=> 'required|min:2|max:255',
             'message'=> 'required|min:2',
@@ -37,6 +40,7 @@ class MessageController extends Controller
             'email.max' => 'l\' email deve avere :max caratteri',
             'message.required' => 'il message è un campo obbligatorio',
             'message.min' => 'il message deve avere :min caratteri',
+            'status.type' => 'ciao'
         ]
     );
 
@@ -46,14 +50,16 @@ class MessageController extends Controller
         return response()->json(compact('success','errors'));
     }
     $new_message = new Message();
-    $new_message->fill($data_message_user);
-    $new_message->save();
 
-    // $apartment_id = $data_message_user['apartment_id'];
+    $new_message->apartment_id = $apt_id;
+
+    $new_message->fill($data_message_user)->save();
+    // $new_message->save();
 
     // Mail::to('provamessaggio@example.com')->send(new NewContact($new_message));
 
     $success = true;
+
     return response()->json(compact('success'));
     }
 }
