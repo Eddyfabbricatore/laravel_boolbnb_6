@@ -2,6 +2,9 @@
 
 @section('content')
     <div id="create-edit" class="h-100 w-100 ">
+        <a class="position-fixed z-2 top-0 start-50 translate-middle pt-5 my-2 text-light " href="javascript:history.go(-1)">
+            <p class="btn mt-4 w-100 h-100 fs-5 btn-outline-light">Torna indietro</p>
+        </a>
         <h1 class="text-center text-dark fw-bolder pt-3">{{ $title }}</h1>
 
         @foreach ($errors as $error)

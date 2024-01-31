@@ -1,4 +1,5 @@
 <nav id="full-navbar" class="navbar navbar-expand-md">
+
   <div class="w-100 mx-5">
 
       <!-- BUTTON FOR MOBILE VIEW -->
@@ -6,13 +7,12 @@
           <span class="navbar-toggler-icon"></span>
       </button>
 
+
       <!-- FULL NAVBAR -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <a class="nav-link" href="http://localhost:5173/">{{ __('Vai al sito') }}</a>
           <!-- Left Side -->
           <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                  <a class="nav-link" href="http://localhost:5173/">{{ __('Vai al sito') }}</a>
-              </li>
               <li class="nav-item">
                   <a class="nav-link" href="{{route('dashboard')}}">{{ __('Dashboard') }}</a>
               </li>
