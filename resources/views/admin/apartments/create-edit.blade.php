@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="create-edit" class="h-100 w-100 bg-body-secondary ">
+    <div id="create-edit" class="h-100 w-100 ">
         <h1 class="text-center text-dark fw-bolder pt-3">{{ $title }}</h1>
 
         @foreach ($errors as $error)
