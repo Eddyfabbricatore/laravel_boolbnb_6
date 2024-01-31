@@ -12,7 +12,7 @@
     @dump($_SESSION); --}}
 
     <div id="dashboard" class="container h-100 d-flex align-items-center">
-        <div class="route-select border rounded-3 m-auto p-5 h-75 w-100 d-flex align-items-center justify-content-center flex-column">
+        <div class="route-select border rounded-3 m-auto p-5 w-100 d-flex align-items-center justify-content-center flex-column">
             <h1 class="text-center">Bentornato {{$user->name}} {{$user->surname}}!!</h1>
 
             <h3>Scegli cosa fare:</h3>
