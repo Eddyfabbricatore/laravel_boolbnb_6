@@ -13,9 +13,11 @@
                     <a class="nav-link btn btn-warning" href="{{route('admin.apartments.edit', $apartment->slug)}}">
                         <button class="btn btn-warning"><i class="fa-sharp fa-solid fa-pen"></i></button>
                     </a>
-                    <button class="btn btn-secondary">
-                        <a class="nav-link btn btn-warning" href="{{route('admin.messages',$apartment->slug)}}"><i class="fa-solid fa-message"></i></a>
-                    </button>
+                    <a class="nav-link btn btn-warning" href="{{route('admin.messages',$apartment->slug)}}">
+                        <button class="btn btn-secondary h-100 w-100">
+                            <i class="fa-solid fa-message"></i>
+                        </button>
+                    </a>
                     <form action={{route("admin.apartments.destroy", $apartment->slug)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
                         @csrf
                         @method('DELETE')
