@@ -13,26 +13,29 @@ use Illuminate\Support\Facades\DB;
 
 class StatsController extends Controller
 {
-    public function index(Apartment $apartment, Request $request){
+    public function index(Request $request, $slug){
+        $apartment = Apartment::where('slug', $slug)->with('services', 'sponsors', 'user')->first();
         $selectedYear = Carbon::now()->format('Y');
 
-        $viewStats = View::selectRaw('COUNT(*) as count, YEAR(view_date) as year, MONTH(view_date) as month')
-                        ->whereYear('view_date', $selectedYear)
-                        ->groupBy('year', 'month')
-                        ->get();
+        $viewStats = $apartment->views()
+                                ->selectRaw('COUNT(*) as count, YEAR(view_date) as year, MONTH(view_date) as month')
+                                ->whereYear('view_date', $selectedYear)
+                                ->groupBy('year', 'month')
+                                ->get();
 
-        $messageStats = Message::selectRaw('COUNT(*) as count, YEAR(date) as year, MONTH(date) as month')
-                        ->whereYear('date', $selectedYear)
-                        ->groupBy('year', 'month')
-                        ->get();
+        $messageStats = $apartment->messages()
+                                ->selectRaw('COUNT(*) as count, YEAR(date) as year, MONTH(date) as month')
+                                ->whereYear('date', $selectedYear)
+                                ->groupBy('year', 'month')
+                                ->get();
 
         // Assuming you have relationships defined in your Apartment and Sponsor models
 
-        $sponsorAllYears = Sponsor::select('sponsors.id as sponsor_id', DB::raw('COUNT(*) as count'))
+        $sponsorAllYears = Sponsor::select('sponsors.name as sponsor_name', DB::raw('COUNT(*) as count'))
                     ->join('apartment_sponsor', 'sponsors.id', '=', 'apartment_sponsor.sponsor_id')
                     ->join('apartments', 'apartment_sponsor.apartment_id', '=', 'apartments.id')
                     ->where('apartments.id', $apartment->id)
-                    ->groupBy('sponsors.id')
+                    ->groupBy('sponsors.name')
                     ->get();
 
 
@@ -43,11 +46,14 @@ class StatsController extends Controller
     public function updateViewChart(Request $request)
     {
         $selectedYear = $request->input('selectedYear', date('Y'));
+        $apartmentId = $request->input('apartment');
+        $apartment = Apartment::find($apartmentId);
 
-        $viewStatsResponse = View::selectRaw('COUNT(*) as count, YEAR(view_date) as year, MONTH(view_date) as month')
-                        ->whereYear('view_date', $selectedYear)
-                        ->groupBy('year', 'month')
-                        ->get();
+        $viewStatsResponse = $apartment->views()
+                                        ->selectRaw('COUNT(*) as count, YEAR(view_date) as year, MONTH(view_date) as month')
+                                        ->whereYear('view_date', $selectedYear)
+                                        ->groupBy('year', 'month')
+                                        ->get();
 
         return response()->json(['response' => $viewStatsResponse]);
     }
@@ -55,8 +61,11 @@ class StatsController extends Controller
     public function updateMessageChart(Request $request)
     {
         $selectedYear = $request->input('selectedYear', date('Y'));
+        $apartmentId = $request->input('apartment');
+        $apartment = Apartment::find($apartmentId);
 
-        $messageStatsResponse = Message::selectRaw('COUNT(*) as count, YEAR(date) as year, MONTH(date) as month')
+        $messageStatsResponse = $apartment->messages()
+                        ->selectRaw('COUNT(*) as count, YEAR(date) as year, MONTH(date) as month')
                         ->whereYear('date', $selectedYear)
                         ->groupBy('year', 'month')
                         ->get();
