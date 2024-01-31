@@ -37,7 +37,7 @@ Route::middleware(['auth', 'verified'])
         Route::resource('apartments', ApartmentController::class);
 
         Route::get('apartments/{slug}/payment', [PaymentController::class, 'index'])->name('payment');
-        Route::get('{apartment}/stats', [StatsController::class, 'index'])->name('stats');
+        Route::get('apartments/{slug}/stats', [StatsController::class, 'index'])->name('stats');
         Route::post('apartments/{slug}/payment-checkout', [PaymentController::class, 'processPayment'])->name('payment.processPayment');
         Route::get('apartments/{slug}/messages', [MessageController::class,'messagesForApartment'])->name('messages');
     });
