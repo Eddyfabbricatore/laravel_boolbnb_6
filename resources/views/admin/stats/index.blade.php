@@ -3,8 +3,8 @@
 @section('content')
 
 <div class="w-100 d-flex flex-column flex-md-row gap-3 my-2 px-2 position-relative">
-    <a href="{{route('admin.apartments.show',$apartment->slug)}}">
-        <button class="btn btn-danger position-fixed z-1 bottom-0 start-50 mb-3">Torna su {{$apartment->title}}</button>
+    <a class="position-fixed z-2 top-0 start-50 translate-middle pt-5 my-2 text-light " href="{{route('admin.apartments.show',$apartment->slug)}}">
+        <p class="btn mt-4 w-100 h-100 fs-5 btn-outline-light">Torna all'appartamento</p>
     </a>
     <div class="w-auto">
         <section class="mb-3">
@@ -147,14 +147,22 @@
 
     /* SPONSOR Stats DOUGHNUT */
     var sponsorAllYearsData = @json($sponsorAllYears);
+    console.log('sponsorAllYearsData:',sponsorAllYearsData);
 
     // Extract data for Chart.js
     var sponsorAllYearsId = sponsorAllYearsData.map(item => item.sponsor_id);
     var sponsorAllYearsCount= sponsorAllYearsData.map(item => item.count);
 
-    console.log('sponsorAllYearsData:',sponsorAllYearsData);
-    console.log('sponsorAllYearsData:',sponsorAllYearsData);
-    console.log('sponsorAllYearsData:',sponsorAllYearsData);
+    var sponsorAllname = sponsorAllYearsData.map(item => item.sponsor_name);
+
+    let sponsorColorMap = {
+        'Basic': 'rgba(219, 112, 42, 0.7)',
+        'Premium': 'rgba(200, 200, 200, 0.7)',
+        'Gold': 'rgba(255, 220, 0, 0.7)'
+    };
+
+    let sponsorAllNames = sponsorAllYearsData.map(item => item.sponsor_name);
+    let backgroundColors = sponsorAllNames.map(name => sponsorColorMap[name]);
 
 /*     let sponsorStatsElem = new Chart(sponsorStats, {
         type: 'doughnut',
@@ -175,15 +183,11 @@
     let viewYearStatsElem = new Chart(viewYearStats, {
         type: 'polarArea',
         data: {
-        labels: sponsors,
+        labels: sponsorAllNames,
         datasets: [{
             label: 'Numero totale di sponsorizzazioni',
-            data: sponsorAllYearsCount,
-            backgroundColor: [
-            'rgba(219, 112, 42, 0.7)',
-            'rgba(200, 200, 200, 0.7)',
-            'rgba(255, 220, 0, 0.7)'
-            ],
+            data: sponsorAllYearsData.map(item => item.count),
+            backgroundColor: backgroundColors,
             hoverOffset: 2,
             /* options: {
                 responsive: true,
@@ -202,9 +206,11 @@
 
     axios.get(apiUrl, {
         params: {
-            selectedYear: selectedYear
+            selectedYear: selectedYear,
+            apartment: {{$apartment->id}}
         }
     }).then(function (response) {
+        console.log(response);
         var updatedStats = response.data.response;
 
         if (updatedStats) {
