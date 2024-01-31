@@ -10,7 +10,10 @@
             {{ session('errors') }}
         </div>
     @endif
-    <div class="container h-100">
+    <div class="container h-100 position-relative">
+        <a class="position-fixed z-2 top-0 start-50 translate-middle pt-5 my-2 text-light " href="{{route('admin.apartments.show',$apartment->slug)}}">
+            <p class="btn mt-4 w-100 h-100 fs-5 btn-outline-light">Torna all'appartamento</p>
+        </a>
         @isset($transaction)
         <div class="card mt-3">
             <h1>Riepilogo transazione</h1>
@@ -30,9 +33,6 @@
                 </div>
             </div>
 
-        </div>
-        <div class="mt-3 d-flex justify-content-center">
-            <a class="btn btn-secondary" href="{{route('admin.apartments.show', $apartment->slug)}}">Torna all'appartamento</a>
         </div>
         @endisset
     </div>
