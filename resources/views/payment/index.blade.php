@@ -1,12 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="index_payment" class="h-100 w-100 d-flex flex-column">
+<div id="index_payment" class="h-100 w-100 d-flex flex-column position-relative">
     @if(session('errors'))
     <div style="color: red;">
         {{ session('errors') }}
     </div>
     @endif
+    <a class="position-fixed z-2 top-0 start-50 translate-middle pt-5 my-2 text-light " href="{{route('admin.apartments.show',$apartment->slug)}}">
+        <p class="btn mt-4 w-100 h-100 fs-5 btn-outline-light">Torna all'appartamento</p>
+    </a>
 
     <div class="row w-100 ps-4">
         <h1 id="sponsor_title" class="text-center text-dark">Scegli la tua offerta</h1>
@@ -15,7 +18,7 @@
 
     <div id="sponsor_cards" class="w-100 row d-flex flex-md-row ps-4">
         @foreach ($sponsors as $sponsor)
-            <div id="card_{{$sponsor->id}}" class="col-12 col-sm-3 btn sponsorship-card d-flex flex-column justify-content-evenly" data-price="{{ $sponsor->price }}">
+            <div id="card_{{$sponsor->id}}" data-name="{{$sponsor->name}}" class="col-12 col-sm-3 btn sponsorship-card d-flex flex-column justify-content-evenly" data-price="{{ $sponsor->price }}">
                 <h1>{{ $sponsor->name }}</h1>
                 <h3>Prezzo: € {{ $sponsor->price }}</h3>
                 <h3>Durata: {{ $sponsor->duration_in_hours }}h</h3>
@@ -26,12 +29,12 @@
 
     @isset($sponsor)
     <div id="box_form" class="d-none h-100">
-        <form method="POST" action="{{ route('admin.payment.processPayment', $apartment->slug) }}" id="payment_form" class="card d-flex flex-column align-items-center m-auto h-100 w-100 p-4">
+        <form method="POST" action="{{ route('admin.payment.processPayment', $apartment->slug) }}" id="payment_form" class="card d-flex flex-column justify-content-evenly align-items-center m-auto h-100 w-75 p-4">
 
             @csrf
             <div class="payment-description d-flex flex-column justify-content-evenly">
-                <h1 class="text-center mb-4 h-50">Hai selezionato l'offerta {{$sponsor->name}} per <br> {{ $apartment->title }}</h1>
-                <h2 class="text-center">Il prezzo dell'offerta: {{$sponsor->price}}€</h2>
+                <h1 class="text-center mb-4 h-50">Hai selezionato l'offerta <span id="sponsor_selected"></span> per <br> {{ $apartment->title }}</h1>
+                <h2 class="text-center mt-2">Il prezzo dell'offerta: <span id="price_selected"></span>€</h2>
             </div>
 
             <div class="payment-box h-50 m-auto my-0 row">
@@ -56,6 +59,8 @@
 <script src="https://js.braintreegateway.com/web/dropin/1.41.0/js/dropin.min.js"></script>
 
 <script>
+    let priceSelected = document.getElementById('price_selected');
+    let sponsorSelected = document.getElementById('sponsor_selected');
     //Sponsor
     let sponsorTitle = document.getElementById('sponsor_title');
     let sponsorParagraph = document.getElementById('sponsor_paragraph');
@@ -80,10 +85,14 @@
         sponsorshipCards.forEach(function (card) {
             card.addEventListener('click', function () {
                 //Prendo i valori dell' amount
+                let cardSelected = card.getAttribute('data-name');
                 let selectedAmount = card.getAttribute('data-price');
                 amountInput.value = selectedAmount;
 
                 selectedSponsorInput.value = selectedAmount;
+
+                priceSelected.innerHTML = selectedAmount;
+                sponsorSelected.innerHTML = cardSelected;
                 //Abilito al pagamento
                 submitPaymentButton.removeAttribute('disabled');
 
