@@ -124,7 +124,8 @@
             </div>
         </div>
         @empty
-            <p>Non ci sono appartamenti</p>
+            <h4 class="text-black me-4">Non ci sono appartamenti</h4>
+            <a class="btn btn-success" href="{{route('admin.apartments.create')}}">Crea Nuovo Appartamento</a>
         @endforelse
     </div>
 </section>
