@@ -55,48 +55,7 @@ class ApartmentController extends Controller
     return false;
 }
 
-    public function getApartmentsTotalOld(Request $request) {
 
-        $lonA = $request->input('lonA',);
-        $latA = $request->input('latA',);
-        $services = $request->input('services', []);
-        $rooms = $request->input('rooms', 0);
-        $beds = $request->input('beds', 0);
-
-        $formRadius = $request->input('radius', 20000);
-
-        if ($formRadius == 0) $formRadius = 2000;
-
-
-        $apartmentsQuery = Apartment::select(
-            'apartments.*',
-            DB::raw("ST_Distance_Sphere(point(?, ?), point(apartments.lng, apartments.lat)) as distance")
-        )
-        ->whereRaw("ST_Distance_Sphere(point(?, ?), point(apartments.lng, apartments.lat)) <= ?", [$lonA, $latA, $lonA, $latA, $formRadius])
-        ->where('rooms', '>=', $rooms)
-        ->where('beds', '>=', $beds)
-        ->orderBy('distance');
-
-        if (!empty($services)) {
-            $apartmentsQuery->join('apartment_service as sa', 'apartments.id', '=', 'sa.apartment_id')
-                ->join('services as s', 'sa.service_id', '=', 's.id')
-                ->whereIn('s.name', $services)
-                ->groupBy('apartments.id')
-                ->havingRaw('COUNT(DISTINCT s.name) = ?', [count($services)])
-                ->selectRaw('apartments.*, GROUP_CONCAT(s.name) AS service_names');
-        }
-
-        $apartments = $apartmentsQuery->get();
-        // Log::info("lonA: $lonA, latA: $latA, services: " . json_encode($services) . ", rooms: $rooms, beds: $beds, radius: $formRadius, servicesQuery: $servicesQuery");
-
-        $response = response()->json(compact('apartments'));
-
-        $response->header('Access-Control-Allow-Origin', '*');
-        $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-        $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With');
-
-        return $response;
-    }
 
 public function getApartmentsTotal(Request $request) {
     // Recupera i valori precedenti dei parametri dalla query dell'URI
@@ -122,8 +81,12 @@ public function getApartmentsTotal(Request $request) {
 
     $apartmentsQuery = Apartment::select(
         'apartments.*',
-        DB::raw("ST_Distance_Sphere(point(?, ?), point(apartments.lng, apartments.lat)) as distance")
+        DB::raw("ST_Distance_Sphere(point(?, ?), point(apartments.lng, apartments.lat)) as distance"),
+        // DB::raw("CASE WHEN apartment_sponsor.end_sponsor_date >= NOW() THEN 1 ELSE 0 END as is_sponsored")
     )
+    // ->join('apartment_sponsor', 'apartments.id', '=', 'apartment_sponsor.apartment_id')
+    // ->join('sponsors', 'apartment_sponsor.sponsor_id', '=', 'sponsors.id')
+    // ->orderByDesc('is_sponsored')
     ->orderBy('distance');
 
     // Condizioni per il raggio
@@ -147,7 +110,10 @@ public function getApartmentsTotal(Request $request) {
 
     $apartments = $apartmentsQuery->get();
 
-
+    foreach ($apartments as $apartment) {
+        // Aggiungi l'attributo dinamico isSponsored
+        $apartment->setAttribute('isSponsored', $this->isSponsored($apartment));
+    }
 
     $response = response()->json(compact('apartments'));
 
