@@ -10,7 +10,7 @@
 
       <!-- FULL NAVBAR -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <a class="nav-link" href="http://localhost:5173/">{{ __('Vai al sito') }}</a>
+          <a class="nav-link navbar-nav me-auto" href="http://localhost:5173/">{{ __('Vai al sito') }}</a>
           <!-- Left Side -->
           <ul class="navbar-nav me-auto">
               <li class="nav-item">
@@ -23,11 +23,11 @@
               <!-- Authentication Links -->
               @guest
               <li class="nav-item">
-                  <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                  <a class="nav-link" href="{{ route('login') }}">{{ __('Accedi') }}</a>
               </li>
               @if (Route::has('register'))
               <li class="nav-item">
-                  <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                  <a class="nav-link" href="{{ route('register') }}">{{ __('Registrati') }}</a>
               </li>
               @endif
               @else
@@ -36,11 +36,11 @@
                       {{ Auth::user()->name }}
                   </a>
 
-                  <div class="dropdown-menu dropdown-menu-right bg-black" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item " href="{{ url('profile') }}">{{__('Profile')}}</a>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item " href="{{ url('profile') }}">{{__('Profilo')}}</a>
                       <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
-                          {{ __('Logout') }}
+                          {{ __('Disconnettiti') }}
                       </a>
 
                       <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
