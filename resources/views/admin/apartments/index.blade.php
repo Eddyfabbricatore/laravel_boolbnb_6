@@ -111,7 +111,7 @@
                     </a>
 
                     {{-- STATS --}}
-                    <a class="nav-link flex-grow-1" href="{{route('admin.stats', $apartment)}}">
+                    <a class="nav-link flex-grow-1" href="{{route('admin.stats', $apartment->slug)}}">
                         <button class="btn btn-success w-100">
                             <div>
                                 <i class="fa-solid fa-chart-line"></i>
