@@ -43,3 +43,22 @@
 .media-comment {
     margin-top:20px
 }
+
+nav {
+    margin: auto;
+}
+
+.page-link {
+    color: rgba(25, 61, 18,0.7);
+    &:hover {
+        color: rgba(25, 61, 18,1);
+    }
+    &:active {
+        box-shadow: 0 0 5px 0 rgba(25, 61, 18,0.7);
+    }
+}
+
+.active .page-link {
+    background-color: rgba(25, 61, 18,0.7);
+    border-color: rgba(25, 61, 18,0.5)
+}
