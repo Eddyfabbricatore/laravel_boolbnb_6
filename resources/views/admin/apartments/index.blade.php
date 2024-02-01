@@ -28,13 +28,14 @@
 
     @endif
 
-    <div class="d-md-flex align-items-center flex-wrap mb-4">
+        <div class="container_custom">
+        <div class="row justify-content-center">
         @forelse ($apartments as $apartment)
-        <div style="max-height: 750px" class="w-50 mb-3">
-            <div class="card-content position-relative m-3 p-3">
-                <div class="set-icons position-absolute p-4 z-1">
-                    <div class="btn-group dropdown">
-                        <button type="button" class="btn btn-secondary rounded" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="col-12 d-flex col-md-4">
+                <div class="card">
+                    <div class="set-icons">
+                        {{-- Bottone del setting con MODIFICA E ELIMINA--}}
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-sharp fa-solid fa-gear fs-1"></i>
                         </button>
                         <ul class="dropdown-menu bg-transparent border-0">
@@ -58,76 +59,72 @@
                             </li>
                         </ul>
                     </div>
+                    <a class=" text-decoration-none overflow-hidden" href="{{route('admin.apartments.show',$apartment->slug)}}">
+                    <div class="box-img">
+                        @if (file_exists(public_path('storage/' . $apartment->image)))
+                            <img src="{{ asset('storage/' . $apartment->image) }}" alt="{{ $apartment->title }}">
+                        @else
+                            <img src="/img/{{$apartment->image}}" alt="{{ $apartment->title }}">
+                        @endif
+                    </div>
+                    </a>
+                        <div class="card-body">
+                            <div class="box-text">
+                                <div class="icon d-flex align-items-center py-2 fs-5">
 
-                </div>
-                <a class=" text-decoration-none card flex-grow-1 w-100 px-0 overflow-hidden" href="{{route('admin.apartments.show',$apartment->slug)}}">
-                    <div class="h-100 w-100 d-flex flex-column">
-                        <div class="h-100 g-0">
-                            <div class="box-img h-100">
-                                @if (file_exists(public_path('storage/' . $apartment->image)))
-                                    <img src="{{ asset('storage/' . $apartment->image) }}" class="w-100 h-100" alt="{{ $apartment->title }}">
-                                @else
-                                    <img src="/img/{{$apartment->image}}" class="w-100 h-100" alt="{{ $apartment->title }}">
-                                @endif
-                            </div>
-                        </div>
-                        <div class="w-100 text-center">
-                            <div class="w-100 p-3">
-                                <div class="d-flex w-100 justify-content-center">
-                                    <h3 class="card-title fs-1 text-center">{{$apartment->title}} </h3>
-                                    <div class="icon d-flex align-items-center ms-3 fs-5">
-                                        @if($apartment->visible)
-                                        <i class="fa-solid fa-eye text-success my-auto"></i>
-                                        @else
-                                        <i class="fa-solid fa-eye-slash text-danger my-auto"></i>
-                                        @endif
-                                    </div>
+                                    <h5 class="card-title me-2 mb-1">{{$apartment->title}}</h5>
+                                    @if($apartment->visible)
+                                    <i class="fa-solid fa-eye text-success my-auto"></i>
+                                    @else
+                                    <i class="fa-solid fa-eye-slash text-danger my-auto"></i>
+                                    @endif
                                 </div>
-                                <p class="card-text">Indirizzo di casa: {{$apartment->address}}</p>
+                                <h6 class="card-subtitle mb-2 text-muted"> {{$apartment->address}}</h6>
+                            </div>
+                        <div class="row align-items-end">
+                            {{-- Sponsor --}}
+                            <div class="col-4">
+                            <a class="flex-grow-1" href="{{route('admin.payment', $apartment->slug)}}">
+                                <button class="btn btn-success">
+                                    <div class="pt-1">
+                                        <i class="fa-solid fa-credit-card"></i>
+                                        <p>Sponsorizza</p>
+                                    </div>
+                                </button>
+                            </a>
+                            </div>
+                            {{-- MESSAGE --}}
+                            <div class="col-4">
+                            <a class="nav-link flex-grow-1" href="{{route('admin.messages',$apartment->slug)}}">
+                                <button class="btn btn-secondary">
+                                    <div class="pt-1">
+                                        <i class="fa-solid fa-message"></i>
+                                        <p>Messaggi</p>
+                                    </div>
+                                </button>
+                            </a>
                             </div>
 
+                            {{-- STATS --}}
+                            <div class="col-4">
+                            <a class="nav-link flex-grow-1" href="{{route('admin.stats', $apartment->slug)}}">
+                                <button class="btn btn-success">
+                                    <div class="pt-1">
+                                        <i class="fa-solid fa-chart-line"></i>
+                                        <p>Statistiche</p>
+                                    </div>
+                                </button>
+                            </a>
+                            </div>
                         </div>
                     </div>
-                </a>
-                <div class="d-flex flex-grow w-100">
-                    {{-- SPONSOR --}}
-                    <a class="nav-link flex-grow-1" href="{{route('admin.payment', $apartment->slug)}}">
-                        <button class="btn btn-success w-100">
-                            <div>
-                                <i class="fa-solid fa-credit-card"></i>
-                                <p>Sponsorizza</p>
-                            </div>
-                        </button>
-                    </a>
-
-                    {{-- MESSAGE --}}
-                    <a class="nav-link flex-grow-1" href="{{route('admin.messages',$apartment->slug)}}">
-                        <button class="btn btn-secondary w-100">
-                            <div class="">
-                                <i class="fa-solid fa-message"></i>
-                                <p>Messaggi</p>
-                            </div>
-                        </button>
-                    </a>
-
-                    {{-- STATS --}}
-                    <a class="nav-link flex-grow-1" href="{{route('admin.stats', $apartment->slug)}}">
-                        <button class="btn btn-success w-100">
-                            <div>
-                                <i class="fa-solid fa-chart-line"></i>
-                                <p>Statistiche</p>
-                            </div>
-                        </button>
-                    </a>
-
                 </div>
             </div>
+            @empty
+            <p>Non ci sono appartamenti</p>
+            @endforelse
         </div>
-        @empty
-            <h4 class="text-black me-4">Non ci sono appartamenti</h4>
-            <a class="btn btn-success" href="{{route('admin.apartments.create')}}">Crea Nuovo Appartamento</a>
-        @endforelse
-    </div>
+
 </section>
 
 
