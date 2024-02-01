@@ -1,4 +1,5 @@
 #full-navbar{
+    position: relative;
     height: 70px;
     background: rgb(25, 61, 18);
     background: radial-gradient(circle, rgba(25, 61, 18,0.5) 20%,    rgb(25, 61, 18) 100%);
@@ -7,5 +8,35 @@
 
     a{
         color: white;
+    }
+}
+
+.navbar-toggler {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.dropdown-menu {
+    background-color: rgba(25, 61, 18,0.7);
+    a:hover {
+        background-color: rgba(13, 34, 8, 0.7);
+    }
+}
+
+
+@media (max-width: 576px){
+
+    #navbarSupportedContent {
+        z-index: 999;
+        position: relative;
+        top: 50px;
+        max-width: 180px;
+        background-color: rgba(25, 61, 18,0.7);
+        border-radius: 0 20px 20px 20px;
+        padding: 10px 20px;
+        .navbar-nav:active {
+            background-color: rgba(25, 61, 18,0.9);
+        }
     }
 }

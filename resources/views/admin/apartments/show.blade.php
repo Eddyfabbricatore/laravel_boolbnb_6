@@ -4,6 +4,9 @@
 
     <section class="container w-100 h-100 d-flex justify-content-center align-items-center" style="
         background-image: url('@if(file_exists(public_path('storage/' . $apartment->image) )){{ asset('storage/' . $apartment->image) }}@else/img/{{$apartment->image}}@endif'); background-size: cover;">
+        <a class="position-fixed z-2 top-0 start-50 translate-middle pt-5 my-2 text-light " href="javascript:history.go(-1)">
+            <p class="btn mt-4 w-100 h-100 fs-5 btn-outline-light">Torna indietro</p>
+        </a>
 
         <div id="show-form" class="card p-5">
             <div class="d-flex gap-5 align-items-center ">
@@ -13,9 +16,11 @@
                     <a class="nav-link btn btn-warning" href="{{route('admin.apartments.edit', $apartment->slug)}}">
                         <button class="btn btn-warning"><i class="fa-sharp fa-solid fa-pen"></i></button>
                     </a>
-                    <button class="btn btn-secondary">
-                        <a class="nav-link btn btn-warning" href="{{route('admin.messages',$apartment->slug)}}"><i class="fa-solid fa-message"></i></a>
-                    </button>
+                    <a class="nav-link btn btn-warning" href="{{route('admin.messages',$apartment->slug)}}">
+                        <button class="btn btn-secondary h-100 w-100">
+                            <i class="fa-solid fa-message"></i>
+                        </button>
+                    </a>
                     <form action={{route("admin.apartments.destroy", $apartment->slug)}} method="post" onsubmit="return confirm('Are you sure you want to delete this apartment?')">
                         @csrf
                         @method('DELETE')

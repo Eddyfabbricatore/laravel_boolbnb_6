@@ -3,6 +3,9 @@
 @section('content')
 
 <section id="index" class="w-100 p-5">
+    <a class="position-fixed z-2 top-0 start-50 translate-middle pt-5 my-2 text-light " href="javascript:history.go(-1)">
+        <p class="btn mt-4 w-100 h-100 fs-5 btn-outline-light">Torna indietro</p>
+    </a>
     @if (session('success'))
         <div class="display-none" id="successDelete"></div>
         <div class="modal fade opacity-100 top-50 overflow-visible " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
