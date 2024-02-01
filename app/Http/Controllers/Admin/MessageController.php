@@ -19,7 +19,7 @@ class MessageController extends Controller
         $id = $apartment->id;
 
         // dd($apartment);
-        $messages = Message::with('apartment')->where('apartment_id' , $id)->get();
+        $messages = Message::with('apartment')->where('apartment_id' , $id)->orderByDesc('date')->paginate(10);
         return view('admin.apartments.messages', compact('messages'));
     }
 
