@@ -37,17 +37,4 @@
         @endisset
     </div>
 
-    <script>
-        setInterval(function() {
-            let tempoRimanente = parseInt(document.getElementById('tempo_rimanente').innerText);
-            let sponsored = document.getElementById('sponsored');
-
-            if (tempoRimanente > 0) {
-                tempoRimanente--;
-                document.getElementById('tempo_rimanente').innerText = tempoRimanente;
-            } else if (tempoRimanente === 0) {
-                sponsored.innerText = sponsoredApartment = 'no';
-            }
-        }, 1000);
-    </script>
 @endsection
